@@ -18,5 +18,17 @@ export const loginSchema = z.object({
   password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
 });
 
+export const profileSchema = z.object({
+  username: z
+    .string()
+    .min(3, "El nombre de usuario debe tener al menos 3 caracteres"),
+  name: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
+  lastName: z.string().min(3, "El apellido debe tener al menos 3 caracteres"),
+  profilePicture: z.string().optional(),
+  phone: z.string().optional(),
+  address: z.string().optional(),
+});
+
 export type RegisterFields = z.infer<typeof registerSchema>;
 export type LoginFormFields = z.infer<typeof loginSchema>;
+export type ProfileFields = z.infer<typeof profileSchema>;
