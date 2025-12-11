@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client"; // 1. Importar la función real, 
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
+import { AuthProvider } from "./features/auth/context/auth.context";
 
 const rootElement = document.getElementById("root");
 
@@ -15,8 +16,10 @@ const root = createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>
 );

@@ -11,7 +11,7 @@ import {
 
 // Importamos el servicio que acabamos de crear
 // (Asegúrate de ajustar la ruta según dónde guardes el archivo service)
-import { registerUser } from "../../auth/services/authService";
+import { registerUserService } from "../../auth/services/authService";
 
 const RegisterPage = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -45,7 +45,7 @@ const RegisterPage = () => {
     setServerError("");
     try {
       // Delegamos la lógica de la petición al servicio
-      await registerUser(data, file);
+      await registerUserService(data, file);
 
       // Si todo sale bien, redirigimos
       navigate("/login");

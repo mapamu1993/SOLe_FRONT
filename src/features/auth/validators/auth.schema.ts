@@ -19,4 +19,4 @@ export const loginSchema = z.object({
 });
 
 export type RegisterFields = z.infer<typeof registerSchema>;
-export type LoginCredentials = z.infer<typeof loginSchema>;
+export type LoginFormFields = z.infer<typeof loginSchema>;

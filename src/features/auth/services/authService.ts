@@ -1,13 +1,16 @@
-import axiosApi from "../../../api/axios.api";
+import axiosClient from "../../../api/axios.client";
 import {
   type RegisterFields,
-  type LoginCredentials,
+  type LoginFormFields,
 } from "../../auth/validators/auth.schema";
 
 /**
  * Servicio para registrar un nuevo usuario.
  */
-export const registerUser = async (data: RegisterFields, file: File | null) => {
+export const registerUserService = async (
+  data: RegisterFields,
+  file: File | null
+) => {
   const formData = new FormData();
 
   // Agregamos los campos de texto
@@ -22,14 +25,14 @@ export const registerUser = async (data: RegisterFields, file: File | null) => {
     formData.append("image", file);
   }
 
-  // Realizamos la petición
-  const response = await axiosApi.post("api/users/register", formData);
+  // Realizamos la petición de register
+  const response = await axiosClient.post("api/users/register", formData);
   return response.data;
 };
 
 // servicio para iniciar sesion
-export const loginUser = async (credentials: LoginCredentials) => {
-  const response = await axiosApi.post("api/users/login", credentials);
+export const loginUserService = async (data: LoginFormFields) => {
+  const response = await axiosClient.post("api/users/login", data);
 
   return response.data;
 };
