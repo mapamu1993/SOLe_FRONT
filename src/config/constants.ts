@@ -1,10 +1,10 @@
 export const API_ROUTES = {
-  USERS: "/users",
-  BLOGS: "/blogs",
-  PRODUCTS: "/products",
-  ORDERS: "/orders",
-  CART: "/cart",
-  KITS: "/kits",
+  USERS: "api/users",
+  BLOGS: "api/blogs",
+  PRODUCTS: "api/products",
+  ORDERS: "api/orders",
+  CART: "api/cart",
+  KITS: "api/kits",
 };
 
 export const IMAGE_URL =

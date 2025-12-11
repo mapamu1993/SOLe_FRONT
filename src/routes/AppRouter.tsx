@@ -4,6 +4,8 @@ import RegisterPage from "../features/auth/pages/RegisterPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import UserProfilePage from "../features/auth/pages/UserProfilePage";
 import UpdateProfilePage from "../features/auth/pages/UpdateProfilePage";
+import ForgotPasswordPage from "../features/auth/pages/ForgotPasswordPage";
+import ResetPasswordPage from "../features/auth/pages/ResetPasswordPage";
 
 const AppRouter = () => {
   return (
@@ -12,7 +14,9 @@ const AppRouter = () => {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/profile" element={<UserProfilePage />} />
+      <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
       <Route path="/update" element={<UpdateProfilePage />} />
+      <Route path="/resetpassword" element={<ResetPasswordPage />} />
     </Routes>
   );
 };
