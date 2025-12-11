@@ -7,9 +7,9 @@ import { loginSchema, type LoginFormFields } from "../validators/auth.schema";
 import { loginUserService } from "../services/authService";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [error, setError] = useState("");
   const { login } = useAuth();
-  const navigate = useNavigate();
 
   const {
     register,
@@ -25,7 +25,7 @@ const LoginPage = () => {
       const response = await loginUserService(data);
       const userData = response.user;
       login(userData);
-      navigate("/");
+      navigate("/profile");
     } catch (err: any) {
       const errorMessage =
         err.response?.data?.message || "Error al iniciar sesión";
