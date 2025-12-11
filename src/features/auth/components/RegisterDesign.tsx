@@ -26,97 +26,125 @@ export const RegisterDesign = ({
   previewUrl,
 }: RegisterDesignProps) => {
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-white p-4 dark:bg-black">
-      <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-8 shadow-input dark:bg-black border border-neutral-200 dark:border-neutral-800">
+    // FONDO: #C2C5AA
+    <div className="flex min-h-screen w-full items-center justify-center bg-[#C2C5AA] p-4">
+      <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl border border-[#A4AC86]">
         
-        <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
-          Crea tu cuenta en SOL-e
-        </h2>
-        <p className="mt-2 text-sm max-w-sm text-neutral-600 dark:text-neutral-300 mb-6">
-          Rellena tus datos para empezar
-        </p>
+        {/* Cabecera */}
+        <div className="mb-6">
+            <h2 className="text-2xl font-bold text-[#333D29]">
+            Crea tu cuenta
+            </h2>
+            <p className="mt-2 text-sm text-[#656D4A]">
+            Únete a la comunidad de <span className="font-bold text-[#582F0E]">SOL-e</span>
+            </p>
+        </div>
 
         {serverError && (
-          <div className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400 border border-red-200 dark:border-red-800">
-            {serverError}
+          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+            ⚠️ {serverError}
           </div>
         )}
 
         <form onSubmit={onSubmit}>
           
-          {/* Fila Doble: Nombre y Apellido */}
-          <div className="mb-4 flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0">
+          {/* Fila Doble */}
+          <div className="mb-4 flex flex-col gap-4 md:flex-row">
             <LabelInputContainer>
-              <Label htmlFor="name">Nombre</Label>
-              <Input id="name" placeholder="Tu nombre" type="text" {...register("name")} />
-              {errors.name && <span className="text-xs text-red-500">{errors.name.message}</span>}
+              <Label htmlFor="name" className="text-[#333D29]">Nombre</Label>
+              <Input 
+                id="name" placeholder="Tu nombre" type="text" {...register("name")} 
+                className="bg-white border-[#A4AC86] text-[#333D29] focus-visible:ring-[#582F0E]" 
+              />
+              {errors.name && <span className="text-xs font-medium text-red-600">{errors.name.message}</span>}
             </LabelInputContainer>
             
             <LabelInputContainer>
-              <Label htmlFor="lastName">Apellido</Label>
-              <Input id="lastName" placeholder="Apellidos" type="text" {...register("lastName")} />
-              {errors.lastName && <span className="text-xs text-red-500">{errors.lastName.message}</span>}
+              <Label htmlFor="lastName" className="text-[#333D29]">Apellido</Label>
+              <Input 
+                id="lastName" placeholder="Tus apellidos" type="text" {...register("lastName")} 
+                className="bg-white border-[#A4AC86] text-[#333D29] focus-visible:ring-[#582F0E]" 
+              />
+              {errors.lastName && <span className="text-xs font-medium text-red-600">{errors.lastName.message}</span>}
             </LabelInputContainer>
           </div>
 
-          {/* Usuario */}
           <LabelInputContainer className="mb-4">
-            <Label htmlFor="username">Usuario</Label>
-            <Input id="username" placeholder="usuario123" type="text" {...register("username")} />
-            {errors.username && <span className="text-xs text-red-500">{errors.username.message}</span>}
+            <Label htmlFor="username" className="text-[#333D29]">Usuario</Label>
+            <Input 
+                id="username" placeholder="Usuario" type="text" {...register("username")} 
+                className="bg-white border-[#A4AC86] text-[#333D29] focus-visible:ring-[#582F0E]" 
+            />
+            {errors.username && <span className="text-xs font-medium text-red-600">{errors.username.message}</span>}
           </LabelInputContainer>
 
-          {/* Email */}
           <LabelInputContainer className="mb-4">
-            <Label htmlFor="email">Correo Electrónico</Label>
-            <Input id="email" placeholder="hola@ejemplo.com" type="email" {...register("email")} />
-            {errors.email && <span className="text-xs text-red-500">{errors.email.message}</span>}
+            <Label htmlFor="email" className="text-[#333D29]">Correo Electrónico</Label>
+            <Input 
+                id="email" placeholder="correo@ejemplo.com" type="email" {...register("email")} 
+                className="bg-white border-[#A4AC86] text-[#333D29] focus-visible:ring-[#582F0E]" 
+            />
+            {errors.email && <span className="text-xs font-medium text-red-600">{errors.email.message}</span>}
           </LabelInputContainer>
 
-          {/* Password */}
           <LabelInputContainer className="mb-4">
-            <Label htmlFor="password">Contraseña</Label>
-            <Input id="password" placeholder="••••••••" type="password" {...register("password")} />
-            {errors.password && <span className="text-xs text-red-500">{errors.password.message}</span>}
+            <Label htmlFor="password" className="text-[#333D29]">Contraseña</Label>
+            <Input 
+                id="password" placeholder="••••••••" type="password" {...register("password")} 
+                className="bg-white border-[#A4AC86] text-[#333D29] focus-visible:ring-[#582F0E]" 
+            />
+            {errors.password && <span className="text-xs font-medium text-red-600">{errors.password.message}</span>}
           </LabelInputContainer>
 
-          {/* Input de Foto Personalizado */}
+          {/* Input de Archivo con tonos Beige/Verde */}
           <LabelInputContainer className="mb-8">
-            <Label>Foto de Perfil</Label>
-            <div className="flex items-center gap-4 rounded-lg bg-gray-50 p-2 dark:bg-zinc-800 border border-neutral-200 dark:border-neutral-700">
+            <Label className="text-[#333D29]">Foto de Perfil</Label>
+            <div className="flex items-center gap-3 rounded-lg border border-[#A4AC86] bg-[#EBECE2] p-2">
               <Input
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
-                className="h-auto border-none bg-transparent p-0 shadow-none file:mr-4 file:rounded-md file:border-0 file:bg-black file:px-4 file:py-2 file:text-xs file:font-medium file:text-white hover:file:bg-neutral-800 dark:file:bg-white dark:file:text-black cursor-pointer"
+                className="h-auto w-full cursor-pointer border-none bg-transparent p-0 text-sm file:mr-4 file:rounded-md file:border-0 file:bg-[#333D29] file:px-4 file:py-2 file:text-xs file:font-medium file:text-white file:transition-colors hover:file:bg-[#414833]"
               />
-              {previewUrl && (
+              {previewUrl ? (
                 <img
                   src={previewUrl}
                   alt="Preview"
-                  className="h-10 w-10 rounded-full object-cover ring-2 ring-neutral-200 dark:ring-neutral-600"
+                  className="h-10 w-10 shrink-0 rounded-full object-cover ring-2 ring-[#582F0E]"
                 />
+              ) : (
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#A4AC86] text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                </div>
               )}
             </div>
           </LabelInputContainer>
 
-          {/* Botón */}
           <button
-            className="bg-gradient-to-br from-black to-neutral-600 block w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:bg-zinc-800 dark:from-zinc-900 dark:to-zinc-900 dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+            className="group/btn relative block h-11 w-full rounded-lg bg-[#582F0E] font-bold text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] transition-transform hover:scale-[1.02] hover:bg-[#7F4F24] disabled:opacity-70"
             type="submit"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Creando cuenta..." : "Registrarse →"}
+            {isSubmitting ? (
+                <span className="flex items-center justify-center gap-2">
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"/>
+                    Registrando...
+                </span>
+            ) : (
+                <>Registrarse &rarr;</>
+            )}
             <BottomGradient />
           </button>
         </form>
 
-        {/* Link al Login */}
-        <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-800 text-center">
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
-              ¿Ya tienes cuenta?
+        <div className="mt-8 border-t border-[#C2C5AA] pt-6 text-center">
+            <p className="text-sm text-[#656D4A]">
+              ¿Ya estás registrado?
             </p>
-            <Link to="/login" className="text-blue-600 dark:text-blue-500 font-bold hover:underline mt-2 inline-block">
+            <Link
+                to="/login"
+                className="mt-1 inline-block text-sm font-bold text-[#7F4F24] transition-colors hover:text-[#582F0E] hover:underline"
+            >
                 Inicia sesión aquí
             </Link>
         </div>
@@ -126,12 +154,12 @@ export const RegisterDesign = ({
   );
 };
 
-// Componentes auxiliares para el estilo
+// --- Efectos Visuales ---
 const BottomGradient = () => {
   return (
     <>
-      <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
-      <span className="absolute inset-x-10 -bottom-px block h-px w-1/2 mx-auto bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
+      <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-[#B6AD90] to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
+      <span className="absolute inset-x-10 -bottom-px block h-px w-1/2 mx-auto bg-gradient-to-r from-transparent via-[#A68A64] to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
     </>
   );
 };
