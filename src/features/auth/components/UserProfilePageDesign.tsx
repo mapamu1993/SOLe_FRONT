@@ -1,6 +1,5 @@
 import React from "react";
 
-// Definimos los tipos para las props (TypeScript)
 interface DetailItem {
   label: string;
   value: string | undefined | null;
@@ -10,9 +9,10 @@ interface ProfileCardProps {
   displayName: string;
   role: string;
   initial: string;
-  imageUrl?: string | null; // El ? indica que es opcional
+  imageUrl?: string | null;
   details: DetailItem[];
-  onEdit?: () => void; // Opcional: por si quieres añadir acción al botón
+  onEdit?: () => void;
+  onGoHome?: () => void;
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -22,12 +22,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   imageUrl,
   details,
   onEdit,
+  onGoHome,
 }) => {
   return (
     <div className="min-h-screen bg-brand-bg flex items-center justify-center p-4 font-sans">
       {/* Tarjeta Principal */}
       <div className="bg-brand-card shadow-2xl rounded-2xl overflow-hidden max-w-lg w-full border border-gray-200 flex flex-col">
-        {/* Banner Superior (Gradiente con tus colores) */}
+        {/* Banner Superior */}
         <div className="h-32 bg-gradient-to-r from-brand-primary to-brand-secondary"></div>
 
         <div className="relative px-6 pb-8 flex-1">
@@ -77,15 +78,26 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             ))}
           </div>
 
-          {/* Botón de Acción */}
-          <div className="mt-8">
+          {/* --- ZONA DE BOTONES --- */}
+
+          <div className="mt-8 flex flex-col gap-3">
+            {/* Botón Principal (Editar) - Estilo Relleno */}
             <button
               onClick={onEdit}
-              className="w-full bg-brand-primary hover:opacity-90 active:scale-95 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
+              className="w-full bg-brand-primary hover:opacity-90 active:scale-95 text-white font-bold py-3 px-4 rounded-xl shadow-md transition-all duration-200 flex items-center justify-center gap-2"
             >
               <span>Editar Perfil</span>
             </button>
+
+            {/* BOTÓN SECUNDARIO (Volver al Inicio) - Estilo Borde (Outline) */}
+            <button
+              onClick={onGoHome}
+              className="w-full bg-white text-brand-primary border-2 border-brand-primary hover:bg-blue-50 active:scale-95 font-bold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
+            >
+              <span>Volver al Inicio</span>
+            </button>
           </div>
+          {/* --- FIN ZONA DE BOTONES --- */}
         </div>
       </div>
     </div>

@@ -1,19 +1,20 @@
 import React from "react";
-// import { Link as RouterLink } from "react-router-dom";
+// 1. IMPORTAMOS useNavigate
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
 import { IMAGE_URL } from "../../../config/constants";
-import ProfileCard from "../components/UserProfilePageDesign"; // Asegúrate de que la ruta al componente es correcta
+import ProfileCard from "../components/UserProfilePageDesign"; // Asegúrate de que la ruta es correcta
 
 const UserProfilePage: React.FC = () => {
   const { user } = useAuth();
+  // 2. INICIALIZAMOS EL HOOK DE NAVEGACIÓN
+  const navigate = useNavigate();
 
-  // 1. SEGURIDAD: Si no hay usuario logueado, no renderizamos nada (o podrías poner un <Loading />)
   if (!user) return null;
 
-  // 2. LÓGICA DE DATOS REALES
+  // --- LÓGICA DE DATOS (IGUAL QUE ANTES) ---
   let profileImageUrl: string | null = user.profilePicture || null;
 
-  // Si la imagen viene del backend (no es una URL externa), le añadimos la ruta base
   if (profileImageUrl && !profileImageUrl.startsWith("http")) {
     profileImageUrl = `${IMAGE_URL}/uploads/users/${profileImageUrl}`;
   }
@@ -39,12 +40,18 @@ const UserProfilePage: React.FC = () => {
     { label: "Dirección", value: user.address || "No proporcionado" },
   ];
 
+  // Función existente para editar
   const handleEdit = () => {
-    // Aquí pondrás la lógica para ir a la página de edición más adelante
-    console.log("Navegar a editar perfil...");
+    navigate("/profile/edit");
   };
 
-  // 3. RENDERIZADO DEL DISEÑO
+  // 3. NUEVA FUNCIÓN PARA VOLVER AL INICIO
+  const handleGoHome = () => {
+    // Navega a la ruta raíz "/"
+    navigate("/");
+  };
+
+  // --- RENDERIZADO DEL DISEÑO ---
   return (
     <ProfileCard
       displayName={displayName}
@@ -53,6 +60,8 @@ const UserProfilePage: React.FC = () => {
       imageUrl={profileImageUrl}
       details={profileDetails}
       onEdit={handleEdit}
+      // 4. PASAMOS LA NUEVA FUNCIÓN AL COMPONENTE
+      onGoHome={handleGoHome}
     />
   );
 };

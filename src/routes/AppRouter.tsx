@@ -12,7 +12,7 @@ const AppRouter = () => {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/profile" element={<UserProfilePage />} />
-      <Route path="/update" element={<UpdateProfilePage />} />
+      <Route path="/profile/edit" element={<UpdateProfilePage />} />
     </Routes>
   );
 };
