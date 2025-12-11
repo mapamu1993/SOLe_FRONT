@@ -35,7 +35,6 @@ const UserProfilePage: React.FC = () => {
   const profileDetails = [
     { label: "Usuario", value: user.username },
     { label: "Email", value: user.email },
-    { label: "Rol", value: formateRole },
     { label: "Teléfono", value: user.phone || "No proporcionado" },
     { label: "Dirección", value: user.address || "No proporcionado" },
   ];
