@@ -22,7 +22,7 @@ export const LoginDesign = ({
   serverError,
 }: LoginDesignProps) => {
   return (
-    // FONDO: #C2C5AA (Tu verde salvia claro)
+    // FONDO
     <div className="flex min-h-screen w-full items-center justify-center bg-[#C2C5AA] p-4">
       
       {/* TARJETA */}
@@ -50,8 +50,6 @@ export const LoginDesign = ({
           <LabelInputContainer className="mb-4">
             <Label htmlFor="email" className="text-[#333D29]">Correo Electrónico</Label>
             
-            {/* --- CORRECCIÓN AQUÍ --- */}
-            {/* He quitado el className manual. Ahora usa los colores de tu input.tsx automáticamente */}
             <Input
               id="email"
               placeholder="tu@email.com"
