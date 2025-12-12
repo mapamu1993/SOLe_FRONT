@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateProfileService } from "../services/authService";
 import { useAuth } from "../context/auth.context";
-import type { ProfileFields } from "../validators/auth.schema";
+import type { ProfileFields } from "../validators/authSchema";
 
 type UpdateProfileParams = {
   data: ProfileFields;
