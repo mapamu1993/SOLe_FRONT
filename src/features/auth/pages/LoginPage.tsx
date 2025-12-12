@@ -86,6 +86,7 @@ const LoginPage = () => {
 
       <p style={{ marginTop: "1rem" }}>
         ¿No tienes cuenta? <RouterLink to="/register">Regístrate</RouterLink>
+        <RouterLink to="/forgotpassword">Recuperar contraseña</RouterLink>
       </p>
     </div>
   );
