@@ -1,6 +1,5 @@
 import React from "react";
 import { type UseFormRegister, type FieldErrors } from "react-hook-form";
-// Asegúrate de importar el tipo correcto de tu esquema
 import { type ProfileFields } from "../validators/auth.schema";
 
 // Icono de cámara para el diseño
