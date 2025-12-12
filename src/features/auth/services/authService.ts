@@ -3,6 +3,8 @@ import {
   type RegisterFields,
   type LoginFormFields,
   type ProfileFields,
+  type ForgotPasswordFields,
+  type ResetPasswordFields,
 } from "../../auth/validators/auth.schema";
 import { API_ROUTES } from "../../../config/constants";
 
@@ -34,7 +36,7 @@ export const registerUserService = async (
 
 // servicio para iniciar sesion
 export const loginUserService = async (data: LoginFormFields) => {
-  const response = await axiosClient.post("api/users/login", data);
+  const response = await axiosClient.post(`${API_ROUTES.USERS}/login`, data);
 
   return response.data;
 };
@@ -45,7 +47,7 @@ export const getMyProfileService = async () => {
   return response.data;
 };
 
-//servicio para actualizar el perfil
+//servicio para actualizar el perfil REVISAR!!!!!
 export const updateProfileService = async (
   data: ProfileFields,
   file: File | null
@@ -63,7 +65,29 @@ export const updateProfileService = async (
     formData.append("profilePicture", file);
   }
 
-  const response = await axiosClient.patch("api/users/update/", formData);
+  const response = await axiosClient.patch(
+    `${API_ROUTES.USERS}/update/`,
+    formData
+  );
 
+  return response.data;
+};
+
+//servicio para olvidé la contraseña
+export const forgotPasswordService = async (data: ForgotPasswordFields) => {
+  const response = await axiosClient.post(
+    `${API_ROUTES.USERS}/forgotpassword`,
+    data
+  );
+  return response.data;
+};
+
+//servicio para restablecer la contraseña
+export const resetPasswordService = async (data: ResetPasswordFields) => {
+  const response = await axiosClient.post(`${API_ROUTES.USERS}/resetpassword`, {
+    email: data.email,
+    pin: data.pin,
+    password: data.password,
+  });
   return response.data;
 };
