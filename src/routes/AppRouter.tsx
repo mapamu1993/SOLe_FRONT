@@ -14,13 +14,10 @@ const AppRouter = () => {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/profile" element={<UserProfilePage />} />
-<<<<<<< HEAD
       <Route path="/profile/edit" element={<UpdateProfilePage />} />
-=======
       <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
       <Route path="/update" element={<UpdateProfilePage />} />
       <Route path="/resetpassword" element={<ResetPasswordPage />} />
->>>>>>> a51d09307552df3d844b05aef8c6f1e391e129c7
     </Routes>
   );
 };

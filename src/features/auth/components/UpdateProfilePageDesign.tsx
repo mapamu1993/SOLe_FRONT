@@ -1,6 +1,6 @@
 import React from "react";
 import { type UseFormRegister, type FieldErrors } from "react-hook-form";
-import { type ProfileFields } from "../validators/auth.schema";
+import { type ProfileFields } from "../validators/authSchema";
 
 // Icono de cámara para el diseño
 const CameraIcon = () => (
