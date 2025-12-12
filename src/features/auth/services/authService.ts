@@ -5,7 +5,7 @@ import {
   type ProfileFields,
   type ForgotPasswordFields,
   type ResetPasswordFields,
-} from "../../auth/validators/auth.schema";
+} from "../validators/auth.schema";
 import { API_ROUTES } from "../../../config/constants";
 
 /**
