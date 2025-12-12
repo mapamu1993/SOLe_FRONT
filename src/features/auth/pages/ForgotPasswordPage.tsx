@@ -4,7 +4,7 @@ import { Link as RouterLink } from "react-router-dom"; // 1. Importar useNavigat
 import {
   forgotPasswordSchema,
   type ForgotPasswordFields,
-} from "../validators/auth.schema";
+} from "../validators/authSchema";
 import { useForgotPasswordMutation } from "../hooks/usePasswordRecovery";
 
 const ForgotPasswordPage = () => {

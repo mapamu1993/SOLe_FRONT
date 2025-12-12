@@ -8,7 +8,7 @@ import {
 import type {
   ResetPasswordFields,
   ForgotPasswordFields,
-} from "../validators/auth.schema";
+} from "../validators/authSchema";
 import { useSnackbar } from "notistack";
 
 interface ErrorResponse {

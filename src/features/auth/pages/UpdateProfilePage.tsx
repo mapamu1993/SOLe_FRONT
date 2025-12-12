@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 // CORRECCIÓN 1: Importar el esquema (valor) además del tipo
-import { profileSchema, type ProfileFields } from "../validators/auth.schema";
+import { profileSchema, type ProfileFields } from "../validators/authSchema";
 import { useAuth } from "../context/auth.context";
 import useUpdateProfile from "../hooks/useUpdateProfile";
 import { getUserProfileUrl } from "../utils/userUtil";

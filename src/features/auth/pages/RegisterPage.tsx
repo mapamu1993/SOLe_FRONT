@@ -4,7 +4,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 // Importamos el esquema y el tipo
-import { registerSchema, type RegisterFields } from "../validators/auth.schema";
+import { registerSchema, type RegisterFields } from "../validators/authSchema";
 
 // Importamos el servicio que acabamos de crear
 // (Asegúrate de ajustar la ruta según dónde guardes el archivo service)

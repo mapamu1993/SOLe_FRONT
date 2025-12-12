@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import {
   resetPasswordSchema,
   type ResetPasswordFields,
-} from "../validators/auth.schema";
+} from "../validators/authSchema";
 import { useResetPasswordMutation } from "../hooks/usePasswordRecovery";
 import { useForm } from "react-hook-form";
 
