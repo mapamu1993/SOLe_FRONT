@@ -37,7 +37,7 @@ const LoginPage = () => {
 
   // CONEXIÓN CON EL DISEÑO
   return (
-<<<<<<< HEAD
+
     <LoginDesign 
       register={register}
       errors={errors}
@@ -45,63 +45,8 @@ const LoginPage = () => {
       onSubmit={handleSubmit(onSubmit)}
       serverError={error}
     />
-=======
-    <div className="login-container">
-      <h2>Login</h2>
 
-      {/* Mensaje de error general */}
-      {error && (
-        <div
-          style={{
-            color: "red",
-            marginBottom: "1rem",
-            border: "1px solid red",
-            padding: "10px",
-          }}
-        >
-          {error}
-        </div>
-      )}
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* Email */}
-        <div>
-          <label>Email:</label>
-          <input type="email" {...register("email")} />
-          {errors.email && (
-            <span style={{ color: "red", display: "block" }}>
-              {errors.email.message}
-            </span>
-          )}
-        </div>
-
-        {/* Contraseña */}
-        <div>
-          <label>Contraseña:</label>
-          <input type="password" {...register("password")} />
-          {errors.password && (
-            <span style={{ color: "red", display: "block" }}>
-              {errors.password.message}
-            </span>
-          )}
-        </div>
-
-        {/* Botón Submit */}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          style={{ marginTop: "10px" }}
-        >
-          {isSubmitting ? "Iniciando sesión..." : "Iniciar sesión"}
-        </button>
-      </form>
-
-      <p style={{ marginTop: "1rem" }}>
-        ¿No tienes cuenta? <RouterLink to="/register">Regístrate</RouterLink>
-        <RouterLink to="/forgotpassword">Recuperar contraseña</RouterLink>
-      </p>
-    </div>
->>>>>>> master
   );
 };
 
