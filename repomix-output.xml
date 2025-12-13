@@ -56,15 +56,27 @@ src/features/auth/components/RegisterDesign.tsx
 src/features/auth/components/ui/input.tsx
 src/features/auth/components/ui/label.tsx
 src/features/auth/context/auth.context.tsx
+src/features/auth/hooks/usePasswordRecovery.ts
 src/features/auth/hooks/useUpdateProfile.ts
+src/features/auth/pages/ForgotPasswordPage.tsx
 src/features/auth/pages/LoginPage.tsx
 src/features/auth/pages/RegisterPage.tsx
+src/features/auth/pages/ResetPasswordPage.tsx
 src/features/auth/pages/UpdateProfilePage.tsx
 src/features/auth/pages/UserProfilePage.tsx
 src/features/auth/services/authService.ts
 src/features/auth/types/userTypes.ts
 src/features/auth/utils/userUtil.ts
-src/features/auth/validators/auth.schema.ts
+src/features/auth/validators/authSchema.ts
+src/features/blog/hooks/useBlogsMutation.ts
+src/features/blog/hooks/useBlogsQuery.ts
+src/features/blog/pages/BlogDetailsPage.tsx
+src/features/blog/pages/BlogPage.tsx
+src/features/blog/pages/CreateBlogPage.tsx
+src/features/blog/pages/EditBlogPage.tsx
+src/features/blog/services/blogService.ts
+src/features/blog/types/blogTypes.ts
+src/features/blog/validators/blogSchema.ts
 src/index.css
 src/lib/utils.ts
 src/main.tsx
@@ -221,103 +233,8 @@ export default defineConfig([
 ```
 </file>
 
-<file path="src/api/axios.client.ts">
-import axios from "axios";
-
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
-
-const axiosClient = axios.create({
-  baseURL: BASE_URL,
-  withCredentials: true,
-});
-export default axiosClient;
-</file>
-
 <file path="src/assets/react.svg">
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="35.93" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 228"><path fill="#00D8FF" d="M210.483 73.824a171.49 171.49 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171.23 171.23 0 0 0-6.375 5.848a155.866 155.866 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a170.974 170.974 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a145.52 145.52 0 0 0 6.921 2.165a167.467 167.467 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a145.567 145.567 0 0 0 5.342-4.923a168.064 168.064 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145.016 145.016 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844Zm-6.365 70.984c-1.4.463-2.836.91-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14Zm-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a156.726 156.726 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345a134.17 134.17 0 0 1 1.386 6.193ZM87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a156.923 156.923 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a134.668 134.668 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94ZM50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212 37.076-29.293c2.813-.98 5.757-1.905 8.812-2.773c3.204 10.42 7.406 21.315 12.477 32.332c-5.137 11.18-9.399 22.249-12.634 32.792a134.718 134.718 0 0 1-6.318-1.979Zm12.378-84.26c-4.811-24.587-1.616-43.134 6.425-47.789c8.564-4.958 27.502 2.111 47.463 19.835a144.318 144.318 0 0 1 3.841 3.545c-7.438 7.987-14.787 17.08-21.808 26.988c-12.04 1.116-23.565 2.908-34.161 5.309a160.342 160.342 0 0 1-1.76-7.887Zm110.427 27.268a347.8 347.8 0 0 0-7.785-12.803c8.168 1.033 15.994 2.404 23.343 4.08c-2.206 7.072-4.956 14.465-8.193 22.045a381.151 381.151 0 0 0-7.365-13.322Zm-45.032-43.861c5.044 5.465 10.096 11.566 15.065 18.186a322.04 322.04 0 0 0-30.257-.006c4.974-6.559 10.069-12.652 15.192-18.18ZM82.802 87.83a323.167 323.167 0 0 0-7.227 13.238c-3.184-7.553-5.909-14.98-8.134-22.152c7.304-1.634 15.093-2.97 23.209-3.984a321.524 321.524 0 0 0-7.848 12.897Zm8.081 65.352c-8.385-.936-16.291-2.203-23.593-3.793c2.26-7.3 5.045-14.885 8.298-22.6a321.187 321.187 0 0 0 7.257 13.246c2.594 4.48 5.28 8.868 8.038 13.147Zm37.542 31.03c-5.184-5.592-10.354-11.779-15.403-18.433c4.902.192 9.899.29 14.978.29c5.218 0 10.376-.117 15.453-.343c-4.985 6.774-10.018 12.97-15.028 18.486Zm52.198-57.817c3.422 7.8 6.306 15.345 8.596 22.52c-7.422 1.694-15.436 3.058-23.88 4.071a382.417 382.417 0 0 0 7.859-13.026a347.403 347.403 0 0 0 7.425-13.565Zm-16.898 8.101a358.557 358.557 0 0 1-12.281 19.815a329.4 329.4 0 0 1-23.444.823c-7.967 0-15.716-.248-23.178-.732a310.202 310.202 0 0 1-12.513-19.846h.001a307.41 307.41 0 0 1-10.923-20.627a310.278 310.278 0 0 1 10.89-20.637l-.001.001a307.318 307.318 0 0 1 12.413-19.761c7.613-.576 15.42-.876 23.31-.876H128c7.926 0 15.743.303 23.354.883a329.357 329.357 0 0 1 12.335 19.695a358.489 358.489 0 0 1 11.036 20.54a329.472 329.472 0 0 1-11 20.722Zm22.56-122.124c8.572 4.944 11.906 24.881 6.52 51.026c-.344 1.668-.73 3.367-1.15 5.09c-10.622-2.452-22.155-4.275-34.23-5.408c-7.034-10.017-14.323-19.124-21.64-27.008a160.789 160.789 0 0 1 5.888-5.4c18.9-16.447 36.564-22.941 44.612-18.3ZM128 90.808c12.625 0 22.86 10.235 22.86 22.86s-10.235 22.86-22.86 22.86s-22.86-10.235-22.86-22.86s10.235-22.86 22.86-22.86Z"></path></svg>
-</file>
-
-<file path="src/features/auth/components/ui/input.tsx">
-// Input component extends from shadcnui - https://ui.shadcn.com/docs/components/input
-"use client";
-import * as React from "react";
-import { cn } from "@/lib/utils";
-import { useMotionTemplate, useMotionValue, motion } from "motion/react";
-
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
-
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
-    const radius = 100; // change this to increase the rdaius of the hover effect
-    const [visible, setVisible] = React.useState(false);
-
-    let mouseX = useMotionValue(0);
-    let mouseY = useMotionValue(0);
-
-    function handleMouseMove({ currentTarget, clientX, clientY }: any) {
-      let { left, top } = currentTarget.getBoundingClientRect();
-
-      mouseX.set(clientX - left);
-      mouseY.set(clientY - top);
-    }
-    return (
-      <motion.div
-        style={{
-          background: useMotionTemplate`
-        radial-gradient(
-          ${visible ? radius + "px" : "0px"} circle at ${mouseX}px ${mouseY}px,
-          #3b82f6,
-          transparent 80%
-        )
-      `,
-        }}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={() => setVisible(true)}
-        onMouseLeave={() => setVisible(false)}
-        className="group/input rounded-lg p-[2px] transition duration-300"
-      >
-        <input
-          type={type}
-          className={cn(
-            `shadow-input dark:placeholder-text-neutral-600 flex h-10 w-full rounded-md border-none bg-gray-50 px-3 py-2 text-sm text-black transition duration-400 group-hover/input:shadow-none file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-400 focus-visible:ring-[2px] focus-visible:ring-neutral-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-zinc-800 dark:text-white dark:shadow-[0px_0px_1px_1px_#404040] dark:focus-visible:ring-neutral-600`,
-            className,
-          )}
-          ref={ref}
-          {...props}
-        />
-      </motion.div>
-    );
-  },
-);
-Input.displayName = "Input";
-
-export { Input };
-</file>
-
-<file path="src/features/auth/components/ui/label.tsx">
-// Label component extends from shadcnui - https://ui.shadcn.com/docs/components/label
-"use client";
-import * as React from "react";
-import * as LabelPrimitive from "@radix-ui/react-label";
-import { cn } from "@/lib/utils";
-
-const Label = React.forwardRef<
-  React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(({ className, ...props }, ref) => (
-  <LabelPrimitive.Root
-    ref={ref}
-    className={cn(
-      "text-sm font-medium text-black dark:text-white leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-      className
-    )}
-    {...props}
-  />
-));
-Label.displayName = LabelPrimitive.Root.displayName;
-
-export { Label };
 </file>
 
 <file path="src/features/auth/context/auth.context.tsx">
@@ -399,11 +316,742 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 export const useAuth = () => useContext(AuthContext) as AuthContextType;
 </file>
 
+<file path="src/features/auth/pages/UserProfilePage.tsx">
+import { Link as RouterLink } from "react-router-dom";
+import { useAuth } from "../context/auth.context";
+import { IMAGE_URL } from "../../../config/constants";
+
+const UserProfilePage = () => {
+  const { user } = useAuth();
+  if (!user) return null;
+  let profileImageUrl = user.profilePicture;
+  if (profileImageUrl && !profileImageUrl.startsWith("http")) {
+    profileImageUrl = `${IMAGE_URL}/uploads/users/${profileImageUrl}`;
+  }
+
+  const displayName = user.name || user.username || "Usuario";
+
+  const initial =
+    user.name && user.name.length > 0
+      ? user.name[0]
+      : user.username
+      ? user.username[0]
+      : "U";
+
+  const formateRole =
+    user.role && user.role.length > 0
+      ? user.role.charAt(0).toUpperCase() + user.role.slice(1)
+      : "Usuario";
+
+  const profileDetails = [
+    {
+      label: "Usuario",
+      value: user.username,
+    },
+    {
+      label: "Email",
+      value: user.email,
+    },
+    {
+      label: "Role",
+      value: formateRole,
+    },
+    {
+      label: "Telefono",
+      value: user.phone || "No proporcionado",
+    },
+    {
+      label: "Direccion",
+      value: user.address || "No proporcionado",
+    },
+  ];
+
+  return (
+    <div>
+      <h1>Perfil de {displayName}</h1>
+      <div>
+        <img src={profileImageUrl} alt="Perfil" />
+        <h2>{displayName}</h2>
+        <p>{initial}</p>
+      </div>
+      <ul>
+        {profileDetails.map((detail, index) => (
+          <li key={index}>
+            <strong>{detail.label}:</strong> {detail.value}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default UserProfilePage;
+</file>
+
+<file path="src/features/auth/types/userTypes.ts">
+export interface User {
+  _id: string;
+  username: string;
+  name: string;
+  lastName: string;
+  email: string;
+  role: "user" | "moderator" | "admin";
+  profilePicture?: string;
+  phone?: string;
+  address?: string;
+}
+</file>
+
+<file path="src/features/auth/utils/userUtil.ts">
+import { IMAGE_URL } from "../../../config/constants";
+
+export const getUserProfileUrl = (
+  profilePicture: string | undefined | null
+) => {
+  if (!profilePicture) return undefined;
+  if (profilePicture.startsWith("http")) return profilePicture;
+  return `${IMAGE_URL}/uploads/users/${profilePicture}`;
+};
+
+export const getUserInitials = (name?: string, username?: string) => {
+  if (name && name.length > 0) return name[0].toUpperCase();
+  if (username && username.length > 0) return username[0].toUpperCase();
+  return "U";
+};
+
+export const getDisplayName = (user: any) => {
+  return user.name || user.username || "Usuario";
+};
+
+export const formatUserRole = (role?: string) => {
+  if (!role || role.length === 0) return "N/A";
+  return role.charAt(0).toUpperCase() + role.slice(1);
+};
+</file>
+
+<file path="src/features/auth/validators/authSchema.ts">
+import { z } from "zod";
+
+export const registerSchema = z.object({
+  username: z
+    .string()
+    .min(3, "El nombre de usuario debe tener al menos 3 caracteres"),
+  name: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
+  lastName: z.string().min(3, "El apellido debe tener al menos 3 caracteres"),
+  email: z.string().email("Debe ser un email válido"),
+  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
+  profilePicture: z.string().optional(),
+  phone: z.string().optional(),
+  address: z.string().optional(),
+});
+
+export const loginSchema = z.object({
+  email: z.string().email("Debe ser un email válido"),
+  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
+});
+
+export const profileSchema = z.object({
+  username: z
+    .string()
+    .min(3, "El nombre de usuario debe tener al menos 3 caracteres"),
+  name: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
+  lastName: z.string().min(3, "El apellido debe tener al menos 3 caracteres"),
+  profilePicture: z.string().optional(),
+  phone: z.string().optional(),
+  address: z.string().optional(),
+});
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email("Debe ser un email válido"),
+});
+
+export const resetPasswordSchema = z
+  .object({
+    email: z.string().email("Debe ser un email válido"),
+    pin: z.string().min(4, "El pin debe tener al menos 4 caracteres"),
+    password: z
+      .string()
+      .min(6, "La contraseña debe tener al menos 6 caracteres"),
+    confirmPassword: z
+      .string()
+      .min(6, "La contraseña debe tener al menos 6 caracteres"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Las contraseñas no coinciden",
+    path: ["confirmPassword"],
+  });
+
+export type RegisterFields = z.infer<typeof registerSchema>;
+export type LoginFormFields = z.infer<typeof loginSchema>;
+export type ProfileFields = z.infer<typeof profileSchema>;
+export type ForgotPasswordFields = z.infer<typeof forgotPasswordSchema>;
+export type ResetPasswordFields = z.infer<typeof resetPasswordSchema>;
+</file>
+
+<file path="src/features/blog/hooks/useBlogsMutation.ts">
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  deleteBlogService,
+  editBlogService,
+  createBlogService,
+} from "../services/blogService";
+import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
+
+//para que el server devuelva el error en forma de mensaje
+interface ErrorResponse {
+  message: string;
+}
+
+//este es el hook para crear una entrada de blog
+export const useCreateBlogMutation = () => {
+  //declaramos las funciones que vamos a usar:
+  // para movernos entre paginas
+  const navigate = useNavigate();
+  // para las alertas de error/success
+  const { enqueueSnackbar } = useSnackbar();
+  // para manipular el caché de una consulta específica: cuando le damos a crear blog te deja ahi, no cierra la sesion de la pagina
+  const queryClient = useQueryClient();
+
+  //usamos el hook useMutation con las variables creadas
+  return useMutation({
+    //recibe un objeto con info y archivo
+    mutationFn: ({ data, file }: { data: any; file: File }) =>
+      //envia la info y el archivo al servicio
+      createBlogService(data, file),
+    //si sale bien:
+    onSuccess: () => {
+      //se refresca la lista de blogs
+      queryClient.invalidateQueries({
+        queryKey: ["blogs"],
+      });
+      //sale una alerta de exito
+      enqueueSnackbar("Blog creado exitosamente", { variant: "success" });
+      //vuelve a la pagina de blogs
+      navigate("/blogs");
+    },
+    //si sale mal: SÓLO EN ESE CASO SE EJECUTA
+    onError: (error: AxiosError<ErrorResponse>) => {
+      //nos contesta con un error con estructura previamente fabricada de axiosError
+      // los ? sirven para que si no hay error, no se ejecute. son para ahorrarnos los if
+      const msg = error.response?.data?.message || "Error al crear el blog";
+      //sale la alerta con el error
+      enqueueSnackbar(msg, { variant: "error" });
+    },
+  });
+};
+
+//hook para borrar un blog
+export const useDeleteBlogMutation = () => {
+  const queryClient = useQueryClient();
+  const { enqueueSnackbar } = useSnackbar();
+
+  return useMutation({
+    mutationFn: deleteBlogService,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["blogs"],
+      });
+      enqueueSnackbar("Blog eliminado exitosamente", { variant: "success" });
+    },
+    onError: (error: AxiosError<ErrorResponse>) => {
+      const msg = error.response?.data?.message || "Error al eliminar el blog";
+      enqueueSnackbar(msg, { variant: "error" });
+    },
+  });
+};
+
+//hook para editar un blog
+export const useEditBlogMutation = () => {
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      id,
+      data,
+      file,
+    }: {
+      id: string;
+      data: any;
+      file: File | null;
+    }) => editBlogService(id, data, file),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["blogs"],
+      });
+      enqueueSnackbar("Blog editado exitosamente", { variant: "success" });
+      navigate("/blogs");
+    },
+    onError: (error: AxiosError<ErrorResponse>) => {
+      const msg = error.response?.data?.message || "Error al editar el blog";
+      enqueueSnackbar(msg, { variant: "error" });
+    },
+  });
+};
+</file>
+
+<file path="src/features/blog/pages/BlogPage.tsx">
+import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { USER_ROLES } from "../../../config/constants";
+import { useBlogsQuery } from "../hooks/useBlogsQuery";
+import { useAuth } from "../../auth/context/auth.context";
+import { useDeleteBlogMutation } from "../hooks/useBlogsMutation";
+
+const BlogPage = () => {
+  const { user } = useAuth();
+  const { data: blogs } = useBlogsQuery();
+  const { mutate: deleteBlog } = useDeleteBlogMutation();
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  //permisos:
+  const isAdminOrModerator =
+    user?.role === USER_ROLES.ADMIN || user?.role === USER_ROLES.MODERATOR;
+  const handleDeleteClick = (id: string) => {
+    setDeleteId(id);
+  };
+  const handleConfirmDelete = () => {
+    if (deleteId) {
+      deleteBlog(deleteId);
+      setDeleteId(null);
+    }
+  };
+
+  //OJO: NO USEIS ESTOS RETURNS. SON PARA QUE SEPAIS QUE ESTAN AQUI.
+  //USAD LO QUE FALTE DE ARRIBA AL HACER EL FORMULARIO ETC.
+  return (
+    <div>
+      <h2>Blog</h2>
+      <ul>
+        {blogs?.map((blog) => (
+          <li key={blog.id}>
+            <h3>{blog.title}</h3>
+            <p>{blog.content}</p>
+            {isAdminOrModerator && (
+              <button onClick={() => handleDeleteClick(blog.id)}>
+                Eliminar
+              </button>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default BlogPage;
+</file>
+
+<file path="src/features/blog/pages/CreateBlogPage.tsx">
+import { useCreateBlogMutation } from "../hooks/useBlogsMutation";
+import { useForm } from "react-hook-form";
+import {
+  createBlogSchema,
+  type CreateBlogFields,
+} from "../validators/blogSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+
+const CreateBlogPage = () => {
+  const [file, setFile] = useState<File | null>(null);
+  const { localError, setLocalError } = useState("");
+  const { mutate } = useCreateBlogMutation();
+  //el register nos conecta con inputs de html, handlesubmit envuelve la logica con el envio, formstate error contiene errores de validacion si no se cumple lo de zod
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CreateBlogFields>({
+    resolver: zodResolver(createBlogSchema),
+  });
+  //logica para el submit
+  const onSubmit = (data: CreateBlogFields) => {
+    setLocalError("");
+    if (!file) {
+      setLocalError("Por favor, selecciona una imagen valida");
+      return;
+    }
+    mutate({
+      data,
+      file,
+    });
+  };
+
+  //OJO: NO USEIS ESTOS RETURNS. SON PARA QUE SEPAIS QUE ESTAN AQUI.
+  //USAD LO QUE FALTE DE ARRIBA AL HACER EL FORMULARIO ETC.
+  return (
+    <div>
+      <h2>Crear Blog</h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input type="text" {...register("title")} />
+        <input type="text" {...register("content")} />
+        <input
+          type="file"
+          onChange={(e) => setFile(e.target.files?.[0] || null)}
+        />
+        <button type="submit">Crear</button>
+      </form>
+    </div>
+  );
+};
+
+export default CreateBlogPage;
+</file>
+
+<file path="src/features/blog/pages/EditBlogPage.tsx">
+import { useEditBlogMutation } from "../hooks/useBlogsMutation";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSnackbar } from "notistack";
+import {
+  createBlogSchema,
+  type CreateBlogFields,
+} from "../validators/blogSchema";
+import { getBlogByIdService, editBlogService } from "../services/blogService";
+
+const EditBlogPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const [file, setFile] = useState<File | null>(null);
+  const [currentImage, setCurrentImage] = useState<string | null>(null);
+  const [loadingData, setLoadingData] = useState(true);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+
+  //config del form
+  const register,
+    handleSubmit,
+    setValue,
+    formState: { errors } = useForm<CreateBlogFields>({
+      resolver: zodResolver(createBlogSchema),
+    });
+  //carga inicial de datos
+  useEffect(() => {
+    const fetchBlog = async () => {
+      if (!id) {
+        return;
+      }
+      try {
+        const BlogData = await getBlogByIdService(id);
+        setValue("title", BlogData.title);
+        setValue("content", BlogData.content);
+        setCurrentImage(BlogData.image);
+      } catch (error) {
+        setError("Error al cargar el blog");
+        setLoadingData(false);
+      }
+    };
+    fetchBlog();
+  }, [id, setValue]);
+  const onSubmit = async (data: CreateBlogFields) => {
+    if (!id) return;
+    try {
+      await editBlogService(id, data, file);
+      enqueueSnackbar("Blog editado correctamente", { variant: "success" });
+      navigate("/blog");
+    } catch (error: any) {
+      setError(error.response?.data?.message || "Error al editar blog");
+    }
+  };
+
+  //OJO: NO USEIS ESTOS RETURNS. SON PARA QUE SEPAIS QUE ESTAN AQUI.
+  //USAD LO QUE FALTE DE ARRIBA AL HACER EL FORMULARIO ETC.
+  return (
+    <div>
+      <h1>Editar Blog</h1>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input type="text" {...register("title")} />
+        <textarea {...register("content")} />
+        <input type="file" onChange={(e) => setFile()} />
+        <button type="submit">Editar</button>
+      </form>
+    </div>
+  );
+};
+
+export default EditBlogPage;
+</file>
+
+<file path="src/features/blog/types/blogTypes.ts">
+import {type User} from '../../auth/types/userTypes';
+
+export interface Blog {
+    _id: string;
+    title: string;
+    content: string;
+    image: string;
+    author: User;
+    createdAt: string;
+}
+</file>
+
+<file path="src/lib/utils.ts">
+import { clsx } from "clsx";
+import { type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+</file>
+
+<file path="tailwind.config.js">
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      // --- INICIO DE LO NUEVO ---
+      boxShadow: {
+        input: `0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)`,
+      },
+      // --- FIN DE LO NUEVO ---
+    },
+  },
+  plugins: [],
+}
+</file>
+
+<file path="tsconfig.json">
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
+</file>
+
+<file path="tsconfig.node.json">
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "types": ["node"],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["vite.config.ts"]
+}
+</file>
+
+<file path="index.html">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SOL-e</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="src/api/axios.client.ts">
+import axios from "axios";
+
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
+const axiosClient = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true,
+});
+
+axiosClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (
+      error.response?.status === 401 &&
+      !window.location.pathname.includes("/login")
+    ) {
+      window.dispatchEvent(new Event("force-logout"));
+    }
+    return Promise.reject(error);
+  }
+);
+export default axiosClient;
+</file>
+
+<file path="src/features/auth/components/ui/input.tsx">
+// Input component extends from shadcnui - https://ui.shadcn.com/docs/components/input
+"use client";
+import * as React from "react";
+import { cn } from "@/lib/utils";
+import { useMotionTemplate, useMotionValue, motion } from "motion/react";
+
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {}
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, ...props }, ref) => {
+    const radius = 100;
+    const [visible, setVisible] = React.useState(false);
+
+    let mouseX = useMotionValue(0);
+    let mouseY = useMotionValue(0);
+
+    function handleMouseMove({ currentTarget, clientX, clientY }: any) {
+      let { left, top } = currentTarget.getBoundingClientRect();
+
+      mouseX.set(clientX - left);
+      mouseY.set(clientY - top);
+    }
+    return (
+      <motion.div
+        style={{
+          background: useMotionTemplate`
+        radial-gradient(
+          ${visible ? radius + "px" : "0px"} circle at ${mouseX}px ${mouseY}px,
+          #333D29,
+          transparent 100%
+        )
+      `,
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setVisible(true)}
+        onMouseLeave={() => setVisible(false)}
+        className="group/input rounded-lg p-[2px] transition duration-300"
+      >
+        <input
+          type={type}
+          className={cn(
+            // --- CAMBIOS REALIZADOS ---
+            // 1. bg-white: Fondo BLANCO en modo claro (antes era grisáceo/verde).
+            // 2. dark:bg-stone-900: Fondo MARRÓN OSCURO en modo oscuro (antes era AZUL oscuro).
+            `flex h-10 w-full rounded-md border-none bg-white px-3 py-2 text-sm text-[#333D29] shadow-input transition duration-400
+            placeholder:text-[#333D29]
+            focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-[#582F0E]
+            disabled:cursor-not-allowed disabled:opacity-50
+            dark:bg-[#A4AC86] dark:text-white dark:placeholder-text-stone-500 dark:focus-visible:ring-[#A4AC86]
+            group-hover/input:shadow-none`,
+            className
+          )}
+          ref={ref}
+          {...props}
+        />
+      </motion.div>
+    );
+  },
+);
+Input.displayName = "Input";
+
+export { Input };
+</file>
+
+<file path="src/features/auth/components/ui/label.tsx">
+// Label component extends from shadcnui - https://ui.shadcn.com/docs/components/label
+"use client";
+import * as React from "react";
+import * as LabelPrimitive from "@radix-ui/react-label";
+import { cn } from "@/lib/utils";
+
+const Label = React.forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <LabelPrimitive.Root
+    ref={ref}
+    className={cn(
+      "text-sm font-medium text-dark dark:text-dark leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+      className
+    )}
+    {...props}
+  />
+));
+Label.displayName = LabelPrimitive.Root.displayName;
+
+export { Label };
+</file>
+
+<file path="src/features/auth/hooks/usePasswordRecovery.ts">
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
+import {
+  resetPasswordService,
+  forgotPasswordService,
+} from "../services/authService";
+import type {
+  ResetPasswordFields,
+  ForgotPasswordFields,
+} from "../validators/authSchema";
+import { useSnackbar } from "notistack";
+
+interface ErrorResponse {
+  message: string;
+}
+
+export const useForgotPasswordMutation = () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (data: ForgotPasswordFields) => forgotPasswordService(data),
+    onSuccess: (_, variables) => {
+      enqueueSnackbar("Se envio un correo con el enlace de recuperacion", {
+        variant: "success",
+      });
+      navigate("/resetpassword", { state: { email: variables.email } });
+    },
+    onError: (error: AxiosError<ErrorResponse>) => {
+      const msg =
+        error.response?.data?.message || "Error al recuperar la contraseña";
+      enqueueSnackbar(msg, { variant: "error" });
+    },
+  });
+};
+
+export const useResetPasswordMutation = () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (data: ResetPasswordFields) => resetPasswordService(data),
+    onSuccess: () => {
+      enqueueSnackbar("Se restablecio la contraseña", { variant: "success" });
+      navigate("/login");
+    },
+    onError: (error: AxiosError<ErrorResponse>) => {
+      const msg =
+        error.response?.data?.message || "Error al restablecer la contraseña";
+      enqueueSnackbar(msg, { variant: "error" });
+    },
+  });
+};
+</file>
+
 <file path="src/features/auth/hooks/useUpdateProfile.ts">
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateProfileService } from "../services/authService";
 import { useAuth } from "../context/auth.context";
-import type { ProfileFields } from "../validators/auth.schema";
+import type { ProfileFields } from "../validators/authSchema";
 
 type UpdateProfileParams = {
   data: ProfileFields;
@@ -430,13 +1078,142 @@ const useUpdateProfile = () => {
 export default useUpdateProfile;
 </file>
 
+<file path="src/features/auth/pages/ForgotPasswordPage.tsx">
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Link as RouterLink } from "react-router-dom"; // 1. Importar useNavigate
+import {
+  forgotPasswordSchema,
+  type ForgotPasswordFields,
+} from "../validators/authSchema";
+import { useForgotPasswordMutation } from "../hooks/usePasswordRecovery";
+
+const ForgotPasswordPage = () => {
+  const { mutate, isPending } = useForgotPasswordMutation();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ForgotPasswordFields>({
+    resolver: zodResolver(forgotPasswordSchema),
+  });
+
+  const onSubmit = (data: ForgotPasswordFields) => {
+    mutate(data);
+  };
+
+  return (
+    <div>
+      <h2>Recuperar contraseña</h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <label>Email:</label>
+          <input type="email" {...register("email")} />
+          {errors.email && (
+            <span style={{ color: "red", display: "block" }}>
+              {errors.email.message}
+            </span>
+          )}
+        </div>
+
+        <button type="submit" disabled={isPending}>
+          {isPending ? "Enviando..." : "Enviar enlace de recuperación"}
+        </button>
+        <p style={{ marginTop: "1rem" }}>
+          <RouterLink to="/login">Volver a Iniciar sesión</RouterLink>
+        </p>
+      </form>
+    </div>
+  );
+};
+
+export default ForgotPasswordPage;
+</file>
+
+<file path="src/features/auth/pages/ResetPasswordPage.tsx">
+import { useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useLocation } from "react-router-dom";
+import {
+  resetPasswordSchema,
+  type ResetPasswordFields,
+} from "../validators/authSchema";
+import { useResetPasswordMutation } from "../hooks/usePasswordRecovery";
+import { useForm } from "react-hook-form";
+
+const ResetPasswordPage = () => {
+  const { mutate, isPending } = useResetPasswordMutation();
+  const location = useLocation();
+  const emailFromState = location.state?.email || "";
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<ResetPasswordFields>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: {
+      email: emailFromState,
+      pin: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+  useEffect(() => {
+    if (emailFromState) {
+      setValue("email", emailFromState);
+    }
+  }, [emailFromState, setValue]);
+
+  const onSubmit = (data: ResetPasswordFields) => {
+    mutate(data);
+  };
+
+  return (
+    <div>
+      <h1>Reset Password</h1>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input
+          type="email"
+          {...register("email")}
+          {...(errors.email && <p>{errors.email.message}</p>)}
+        />
+        <input
+          type="text"
+          {...register("pin")}
+          {...(errors.pin && <p>{errors.pin.message}</p>)}
+        />
+        <input
+          type="password"
+          {...register("password")}
+          {...(errors.password && <p>{errors.password.message}</p>)}
+        />
+        <input
+          type="password"
+          {...register("confirmPassword")}
+          {...(errors.confirmPassword && (
+            <p>{errors.confirmPassword.message}</p>
+          ))}
+        />
+        <button type="submit" disabled={isPending}>
+          Reset Password
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default ResetPasswordPage;
+</file>
+
 <file path="src/features/auth/pages/UpdateProfilePage.tsx">
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 // CORRECCIÓN 1: Importar el esquema (valor) además del tipo
-import { profileSchema, type ProfileFields } from "../validators/auth.schema";
+import { profileSchema, type ProfileFields } from "../validators/authSchema";
 import { useAuth } from "../context/auth.context";
 import useUpdateProfile from "../hooks/useUpdateProfile";
 import { getUserProfileUrl } from "../utils/userUtil";
@@ -566,491 +1343,133 @@ const UpdateProfilePage = () => {
 export default UpdateProfilePage;
 </file>
 
-<file path="src/features/auth/pages/UserProfilePage.tsx">
-import { Link as RouterLink } from "react-router-dom";
-import { useAuth } from "../context/auth.context";
-import { IMAGE_URL } from "../../../config/constants";
+<file path="src/features/blog/hooks/useBlogsQuery.ts">
+//hook principal, libreria de react, cache cargas
+import { useQuery } from "@tanstack/react-query";
+//importamos los servicios
+import {
+  getAllBlogsService,
+  getBlogByIdService,
+} from "../services/blogService";
+//importamos el tipo donde se define la interfaz del blog;
+// ARTURO TIENE QUE BORRAR EL ARCHIVO Y CREARLO DE NUEVO PARA QUE FUNCIONE BIEN LA IMPORTACION: copia el contenido, borra y hazlo de nuevo con su nombre correcto y pega
+import { type Blog } from "../types/blogTypes";
 
-const UserProfilePage = () => {
-  const { user } = useAuth();
-  if (!user) return null;
-  let profileImageUrl = user.profilePicture;
-  if (profileImageUrl && !profileImageUrl.startsWith("http")) {
-    profileImageUrl = `${IMAGE_URL}/uploads/users/${profileImageUrl}`;
-  }
+//se define y exportamos la funcion constante y este ayda a que react lo reconoce como un custom hook
+export const useBlogsQuery = () => {
+  //el return ejecuta esa funcion donde le hemos mandado dos parametros, el primero si esta bien y el segundo si no me envia un erro
+  //queryKey es como una caja donde se almacena la info y te la envia, y te lo devuelve en el tipo que este por defecto (blog)
+  return useQuery<Blog[], Error>({
+    queryKey: ["blogs"],
+    //funcion que se ejecuta
+    queryFn: getAllBlogsService,
+  });
+};
 
-  const displayName = user.name || user.username || "Usuario";
+//es lo mismo salvo que tiene la diferencia que nosotros le definimos algo, tambien puede ser undefined
+export const useBlogByIdQuery = (id: string | undefined) => {
+  return useQuery<Blog, Error>({
+    //te da solo el id de los blogs asi tambien sirve con los parametros que hayas elegido
+    queryKey: ["blog", id],
+    // id! ignora los undefined y te trae los que si que estan
+    queryFn: () => getBlogByIdService(id!),
+    //convierte la variable del id a un booleano si hay true si no false
+    enabled: !!id,
+  });
+};
+</file>
 
-  const initial =
-    user.name && user.name.length > 0
-      ? user.name[0]
-      : user.username
-      ? user.username[0]
-      : "U";
+<file path="src/features/blog/pages/BlogDetailsPage.tsx">
+//importamos el hook para que el HTTP nos enseñe los datos de un blog en particular al hacerle click
+import { useBlogByIdQuery } from "../hooks/useBlogsQuery";
+//useParams para leer los parametros dinamicos de la url, como id de productos etc
+import { Link as RouterLink, useParams } from "react-router-dom";
 
-  const formateRole =
-    user.role && user.role.length > 0
-      ? user.role.charAt(0).toUpperCase() + user.role.slice(1)
-      : "Usuario";
+//declaramos la constante de la pagina
+const BlogDetailsPage = () => {
+  //extraemos el id de la url en la que estamos; para que typescript lo reconozca se pone de esa forma antes de los () de la funcion
+  const { id } = useParams<{ id: string }>();
+  //usamos el hook para obtener los datos del blog
+  const { data: blog } = useBlogByIdQuery(id);
 
-  const profileDetails = [
-    {
-      label: "Usuario",
-      value: user.username,
-    },
-    {
-      label: "Email",
-      value: user.email,
-    },
-    {
-      label: "Role",
-      value: formateRole,
-    },
-    {
-      label: "Telefono",
-      value: user.phone || "No proporcionado",
-    },
-    {
-      label: "Direccion",
-      value: user.address || "No proporcionado",
-    },
-  ];
+  //hacemos el procesamiento del contenido: preparar html para recibirlo
+  const content = { __html: blog?.content.replace(/\n/g, "<br />") };
 
+  //OJO: NO USEIS ESTOS RETURNS. SON PARA QUE SEPAIS QUE ESTAN AQUI.
+  //USAD LO QUE FALTE DE ARRIBA AL HACER EL FORMULARIO ETC.
+  //IMPORTANTE TAMBIÉN: HAY QUE ENRUTAR TODAS LAS PAGINAS EN EL APP
+  //SI NO LO HACEIS NO VAIS A VER NADAAAAAA!!!!
   return (
     <div>
-      <h1>Perfil de {displayName}</h1>
-      <div>
-        <img src={profileImageUrl} alt="Perfil" />
-        <h2>{displayName}</h2>
-        <p>{initial}</p>
-      </div>
-      <ul>
-        {profileDetails.map((detail, index) => (
-          <li key={index}>
-            <strong>{detail.label}:</strong> {detail.value}
-          </li>
-        ))}
-      </ul>
+      <h1>{blog?.title}</h1>
+      <div dangerouslySetInnerHTML={content} />
     </div>
   );
 };
 
-export default UserProfilePage;
+export default BlogDetailsPage;
 </file>
 
-<file path="src/features/auth/types/userTypes.ts">
-export interface User {
-  _id: string;
-  username: string;
-  name: string;
-  lastName: string;
-  email: string;
-  role: "user" | "moderator" | "admin";
-  profilePicture?: string;
-  phone?: string;
-  address?: string;
-}
-</file>
+<file path="src/features/blog/services/blogService.ts">
+import axiosClient from "../../../api/axios.client";
+import { type CreateBlogFields } from "../validators/blogSchema";
+import { type Blog } from "../types/blogTypes";
 
-<file path="src/features/auth/utils/userUtil.ts">
-import { IMAGE_URL } from "../../../config/constants";
+//obtener Blog pidiendo a axios que haga la llamada a http al servidor y envie la respuesta(siempre que entre en blog llamara a esta constante)
+export const getAllBlogsService = async (): Promise<Blog[]> => {
+  const response = await axiosClient.get("/blogs");
+  return response.data.data.blogs;
+};
 
-export const getUserProfileUrl = (
-  profilePicture: string | undefined | null
+//obtener blog por ID
+export const getBlogByIdService = async (id: string): Promise<Blog> => {
+  const response = await axiosClient.get(`/blogs/${id}`);
+  return response.data.data.blogs;
+};
+
+//esto es para crear Blog
+export const createBlogService = async (data: CreateBlogFields, file: File) => {
+  const formData = new FormData();
+  formData.append("title", data.title);
+  formData.append("content", data.content);
+  formData.append("blogImage", file);
+  const response = await axiosClient.post("/blogs", formData);
+  return response.data;
+};
+
+//esto te permite editar el blog
+export const editBlogService = async (
+  id: string,
+  data: CreateBlogFields,
+  file: File | null
 ) => {
-  if (!profilePicture) return undefined;
-  if (profilePicture.startsWith("http")) return profilePicture;
-  return `${IMAGE_URL}/uploads/users/${profilePicture}`;
+  const formData = new FormData();
+  formData.append("title", data.title);
+  formData.append("content", data.content);
+  if (file) {
+    formData.append("blogImage", file);
+  }
+  const response = await axiosClient.patch(`/blogs/${id}`, formData);
+  return response.data;
 };
 
-export const getUserInitials = (name?: string, username?: string) => {
-  if (name && name.length > 0) return name[0].toUpperCase();
-  if (username && username.length > 0) return username[0].toUpperCase();
-  return "U";
-};
-
-export const getDisplayName = (user: any) => {
-  return user.name || user.username || "Usuario";
-};
-
-export const formatUserRole = (role?: string) => {
-  if (!role || role.length === 0) return "N/A";
-  return role.charAt(0).toUpperCase() + role.slice(1);
+//esto te permite eliminar el blog
+export const deleteBlogService = async (id: string) => {
+  const response = await axiosClient.delete(`/blogs/${id}`);
+  return response.data;
 };
 </file>
 
-<file path="src/lib/utils.ts">
-import { clsx } from "clsx";
-import { type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+<file path="src/features/blog/validators/blogSchema.ts">
+import { z } from "zod";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-</file>
+export const createBlogSchema = z.object({
+  title: z.string().min(5, "El tìtulo debe contener al menos 5 caracteres."),
+  content: z.string().min(30, "El contenido debe tener al menos 30 caracteres"),
+  blogImage: z.any().optional,
+});
 
-<file path="tailwind.config.js">
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {
-      // --- INICIO DE LO NUEVO ---
-      boxShadow: {
-        input: `0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08)`,
-      },
-      // --- FIN DE LO NUEVO ---
-    },
-  },
-  plugins: [],
-}
-</file>
-
-<file path="tsconfig.json">
-{
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
-}
-</file>
-
-<file path="tsconfig.node.json">
-{
-  "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-    "target": "ES2023",
-    "lib": ["ES2023"],
-    "module": "ESNext",
-    "types": ["node"],
-    "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
-  },
-  "include": ["vite.config.ts"]
-}
-</file>
-
-<file path="index.html">
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SOL-e</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
-</file>
-
-<file path="src/App.tsx">
-import React from "react";
-import { Label } from "@radix-ui/react-label";
-import { Input } from "./features/auth/components/ui/input";
-import { cn } from "@/lib/utils";
-
-export default function App() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white dark:bg-zinc-900 p-10">
-      
-      <div className="w-full max-w-sm space-y-4">
-        <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
-          Formulario de Prueba
-        </h2>
-        
-        <div className="grid w-full items-center gap-1.5">
-          <Label htmlFor="email">Correo Electrónico</Label>
-          <Input id="email" type="email" placeholder="hola@ejemplo.com" />
-        </div>
-
-        <div className="grid w-full items-center gap-1.5">
-          <Label htmlFor="password">Contraseña</Label>
-          <Input id="password" type="password" placeholder="••••••••" />
-        </div>
-
-      </div>
-
-    </div>
-  );
-}
-</file>
-
-<file path="src/config/constants.ts">
-export const API_ROUTES = {
-  USERS: "/users",
-  BLOGS: "/blogs",
-  PRODUCTS: "/products",
-  ORDERS: "/orders",
-  CART: "/cart",
-  KITS: "/kits",
-};
-
-export const IMAGE_URL =
-  import.meta.env.VITE_IMAGE_URL || "http://localhost:3000";
-
-export const USER_ROLES = {
-  ADMIN: "admin",
-  USER: "user",
-  MODERATOR: "moderator",
-};
-</file>
-
-<file path="src/features/auth/pages/LoginPage.tsx">
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/auth.context";
-import { loginSchema, type LoginFormFields } from "../validators/auth.schema";
-import { loginUserService } from "../services/authService";
-
-const LoginPage = () => {
-  const [error, setError] = useState("");
-  const { login } = useAuth();
-  const navigate = useNavigate();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<LoginFormFields>({
-    resolver: zodResolver(loginSchema),
-  });
-
-  const onSubmit = async (data: LoginFormFields) => {
-    setError("");
-    try {
-      const response = await loginUserService(data);
-      const userData = response.user;
-      login(userData);
-      navigate("/");
-    } catch (err: any) {
-      const errorMessage =
-        err.response?.data?.message || "Error al iniciar sesión";
-      setError(errorMessage);
-    }
-  };
-
-  return (
-    <div className="login-container">
-      <h2>Login</h2>
-
-      {/* Mensaje de error general */}
-      {error && (
-        <div
-          style={{
-            color: "red",
-            marginBottom: "1rem",
-            border: "1px solid red",
-            padding: "10px",
-          }}
-        >
-          {error}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* Email */}
-        <div>
-          <label>Email:</label>
-          <input type="email" {...register("email")} />
-          {errors.email && (
-            <span style={{ color: "red", display: "block" }}>
-              {errors.email.message}
-            </span>
-          )}
-        </div>
-
-        {/* Contraseña */}
-        <div>
-          <label>Contraseña:</label>
-          <input type="password" {...register("password")} />
-          {errors.password && (
-            <span style={{ color: "red", display: "block" }}>
-              {errors.password.message}
-            </span>
-          )}
-        </div>
-
-        {/* Botón Submit */}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          style={{ marginTop: "10px" }}
-        >
-          {isSubmitting ? "Iniciando sesión..." : "Iniciar sesión"}
-        </button>
-      </form>
-
-      <p style={{ marginTop: "1rem" }}>
-        ¿No tienes cuenta? <RouterLink to="/register">Regístrate</RouterLink>
-      </p>
-    </div>
-  );
-};
-
-export default LoginPage;
-</file>
-
-<file path="src/features/auth/pages/RegisterPage.tsx">
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-// Importamos el esquema y el tipo
-import {
-  registerSchema,
-  type RegisterFields,
-} from "../../auth/validators/auth.schema";
-
-// Importamos el servicio que acabamos de crear
-// (Asegúrate de ajustar la ruta según dónde guardes el archivo service)
-import { registerUserService } from "../../auth/services/authService";
-
-const RegisterPage = () => {
-  const [file, setFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [serverError, setServerError] = useState("");
-
-  const navigate = useNavigate();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<RegisterFields>({
-    resolver: zodResolver(registerSchema),
-  });
-
-  // Manejo del input tipo File y su previsualización
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0] || null;
-    setFile(selectedFile);
-
-    if (selectedFile) {
-      setPreviewUrl(URL.createObjectURL(selectedFile));
-    } else {
-      setPreviewUrl(null);
-    }
-  };
-
-  // Función de envío del formulario
-  const onSubmit = async (data: RegisterFields) => {
-    setServerError("");
-    try {
-      // Delegamos la lógica de la petición al servicio
-      await registerUserService(data, file);
-
-      // Si todo sale bien, redirigimos
-      navigate("/login");
-    } catch (error) {
-      console.error("Error en petición:", error);
-      // Aquí podrías mejorar el manejo de errores si tu backend devuelve un mensaje específico
-      setServerError("Ocurrió un error, inténtalo de nuevo.");
-    }
-  };
-
-  return (
-    <div className="register-container">
-      <h2>Registro</h2>
-
-      {serverError && <p style={{ color: "red" }}>{serverError}</p>}
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* Nombre */}
-        <div>
-          <label>Nombre:</label>
-          <input type="text" {...register("name")} />
-          {errors.name && (
-            <span style={{ color: "red" }}>{errors.name.message}</span>
-          )}
-        </div>
-
-        {/* Apellido */}
-        <div>
-          <label>Apellido:</label>
-          <input type="text" {...register("lastName")} />
-          {errors.lastName && (
-            <span style={{ color: "red" }}>{errors.lastName.message}</span>
-          )}
-        </div>
-
-        {/* Usuario */}
-        <div>
-          <label>Usuario:</label>
-          <input type="text" {...register("username")} />
-          {errors.username && (
-            <span style={{ color: "red" }}>{errors.username.message}</span>
-          )}
-        </div>
-
-        {/* Email */}
-        <div>
-          <label>Email:</label>
-          <input type="email" {...register("email")} />
-          {errors.email && (
-            <span style={{ color: "red" }}>{errors.email.message}</span>
-          )}
-        </div>
-
-        {/* Contraseña */}
-        <div>
-          <label>Contraseña:</label>
-          <input type="password" {...register("password")} />
-          {errors.password && (
-            <span style={{ color: "red" }}>{errors.password.message}</span>
-          )}
-        </div>
-
-        {/* Imagen de perfil */}
-        <div>
-          <label>Imagen de perfil:</label>
-          <input type="file" accept="image/*" onChange={handleFileChange} />
-          {previewUrl && (
-            <img
-              src={previewUrl}
-              alt="Vista previa"
-              style={{ marginTop: "10px", maxWidth: "100px", display: "block" }}
-            />
-          )}
-        </div>
-
-        {/* Botón Submit */}
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Registrando..." : "Registrarse"}
-        </button>
-      </form>
-
-      <p>
-        ¿Ya tienes cuenta? <RouterLink to="/login">Inicia sesión</RouterLink>
-      </p>
-    </div>
-  );
-};
-
-export default RegisterPage;
+export type CreateBlogFields = z.infer<typeof createBlogSchema>;
 </file>
 
 <file path="src/index.css">
@@ -1110,161 +1529,208 @@ export default defineConfig({
 })
 </file>
 
-<file path="package.json">
-{
-  "name": "package.json",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@hookform/resolvers": "^5.2.2",
-    "@radix-ui/react-label": "^2.1.8",
-    "@tabler/icons-react": "^3.35.0",
-    "@tanstack/react-query": "^5.90.12",
-    "axios": "^1.13.2",
-    "clsx": "^2.1.1",
-    "framer-motion": "^12.23.26",
-    "motion": "^12.23.26",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-hook-form": "^7.68.0",
-    "react-router-dom": "^7.10.1",
-    "tailwind-merge": "^3.4.0",
-    "zod": "^4.1.13"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@types/node": "^24.10.1",
-    "@types/react": "^19.2.5",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.1",
-    "autoprefixer": "^10.4.22",
-    "eslint": "^9.39.1",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.4.24",
-    "globals": "^16.5.0",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17",
-    "typescript": "~5.9.3",
-    "typescript-eslint": "^8.46.4",
-    "vite": "^7.2.4"
-  }
+<file path="src/App.tsx">
+import React from "react";
+import AppRouter from "./routes/AppRouter";
+
+export default function App() {
+  return (
+    // Esto es lo que permite navegar entre Login y Register
+    <AppRouter />
+  );
 }
 </file>
 
-<file path="src/features/auth/services/authService.ts">
-import axiosClient from "../../../api/axios.client";
-import {
-  type RegisterFields,
-  type LoginFormFields,
-  type ProfileFields,
-} from "../../auth/validators/auth.schema";
-import { API_ROUTES } from "../../../config/constants";
-
-/**
- * Servicio para registrar un nuevo usuario.
- */
-export const registerUserService = async (
-  data: RegisterFields,
-  file: File | null
-) => {
-  const formData = new FormData();
-
-  // Agregamos los campos de texto
-  formData.append("name", data.name);
-  formData.append("email", data.email);
-  formData.append("password", data.password);
-  formData.append("username", data.username);
-  formData.append("lastName", data.lastName);
-
-  // Agregamos la imagen si existe
-  if (file) {
-    formData.append("image", file);
-  }
-
-  // Realizamos la petición de register
-  const response = await axiosClient.post("api/users/register", formData);
-  return response.data;
+<file path="src/config/constants.ts">
+export const API_ROUTES = {
+  USERS: "api/users",
+  BLOGS: "api/blogs",
+  PRODUCTS: "api/products",
+  ORDERS: "api/orders",
+  CART: "api/cart",
+  KITS: "api/kits",
 };
 
-// servicio para iniciar sesion
-export const loginUserService = async (data: LoginFormFields) => {
-  const response = await axiosClient.post("api/users/login", data);
+export const IMAGE_URL =
+  import.meta.env.VITE_IMAGE_URL || "http://localhost:3000";
 
-  return response.data;
-};
-
-//servicio para mostrar el perfil
-export const getMyProfileService = async () => {
-  const response = await axiosClient.get(`${API_ROUTES.USERS}`);
-  return response.data;
-};
-
-//servicio para actualizar el perfil
-export const updateProfileService = async (
-  data: ProfileFields,
-  file: File | null
-) => {
-  const formData = new FormData();
-
-  Object.keys(data).forEach((key) => {
-    const value = data[key as keyof ProfileFields];
-    if (value !== undefined && value !== null && key !== "profilePicture") {
-      formData.append(key, String(value));
-    }
-  });
-
-  if (file) {
-    formData.append("profilePicture", file);
-  }
-
-  const response = await axiosClient.patch("api/users/update/", formData);
-
-  return response.data;
+export const USER_ROLES = {
+  ADMIN: "admin",
+  USER: "user",
+  MODERATOR: "moderator",
 };
 </file>
 
-<file path="src/features/auth/validators/auth.schema.ts">
-import { z } from "zod";
+<file path="src/features/auth/components/RegisterDesign.tsx">
+import React from "react";
+import { Link } from "react-router-dom";
+import { type FieldErrors, type UseFormRegister } from "react-hook-form";
+import { type RegisterFields } from "../../auth/validators/auth.schema";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { cn } from "@/lib/utils";
 
-export const registerSchema = z.object({
-  username: z
-    .string()
-    .min(3, "El nombre de usuario debe tener al menos 3 caracteres"),
-  name: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
-  lastName: z.string().min(3, "El apellido debe tener al menos 3 caracteres"),
-  email: z.string().email("Debe ser un email válido"),
-  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
-  profilePicture: z.string().optional(),
-  phone: z.string().optional(),
-  address: z.string().optional(),
-});
+interface RegisterDesignProps {
+  register: UseFormRegister<RegisterFields>;
+  errors: FieldErrors<RegisterFields>;
+  isSubmitting: boolean;
+  onSubmit: (e: React.FormEvent) => void;
+  serverError: string;
+  handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  previewUrl: string | null;
+}
 
-export const loginSchema = z.object({
-  email: z.string().email("Debe ser un email válido"),
-  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
-});
+export const RegisterDesign = ({
+  register,
+  errors,
+  isSubmitting,
+  onSubmit,
+  serverError,
+  handleFileChange,
+  previewUrl,
+}: RegisterDesignProps) => {
+  return (
+    // FONDO: #C2C5AA
+    <div className="flex min-h-screen w-full items-center justify-center bg-[#C2C5AA] p-4">
+      <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl border border-[#A4AC86]">
+        
+        {/* Cabecera */}
+        <div className="mb-6">
+            <h2 className="text-2xl font-bold text-[#333D29]">
+            Crea tu cuenta
+            </h2>
+            <p className="mt-2 text-sm text-[#656D4A]">
+            Únete a la comunidad de <span className="font-bold text-[#582F0E]">SOL-e</span>
+            </p>
+        </div>
 
-export const profileSchema = z.object({
-  username: z
-    .string()
-    .min(3, "El nombre de usuario debe tener al menos 3 caracteres"),
-  name: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
-  lastName: z.string().min(3, "El apellido debe tener al menos 3 caracteres"),
-  profilePicture: z.string().optional(),
-  phone: z.string().optional(),
-  address: z.string().optional(),
-});
+        {serverError && (
+          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+            ⚠️ {serverError}
+          </div>
+        )}
 
-export type RegisterFields = z.infer<typeof registerSchema>;
-export type LoginFormFields = z.infer<typeof loginSchema>;
-export type ProfileFields = z.infer<typeof profileSchema>;
+        <form onSubmit={onSubmit}>
+          
+          {/* Fila Doble */}
+          <div className="mb-4 flex flex-col gap-4 md:flex-row">
+            <LabelInputContainer>
+              <Label htmlFor="name" className="text-[#333D29]">Nombre</Label>
+              <Input 
+                id="name" placeholder="Tu nombre" type="text" {...register("name")} 
+                className="bg-white border-[#A4AC86] text-[#333D29] focus-visible:ring-[#582F0E]" 
+              />
+              {errors.name && <span className="text-xs font-medium text-red-600">{errors.name.message}</span>}
+            </LabelInputContainer>
+            
+            <LabelInputContainer>
+              <Label htmlFor="lastName" className="text-[#333D29]">Apellido</Label>
+              <Input 
+                id="lastName" placeholder="Tus apellidos" type="text" {...register("lastName")} 
+                className="bg-white border-[#A4AC86] text-[#333D29] focus-visible:ring-[#582F0E]" 
+              />
+              {errors.lastName && <span className="text-xs font-medium text-red-600">{errors.lastName.message}</span>}
+            </LabelInputContainer>
+          </div>
+
+          <LabelInputContainer className="mb-4">
+            <Label htmlFor="username" className="text-[#333D29]">Usuario</Label>
+            <Input 
+                id="username" placeholder="Usuario" type="text" {...register("username")} 
+                className="bg-white border-[#A4AC86] text-[#333D29] focus-visible:ring-[#582F0E]" 
+            />
+            {errors.username && <span className="text-xs font-medium text-red-600">{errors.username.message}</span>}
+          </LabelInputContainer>
+
+          <LabelInputContainer className="mb-4">
+            <Label htmlFor="email" className="text-[#333D29]">Correo Electrónico</Label>
+            <Input 
+                id="email" placeholder="correo@ejemplo.com" type="email" {...register("email")} 
+                className="bg-white border-[#A4AC86] text-[#333D29] focus-visible:ring-[#582F0E]" 
+            />
+            {errors.email && <span className="text-xs font-medium text-red-600">{errors.email.message}</span>}
+          </LabelInputContainer>
+
+          <LabelInputContainer className="mb-4">
+            <Label htmlFor="password" className="text-[#333D29]">Contraseña</Label>
+            <Input 
+                id="password" placeholder="••••••••" type="password" {...register("password")} 
+                className="bg-white border-[#A4AC86] text-[#333D29] focus-visible:ring-[#582F0E]" 
+            />
+            {errors.password && <span className="text-xs font-medium text-red-600">{errors.password.message}</span>}
+          </LabelInputContainer>
+
+          {/* Input de Archivo con tonos Beige/Verde */}
+          <LabelInputContainer className="mb-8">
+            <Label className="text-[#333D29]">Foto de Perfil</Label>
+            <div className="flex items-center gap-3 rounded-lg border border-[#A4AC86] bg-[#EBECE2] p-2">
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="h-auto w-full cursor-pointer border-none bg-transparent p-0 text-sm file:mr-4 file:rounded-md file:border-0 file:bg-[#333D29] file:px-4 file:py-2 file:text-xs file:font-medium file:text-white file:transition-colors hover:file:bg-[#414833]"
+              />
+              {previewUrl ? (
+                <img
+                  src={previewUrl}
+                  alt="Preview"
+                  className="h-10 w-10 shrink-0 rounded-full object-cover ring-2 ring-[#582F0E]"
+                />
+              ) : (
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#A4AC86] text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                </div>
+              )}
+            </div>
+          </LabelInputContainer>
+
+          <button
+            className="group/btn relative block h-11 w-full rounded-lg bg-[#582F0E] font-bold text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] transition-transform hover:scale-[1.02] hover:bg-[#7F4F24] disabled:opacity-70"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+                <span className="flex items-center justify-center gap-2">
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"/>
+                    Registrando...
+                </span>
+            ) : (
+                <>Registrarse &rarr;</>
+            )}
+            <BottomGradient />
+          </button>
+        </form>
+
+        <div className="mt-8 border-t border-[#C2C5AA] pt-6 text-center">
+            <p className="text-sm text-[#656D4A]">
+              ¿Ya estás registrado?
+            </p>
+            <Link
+                to="/login"
+                className="mt-1 inline-block text-sm font-bold text-[#7F4F24] transition-colors hover:text-[#582F0E] hover:underline"
+            >
+                Inicia sesión aquí
+            </Link>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+// --- Efectos Visuales ---
+const BottomGradient = () => {
+  return (
+    <>
+      <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-[#B6AD90] to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
+      <span className="absolute inset-x-10 -bottom-px block h-px w-1/2 mx-auto bg-gradient-to-r from-transparent via-[#A68A64] to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
+    </>
+  );
+};
+
+const LabelInputContainer = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+  return <div className={cn("flex flex-col space-y-2 w-full", className)}>{children}</div>;
+};
 </file>
 
 <file path="src/main.tsx">
@@ -1299,6 +1765,185 @@ root.render(
 );
 </file>
 
+<file path="package.json">
+{
+  "name": "package.json",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@radix-ui/react-label": "^2.1.8",
+    "@tabler/icons-react": "^3.35.0",
+    "@tanstack/react-query": "^5.90.12",
+    "axios": "^1.13.2",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.26",
+    "motion": "^12.23.26",
+    "notistack": "^3.0.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-hook-form": "^7.68.0",
+    "react-router-dom": "^7.10.1",
+    "tailwind-merge": "^3.4.0",
+    "zod": "^4.1.13"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "autoprefixer": "^10.4.22",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^7.2.4"
+  }
+}
+</file>
+
+<file path="src/features/auth/components/LoginDesign.tsx">
+import React from "react";
+import { Link } from "react-router-dom";
+import { type FieldErrors, type UseFormRegister } from "react-hook-form";
+import { type LoginFormFields } from "../../auth/validators/auth.schema";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { cn } from "@/lib/utils";
+
+interface LoginDesignProps {
+  register: UseFormRegister<LoginFormFields>;
+  errors: FieldErrors<LoginFormFields>;
+  isSubmitting: boolean;
+  onSubmit: (e: React.FormEvent) => void;
+  serverError: string;
+}
+
+export const LoginDesign = ({
+  register,
+  errors,
+  isSubmitting,
+  onSubmit,
+  serverError,
+}: LoginDesignProps) => {
+  return (
+    // FONDO
+    <div className="flex min-h-screen w-full items-center justify-center bg-[#C2C5AA] p-4">
+      
+      {/* TARJETA */}
+      <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl border border-[#A4AC86]">
+        
+        {/* Cabecera */}
+        <div className="mb-6">
+            <h2 className="text-2xl font-bold text-[#333D29]">
+            Bienvenido de nuevo
+            </h2>
+            <p className="mt-2 text-sm text-[#656D4A]">
+            Ingresa a tu cuenta para continuar en <span className="font-bold text-[#582F0E]">SOL-e</span>
+            </p>
+        </div>
+
+        {/* Mensaje de Error */}
+        {serverError && (
+          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+            ⚠️ {serverError}
+          </div>
+        )}
+
+        <form onSubmit={onSubmit}>
+          
+          <LabelInputContainer className="mb-4">
+            <Label htmlFor="email" className="text-[#333D29]">Correo Electrónico</Label>
+            
+            <Input
+              id="email"
+              placeholder="tu@email.com"
+              type="email"
+              {...register("email")}
+            />
+            {errors.email && (
+              <span className="text-xs font-medium text-red-600">{errors.email.message}</span>
+            )}
+          </LabelInputContainer>
+
+          <LabelInputContainer className="mb-8">
+            <Label htmlFor="password" className="text-[#333D29]">Contraseña</Label>
+            
+            {/* --- CORRECCIÓN AQUÍ --- */}
+            <Input
+              id="password"
+              placeholder="••••••••"
+              type="password"
+              {...register("password")}
+            />
+            {errors.password && (
+              <span className="text-xs font-medium text-red-600">{errors.password.message}</span>
+            )}
+          </LabelInputContainer>
+
+          {/* BOTÓN (Marrón Cálido) */}
+          <button
+            className="group/btn relative block h-11 w-full rounded-lg bg-[#582F0E] font-bold text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] transition-transform hover:scale-[1.02] hover:bg-[#7F4F24] disabled:opacity-70"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+                <span className="flex items-center justify-center gap-2">
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"/>
+                    Entrando...
+                </span>
+            ) : (
+                <>Iniciar Sesión &rarr;</>
+            )}
+            <BottomGradient />
+          </button>
+        </form>
+
+        {/* Footer */}
+        <div className="mt-8 border-t border-[#C2C5AA] pt-6 text-center">
+            <p className="text-sm text-[#656D4A]">
+              ¿Aún no tienes cuenta?
+            </p>
+            <Link
+                to="/register"
+                className="mt-1 inline-block text-sm font-bold text-[#7F4F24] transition-colors hover:text-[#582F0E] hover:underline"
+            >
+                Regístrate aquí
+            </Link>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+// --- Efectos Visuales ---
+const BottomGradient = () => {
+  return (
+    <>
+      <span className="absolute inset-x-0 -bottom-px block h-px w-full bg-gradient-to-r from-transparent via-[#B6AD90] to-transparent opacity-0 transition duration-500 group-hover/btn:opacity-100" />
+      <span className="absolute inset-x-10 -bottom-px block h-px w-1/2 mx-auto bg-gradient-to-r from-transparent via-[#A68A64] to-transparent opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100" />
+    </>
+  );
+};
+
+const LabelInputContainer = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+  return <div className={cn("flex flex-col space-y-2 w-full", className)}>{children}</div>;
+};
+</file>
+
 <file path="src/routes/AppRouter.tsx">
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
@@ -1306,6 +1951,8 @@ import RegisterPage from "../features/auth/pages/RegisterPage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import UserProfilePage from "../features/auth/pages/UserProfilePage";
 import UpdateProfilePage from "../features/auth/pages/UpdateProfilePage";
+import ForgotPasswordPage from "../features/auth/pages/ForgotPasswordPage";
+import ResetPasswordPage from "../features/auth/pages/ResetPasswordPage";
 
 const AppRouter = () => {
   return (
@@ -1314,12 +1961,241 @@ const AppRouter = () => {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/profile" element={<UserProfilePage />} />
+      <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
       <Route path="/update" element={<UpdateProfilePage />} />
+      <Route path="/resetpassword" element={<ResetPasswordPage />} />
     </Routes>
   );
 };
 
 export default AppRouter;
+</file>
+
+<file path="src/features/auth/pages/RegisterPage.tsx">
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+// Importamos el esquema y el tipo
+import { registerSchema, type RegisterFields } from "../validators/authSchema";
+
+// Importamos el servicio
+import { registerUserService } from "../../auth/services/authService";
+
+// IMPORTANTE: Importamos el diseño nuevo
+import { RegisterDesign } from "../components/RegisterDesign";
+
+const RegisterPage = () => {
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [serverError, setServerError] = useState("");
+
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterFields>({
+    resolver: zodResolver(registerSchema),
+  });
+
+  // Manejo del input tipo File y su previsualización
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0] || null;
+    setFile(selectedFile);
+
+    if (selectedFile) {
+      setPreviewUrl(URL.createObjectURL(selectedFile));
+    } else {
+      setPreviewUrl(null);
+    }
+  };
+
+  // Función de envío del formulario
+  const onSubmit = async (data: RegisterFields) => {
+    setServerError("");
+    try {
+      // Delegamos la lógica de la petición al servicio
+      await registerUserService(data, file);
+
+      // Si todo sale bien, redirigimos
+      navigate("/login");
+    } catch (error) {
+      console.error("Error en petición:", error);
+      // Aquí podrías mejorar el manejo de errores si tu backend devuelve un mensaje específico
+      setServerError("Ocurrió un error, inténtalo de nuevo.");
+    }
+  };
+
+  // AQUÍ CONECTAMOS LA LÓGICA CON EL DISEÑO
+  return (
+    <RegisterDesign 
+      register={register}
+      errors={errors}
+      isSubmitting={isSubmitting}
+      onSubmit={handleSubmit(onSubmit)}
+      serverError={serverError}
+      handleFileChange={handleFileChange}
+      previewUrl={previewUrl}
+    />
+  );
+};
+
+export default RegisterPage;
+</file>
+
+<file path="src/features/auth/pages/LoginPage.tsx">
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/auth.context";
+import { loginSchema, type LoginFormFields } from "../validators/authSchema";
+import { loginUserService } from "../services/authService";
+import { LoginDesign } from "../components/LoginDesign"; // Importamos el diseño
+
+const LoginPage = () => {
+  // LÓGICA (NO TOCAR)
+  const [error, setError] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormFields>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = async (data: LoginFormFields) => {
+    setError("");
+    try {
+      const response = await loginUserService(data);
+      const userData = response.user;
+      login(userData);
+      navigate("/");
+    } catch (err: any) {
+      const errorMessage =
+        err.response?.data?.message || "Error al iniciar sesión";
+      setError(errorMessage);
+    }
+  };
+
+  // CONEXIÓN CON EL DISEÑO
+  return (
+
+    <LoginDesign 
+      register={register}
+      errors={errors}
+      isSubmitting={isSubmitting}
+      onSubmit={handleSubmit(onSubmit)}
+      serverError={error}
+    />
+
+
+  );
+};
+
+export default LoginPage;
+</file>
+
+<file path="src/features/auth/services/authService.ts">
+import axiosClient from "../../../api/axios.client";
+import {
+  type RegisterFields,
+  type LoginFormFields,
+  type ProfileFields,
+  type ForgotPasswordFields,
+  type ResetPasswordFields,
+} from "../validators/authSchema";
+import { API_ROUTES } from "../../../config/constants";
+
+/**
+ * Servicio para registrar un nuevo usuario.
+ */
+export const registerUserService = async (
+  data: RegisterFields,
+  file: File | null
+) => {
+  const formData = new FormData();
+
+  // Agregamos los campos de texto
+  formData.append("name", data.name);
+  formData.append("email", data.email);
+  formData.append("password", data.password);
+  formData.append("username", data.username);
+  formData.append("lastName", data.lastName);
+
+  // Agregamos la imagen si existe
+  if (file) {
+    formData.append("image", file);
+  }
+
+  // Realizamos la petición de register
+  const response = await axiosClient.post("api/users/register", formData);
+  return response.data;
+};
+
+// servicio para iniciar sesion
+export const loginUserService = async (data: LoginFormFields) => {
+  const response = await axiosClient.post(`${API_ROUTES.USERS}/login`, data);
+
+  return response.data;
+};
+
+//servicio para mostrar el perfil
+export const getMyProfileService = async () => {
+  const response = await axiosClient.get(`${API_ROUTES.USERS}`);
+  return response.data;
+};
+
+//servicio para actualizar el perfil REVISAR!!!!!
+export const updateProfileService = async (
+  data: ProfileFields,
+  file: File | null
+) => {
+  const formData = new FormData();
+
+  Object.keys(data).forEach((key) => {
+    const value = data[key as keyof ProfileFields];
+    if (value !== undefined && value !== null && key !== "profilePicture") {
+      formData.append(key, String(value));
+    }
+  });
+
+  if (file) {
+    formData.append("profilePicture", file);
+  }
+
+  const response = await axiosClient.patch(
+    `${API_ROUTES.USERS}/update/`,
+    formData
+  );
+
+  return response.data;
+};
+
+//servicio para olvidé la contraseña
+export const forgotPasswordService = async (data: ForgotPasswordFields) => {
+  const response = await axiosClient.post(
+    `${API_ROUTES.USERS}/forgotpassword`,
+    data
+  );
+  return response.data;
+};
+
+//servicio para restablecer la contraseña
+export const resetPasswordService = async (data: ResetPasswordFields) => {
+  const response = await axiosClient.post(`${API_ROUTES.USERS}/resetpassword`, {
+    email: data.email,
+    pin: data.pin,
+    password: data.password,
+  });
+  return response.data;
+};
 </file>
 
 </files>

@@ -13,7 +13,7 @@ const BlogDetailsPage = () => {
   //hacemos el procesamiento del contenido: preparar html para recibirlo
   const content = { __html: blog?.content.replace(/\n/g, "<br />") };
 
-  //OJO: NO USEIS ESTOS RETURNS. SON PARA QUE SEPAIS QUE ESTAN AQUI.
+  {//OJO: NO USEIS ESTOS RETURNS. SON PARA QUE SEPAIS QUE ESTAN AQUI.
   //USAD LO QUE FALTE DE ARRIBA AL HACER EL FORMULARIO ETC.
   //IMPORTANTE TAMBIÉN: HAY QUE ENRUTAR TODAS LAS PAGINAS EN EL APP
   //SI NO LO HACEIS NO VAIS A VER NADAAAAAA!!!!
@@ -23,6 +23,6 @@ const BlogDetailsPage = () => {
       <div dangerouslySetInnerHTML={content} />
     </div>
   );
-};
+};}
 
 export default BlogDetailsPage;

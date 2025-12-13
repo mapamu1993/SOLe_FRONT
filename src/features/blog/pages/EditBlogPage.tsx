@@ -9,6 +9,7 @@ import {
   type CreateBlogFields,
 } from "../validators/blogSchema";
 import { getBlogByIdService, editBlogService } from "../services/blogService";
+import { BlogFormDesign } from "../components/BlogFormDesign";
 
 const EditBlogPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -20,12 +21,14 @@ const EditBlogPage = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   //config del form
-  const register,
+  const {
+    register,
     handleSubmit,
     setValue,
-    formState: { errors } = useForm<CreateBlogFields>({
-      resolver: zodResolver(createBlogSchema),
-    });
+    formState: { errors },
+  } = useForm<CreateBlogFields>({
+    resolver: zodResolver(createBlogSchema),
+  });
   //carga inicial de datos
   useEffect(() => {
     const fetchBlog = async () => {
@@ -55,7 +58,33 @@ const EditBlogPage = () => {
     }
   };
 
-  //OJO: NO USEIS ESTOS RETURNS. SON PARA QUE SEPAIS QUE ESTAN AQUI.
+
+  // SOLO CAMBIA EL RETURN:
+  return (
+    <BlogFormDesign
+      register={register}
+      errors={errors}
+      isSubmitting={false} // O {isPending}
+      onSubmit={handleSubmit(onSubmit)}
+      
+      // Textos
+      pageTitle="Editar Blog"
+      buttonText="Guardar Cambios"
+      serverError={error} // Usamos tu variable de error
+      
+      // Archivos
+      onFileChange={(e) => setFile(e.target.files?.[0] || null)}
+      currentFile={file}
+      
+    />
+  );
+};
+
+export default EditBlogPage;
+
+
+
+ {/* //OJO: NO USEIS ESTOS RETURNS. SON PARA QUE SEPAIS QUE ESTAN AQUI.
   //USAD LO QUE FALTE DE ARRIBA AL HACER EL FORMULARIO ETC.
   return (
     <div>
@@ -68,6 +97,4 @@ const EditBlogPage = () => {
       </form>
     </div>
   );
-};
-
-export default EditBlogPage;
+};*/}

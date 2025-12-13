@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { type FieldErrors, type UseFormRegister } from "react-hook-form";
-import { type RegisterFields } from "../../auth/validators/auth.schema";
+import { type RegisterFields } from "../validators/authSchema";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
