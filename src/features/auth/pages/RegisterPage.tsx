@@ -4,10 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 // Importamos el esquema y el tipo
-import {
-  registerSchema,
-  type RegisterFields,
-} from "../../auth/validators/auth.schema";
+import { registerSchema, type RegisterFields } from "../validators/authSchema";
 
 // Importamos el servicio
 import { registerUserService } from "../../auth/services/authService";

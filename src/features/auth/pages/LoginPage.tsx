@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
-import { loginSchema, type LoginFormFields } from "../validators/auth.schema";
+import { loginSchema, type LoginFormFields } from "../validators/authSchema";
 import { loginUserService } from "../services/authService";
 import { LoginDesign } from "../components/LoginDesign"; // Importamos el diseño
 
