@@ -4,8 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createProductSchema,
   type CreateProductFields,
-} from "../validators/productSchema";
-import { useCreateProductMutation } from "../hooks/useProductMutations";
+} from "../validators/ProductSchema";
+import { useCreateProductMutation } from "../hooks/useProductsMutations";
 
 const CreateProductPage = () => {
   const [file, setFile] = useState<File | null>(null);
