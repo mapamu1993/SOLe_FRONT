@@ -55,7 +55,7 @@ export const BlogFormDesign = ({
                 <h2 className="text-2xl font-bold text-[#333D29]">{pageTitle}</h2>
                 <p className="mt-1 text-sm text-[#656D4A]">Gestiona el contenido de tu blog</p>
             </div>
-            <Link to="/blogs" className="text-sm font-medium text-[#7F4F24] hover:underline">
+            <Link to="/blog" className="text-sm font-medium text-[#7F4F24] hover:underline">
                 Cancelar y volver
             </Link>
         </div>

@@ -2,15 +2,13 @@ import { useEditBlogMutation } from "../hooks/useBlogsMutation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate, useParams } from "react-router-dom";
-import { useSnackbar } from "notistack";
+import { useParams } from "react-router-dom"; // Quitamos useNavigate y useSnackbar porque el hook ya los tiene
 import {
   createBlogSchema,
   type CreateBlogFields,
 } from "../validators/blogSchema";
-import { getBlogByIdService, editBlogService } from "../services/blogService";
+import { getBlogByIdService } from "../services/blogService"; // Quitamos editBlogService
 import { BlogFormDesign } from "../components/BlogFormDesign";
-// IMPORTANTE: Recuperamos esta importación para que funcione la previsualización
 import { IMAGE_URL } from "../../../config/constants";
 
 const EditBlogPage = () => {
@@ -18,11 +16,12 @@ const EditBlogPage = () => {
   const [file, setFile] = useState<File | null>(null);
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [loadingData, setLoadingData] = useState(true);
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
+  const [loadError, setLoadError] = useState(""); // Cambié el nombre para no confundir con el error de edición
 
-  // config del form
+  // 1. AQUÍ USAMOS TU HOOK (El robot que hace el trabajo sucio)
+  // Extraemos 'mutate' para disparar la acción y 'isPending' para saber si está cargando
+  const { mutate, isPending, error: mutationError } = useEditBlogMutation();
+
   const {
     register,
     handleSubmit,
@@ -32,17 +31,20 @@ const EditBlogPage = () => {
     resolver: zodResolver(createBlogSchema),
   });
 
-  // carga inicial de datos
+  // Carga inicial de datos (Esto está bien, es solo lectura)
   useEffect(() => {
     const fetchBlog = async () => {
       if (!id) return;
       try {
         const BlogData = await getBlogByIdService(id);
-        setValue("title", BlogData.title);
-        setValue("content", BlogData.content);
-        setCurrentImage(BlogData.image);
+        // OJO: Si BlogData llega undefined, esto fallará.
+        if (BlogData) {
+            setValue("title", BlogData.title);
+            setValue("content", BlogData.content);
+            setCurrentImage(BlogData.image);
+        }
       } catch (error) {
-        setError("Error al cargar el blog");
+        setLoadError("Error al cargar el blog");
       } finally {
         setLoadingData(false);
       }
@@ -50,41 +52,37 @@ const EditBlogPage = () => {
     fetchBlog();
   }, [id, setValue]);
 
-  const onSubmit = async (data: CreateBlogFields) => {
+  // 2. CORREGIMOS EL ONSUBMIT
+  const onSubmit = (data: CreateBlogFields) => {
     if (!id) return;
-    try {
-      await editBlogService(id, data, file);
-      enqueueSnackbar("Blog editado correctamente", { variant: "success" });
-      navigate("/blogs");
-    } catch (error: any) {
-      setError(error.response?.data?.message || "Error al editar blog");
-    }
+    
+    // En lugar de hacer try/catch manual aquí, le pasamos la pelota al hook
+    // El hook ya tiene configurado el onSuccess (navegar) y onError (alerta)
+    mutate({ id, data, file });
   };
 
-  // Lógica para mostrar la imagen antigua correctamente
   const formattedExistingImage = currentImage?.startsWith("http")
     ? currentImage
     : currentImage
     ? `${IMAGE_URL}/uploads/blogs/${currentImage}`
     : null;
 
+  if (loadingData) return <div>Cargando...</div>;
+  if (loadError) return <div>{loadError}</div>;
+
   return (
     <BlogFormDesign
       register={register}
       errors={errors}
-      isSubmitting={false}
+      // 3. Conectamos el estado de carga del hook
+      isSubmitting={isPending} 
       onSubmit={handleSubmit(onSubmit)}
-      
-      // Textos
       pageTitle="Editar Blog"
       buttonText="Guardar Cambios"
-      serverError={error}
-      
-      // Archivos
+      // 4. Si el hook devuelve error, lo mostramos (o null)
+      serverError={mutationError?.response?.data?.message || ""} 
       onFileChange={(e) => setFile(e.target.files?.[0] || null)}
       currentFile={file}
-      
-      // Pasamos la imagen antigua formateada
       existingImageUrl={formattedExistingImage}
     />
   );

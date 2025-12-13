@@ -17,37 +17,60 @@ const BlogPage = () => {
 
   return (
     <div>
-      <h1>Blog</h1>
-      {canEdit && (
-        <RouterLink to="/blog/new">
-          <button>+ Crear Entrada</button>
-        </RouterLink>
-      )}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h1>Blog</h1>
+        {canEdit && (
+            <RouterLink to="/blog/new">
+            <button style={{ padding: "8px 16px", backgroundColor: "#582F0E", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>
+                + Crear Entrada
+            </button>
+            </RouterLink>
+        )}
+      </div>
 
-      <ul>
+      <ul style={{ listStyle: "none", padding: 0 }}>
         {blogs?.map((blog) => (
           <li
             key={blog._id}
             style={{
               marginBottom: "20px",
-              borderBottom: "1px solid #eee",
-              paddingBottom: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+              padding: "16px",
+              backgroundColor: "white"
             }}
           >
-            <h3>{blog.title}</h3>
+            <h3 style={{ marginTop: 0 }}>{blog.title}</h3>
             <p>{blog.content.substring(0, 100)}...</p>
-            <RouterLink to={`/blog/${blog._id}`}>Leer más</RouterLink>
+            
+            <div style={{ marginTop: "10px", display: "flex", gap: "10px", alignItems: "center" }}>
+                {/* Botón para todos: Leer más */}
+                <RouterLink to={`/blog/${blog._id}`} style={{ color: "#582F0E", fontWeight: "bold" }}>
+                    Leer más
+                </RouterLink>
 
-            {canEdit && (
-              <button
-                onClick={() => {
-                  if (window.confirm("¿Borrar entrada?")) deleteBlog(blog._id);
-                }}
-                style={{ marginLeft: "10px", color: "red" }}
-              >
-                Eliminar
-              </button>
-            )}
+                {/* Botones SOLO para Admin/Moderador */}
+                {canEdit && (
+                <>
+                    {/* 1. BOTÓN DE EDITAR (El que te faltaba) */}
+                    <RouterLink to={`/blog/edit/${blog._id}`}>
+                        <button style={{ cursor: "pointer", color: "blue", background: "none", border: "none", textDecoration: "underline" }}>
+                            Editar
+                        </button>
+                    </RouterLink>
+
+                    {/* 2. BOTÓN DE ELIMINAR */}
+                    <button
+                        onClick={() => {
+                            if (window.confirm("¿Borrar entrada?")) deleteBlog(blog._id);
+                        }}
+                        style={{ cursor: "pointer", color: "red", background: "none", border: "none", textDecoration: "underline" }}
+                    >
+                        Eliminar
+                    </button>
+                </>
+                )}
+            </div>
           </li>
         ))}
       </ul>

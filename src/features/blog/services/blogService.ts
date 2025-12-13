@@ -11,7 +11,7 @@ export const getAllBlogsService = async (): Promise<Blog[]> => {
 
 export const getBlogByIdService = async (id: string): Promise<Blog> => {
   const response = await axiosClient.get(`${API_ROUTES.BLOGS}/${id}`);
-  return response.data.data.blogs; // Nota: en tu código original ponía .blogs en plural, verificar backend
+  return response.data.data.blog; // Nota: en tu código original ponía .blogs en plural, verificar backend
 };
 
 export const createBlogService = async (data: CreateBlogFields, file: File) => {

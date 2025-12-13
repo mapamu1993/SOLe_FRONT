@@ -1,36 +1,53 @@
-// 1. IMPORTACIONES
 import { useBlogByIdQuery } from "../hooks/useBlogsQuery";
-import { useParams } from "react-router-dom"; // Quité RouterLink porque no se usaba en este trozo
+import { useParams } from "react-router-dom";
 
-// 2. DEFINICIÓN DEL COMPONENTE
 const BlogDetailsPage = () => {
-  // A. Extraer el ID de la URL
-  // Le decimos a TypeScript que el parámetro 'id' será un texto (string)
   const { id } = useParams<{ id: string }>();
+  
+  // Extraemos isLoading también
+  const { data: blog, isLoading, isError } = useBlogByIdQuery(id || "");
 
-  // B. Pedir los datos usando ese ID
-  // Si 'id' es undefined, la query esperará (o saltará error según tu config), 
-  // pero normalmente aquí 'id' ya tiene valor.
-  const { data: blog } = useBlogByIdQuery(id || ""); 
+  const content = {
+    __html: blog?.content?.replace(/\n/g, "<br />") || ""
+  };
 
-  // C. Preparar el contenido HTML (Evitamos error si 'blog' aún no ha llegado con el '?')
-  // Reemplazamos los saltos de línea (\n) por etiquetas <br /> de HTML
-  const content = { 
-    __html: blog?.content?.replace(/\n/g, "<br />") || "" 
-  }; 
+  // 1. SI ESTÁ CARGANDO, MOSTRAMOS ESTO
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="text-xl font-bold text-[#333D29]">Cargando artículo...</div>
+      </div>
+    );
+  }
 
-  // D. LO QUE SE VE EN PANTALLA (El Return)
-  // Esto no puede estar comentado ni oculto, es lo que React "pinta".
+  // 2. SI HUBO ERROR O NO HAY BLOG
+  if (isError || !blog) {
+    return (
+      <div className="p-10 text-center text-red-600">
+        No se pudo cargar el blog o no existe.
+      </div>
+    );
+  }
+
   return (
-    <div>
-      {/* Si el blog existe, mostramos el título, si no, nada */}
-      <h1>{blog?.title}</h1>
+    <div className="mx-auto max-w-3xl p-6">
+      <h1 className="mb-6 text-4xl font-bold text-[#333D29]">{blog.title}</h1>
       
-      {/* Insertamos el contenido HTML procesado */}
-      <div dangerouslySetInnerHTML={content} />
+      {/* Opcional: Mostrar imagen si la tiene */}
+      {blog.image && (
+          <img 
+            src={blog.image.startsWith('http') ? blog.image : `http://localhost:3000/uploads/blogs/${blog.image}`} 
+            alt={blog.title}
+            className="mb-6 w-full rounded-lg object-cover shadow-md"
+          />
+      )}
+
+      <div 
+        className="prose prose-lg text-[#333D29]" // clases para formatear texto si usas tailwind typography
+        dangerouslySetInnerHTML={content} 
+      />
     </div>
   );
-}; 
+};
 
-// 3. EXPORTACIÓN (¡Fuera de la función!)
 export default BlogDetailsPage;
