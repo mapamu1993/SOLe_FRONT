@@ -1,17 +1,27 @@
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+
+// Imports de tu lógica
 import {
   resetPasswordSchema,
   type ResetPasswordFields,
 } from "../validators/authSchema";
 import { useResetPasswordMutation } from "../hooks/usePasswordRecovery";
-import { useForm } from "react-hook-form";
+
+// IMPORTE DEL DISEÑO (Asegúrate de que la ruta es correcta)
+// Subimos niveles: features -> auth -> pages -> src -> components
+import ResetPasswordDesign from "../components/ResetPasswordDesign";
 
 const ResetPasswordPage = () => {
   const { mutate, isPending } = useResetPasswordMutation();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // 1. Recogemos el email que nos manda UpdateProfilePage
   const emailFromState = location.state?.email || "";
+
   const {
     register,
     handleSubmit,
@@ -26,6 +36,7 @@ const ResetPasswordPage = () => {
       confirmPassword: "",
     },
   });
+
   useEffect(() => {
     if (emailFromState) {
       setValue("email", emailFromState);
@@ -33,40 +44,28 @@ const ResetPasswordPage = () => {
   }, [emailFromState, setValue]);
 
   const onSubmit = (data: ResetPasswordFields) => {
-    mutate(data);
+    mutate(data, {
+      onSuccess: () => {
+        // Si todo sale bien, volvemos al login para que entre con la nueva pass
+        navigate("/login");
+      },
+    });
   };
 
+  // 2. ESTA ES LA FUNCIÓN PARA VOLVER ATRÁS
+  const handleCancel = () => {
+    navigate("/profile/edit"); // Volvemos a la edición del perfil
+  };
+
+  // 3. Renderizamos el diseño bonito
   return (
-    <div>
-      <h1>Reset Password</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          type="email"
-          {...register("email")}
-          {...(errors.email && <p>{errors.email.message}</p>)}
-        />
-        <input
-          type="text"
-          {...register("pin")}
-          {...(errors.pin && <p>{errors.pin.message}</p>)}
-        />
-        <input
-          type="password"
-          {...register("password")}
-          {...(errors.password && <p>{errors.password.message}</p>)}
-        />
-        <input
-          type="password"
-          {...register("confirmPassword")}
-          {...(errors.confirmPassword && (
-            <p>{errors.confirmPassword.message}</p>
-          ))}
-        />
-        <button type="submit" disabled={isPending}>
-          Reset Password
-        </button>
-      </form>
-    </div>
+    <ResetPasswordDesign
+      register={register}
+      errors={errors}
+      isPending={isPending}
+      onSubmit={handleSubmit(onSubmit)}
+      onCancel={handleCancel}
+    />
   );
 };
 

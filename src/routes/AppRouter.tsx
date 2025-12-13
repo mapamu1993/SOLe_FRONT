@@ -33,9 +33,9 @@ const AppRouter = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/profile" element={<UserProfilePage />} />
       <Route path="/profile/edit" element={<UpdateProfilePage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
       <Route path="/update" element={<UpdateProfilePage />} />
-      <Route path="/resetpassword" element={<ResetPasswordPage />} />
 
       {/* --- BLOG --- */}
       <Route path="/blog" element={<BlogPage />} />

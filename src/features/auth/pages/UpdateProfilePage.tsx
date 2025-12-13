@@ -2,14 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-// CORRECCIÓN 1: Importar el esquema (valor) además del tipo
 import { profileSchema, type ProfileFields } from "../validators/authSchema";
 import { useAuth } from "../context/auth.context";
 import useUpdateProfile from "../hooks/useUpdateProfile";
 import { getUserProfileUrl } from "../utils/userUtil";
-
-// IMPORTAMOS EL DISEÑO
-import UpdateProfileDesign from "../components/UpdateProfilePageDesign"; // <--- Ajusta la ruta si es necesario
+// Importamos el componente de diseño que creamos antes
+import UpdateProfileDesign from "../components/UpdateProfilePageDesign";
 
 const UpdateProfilePage = () => {
   const { user } = useAuth();
@@ -19,7 +17,7 @@ const UpdateProfilePage = () => {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  // Hook del formulario
+  // Configuración del formulario con Zod
   const {
     register,
     handleSubmit,
@@ -36,7 +34,7 @@ const UpdateProfilePage = () => {
     },
   });
 
-  // Cargar datos iniciales
+  // Cargar los datos del usuario en el formulario al entrar
   useEffect(() => {
     if (user) {
       reset({
@@ -51,7 +49,7 @@ const UpdateProfilePage = () => {
     }
   }, [user, reset]);
 
-  // Manejar cambio de archivo
+  // Manejar la selección de nueva foto de perfil
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0] || null;
     setFile(selectedFile);
@@ -63,7 +61,7 @@ const UpdateProfilePage = () => {
     }
   };
 
-  // Enviar formulario
+  // Enviar los cambios al backend
   const onSubmit = (data: ProfileFields) => {
     mutate(
       { data, file },
@@ -75,14 +73,23 @@ const UpdateProfilePage = () => {
     );
   };
 
-  // Funciones de navegación
+  // --- FUNCIONES DE NAVEGACIÓN ---
+
+  // 1. Volver al perfil sin guardar
   const handleCancel = () => navigate("/profile");
+
+  // 2. Volver a la página principal (Home)
   const handleGoHome = () => navigate("/");
 
-  // Calculamos la inicial para el avatar por defecto
+  // 3. Ir a cambiar contraseña
+  const handleChangePassword = () => {
+    navigate("/reset-password", { state: { email: user?.email } });
+  };
+
+  // Obtener inicial para el avatar por defecto
   const initial = user?.username ? user.username[0].toUpperCase() : "U";
 
-  // Renderizamos el componente de DISEÑO pasándole toda la lógica
+  // Renderizamos el diseño pasando toda la lógica
   return (
     <UpdateProfileDesign
       register={register}
@@ -91,9 +98,10 @@ const UpdateProfilePage = () => {
       previewUrl={previewUrl}
       initial={initial}
       onFileChange={handleFileChange}
-      onSubmit={handleSubmit(onSubmit)} // Importante pasar handleSubmit(onSubmit)
+      onSubmit={handleSubmit(onSubmit)}
       onCancel={handleCancel}
       onGoHome={handleGoHome}
+      onChangePassword={handleChangePassword}
     />
   );
 };

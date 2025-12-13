@@ -2,7 +2,7 @@ import React from "react";
 import { type UseFormRegister, type FieldErrors } from "react-hook-form";
 import { type ProfileFields } from "../validators/authSchema";
 
-// Icono de cámara para el diseño
+// Icono de cámara
 const CameraIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -25,16 +25,36 @@ const CameraIcon = () => (
   </svg>
 );
 
+// Icono de Candado (Para contraseña)
+const LockIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-4 w-4"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+    />
+  </svg>
+);
+
 interface UpdateProfileDesignProps {
   register: UseFormRegister<ProfileFields>;
   errors: FieldErrors<ProfileFields>;
   isPending: boolean;
   previewUrl: string | null;
-  initial: string; // Para mostrar la letra si no hay foto
+  initial: string;
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent) => void;
   onCancel: () => void;
   onGoHome: () => void;
+  onChangePassword: () => void;
+  // ELIMINADO: onChangeEmail
 }
 
 const UpdateProfileDesign: React.FC<UpdateProfileDesignProps> = ({
@@ -47,21 +67,25 @@ const UpdateProfileDesign: React.FC<UpdateProfileDesignProps> = ({
   onSubmit,
   onCancel,
   onGoHome,
+  onChangePassword,
+  // ELIMINADO: onChangeEmail
 }) => {
-  // Clases comunes para los inputs para no repetir código
+  // CLASES DE ESTILO
   const inputClass =
     "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white text-gray-800";
   const labelClass =
-    "block text-xs font-bold text-gray-500 uppercase mb-1 tracking-wide";
+    "block text-xs font-bold text-gray-700 uppercase mb-1 tracking-wide";
   const errorClass = "text-red-500 text-xs mt-1 font-medium";
+
+  // Estilo para el botón de seguridad
+  const securityBtnClass =
+    "flex items-center justify-center gap-2 w-full py-2 px-4 rounded-lg border border-gray-300 bg-white text-gray-600 font-semibold hover:bg-gray-50 hover:text-brand-primary hover:border-brand-primary transition-all text-sm shadow-sm";
 
   return (
     <div className="min-h-screen bg-brand-bg flex items-center justify-center p-4 font-sans">
-      {/* Tarjeta contenedora (Mismo estilo que ProfileCard) */}
       <div className="bg-brand-card shadow-2xl rounded-2xl overflow-hidden max-w-2xl w-full border border-gray-200 flex flex-col">
-        {/* Banner Superior */}
+        {/* Banner */}
         <div className="h-32 bg-gradient-to-r from-brand-primary to-brand-secondary relative">
-          {/* Botón flotante para volver atrás rápidamente */}
           <button
             type="button"
             onClick={onCancel}
@@ -73,7 +97,7 @@ const UpdateProfileDesign: React.FC<UpdateProfileDesignProps> = ({
 
         <div className="relative px-8 pb-8 flex-1">
           <form onSubmit={onSubmit}>
-            {/* --- FOTO DE PERFIL --- */}
+            {/* Foto Avatar */}
             <div className="relative -mt-16 mb-8 flex justify-center">
               <div className="relative group">
                 <div className="h-32 w-32 rounded-full ring-4 ring-white bg-white shadow-md flex items-center justify-center overflow-hidden">
@@ -89,12 +113,9 @@ const UpdateProfileDesign: React.FC<UpdateProfileDesignProps> = ({
                     </span>
                   )}
                 </div>
-
-                {/* Botón de la cámara */}
                 <label
                   htmlFor="file-upload"
                   className="absolute bottom-0 right-0 bg-brand-primary hover:bg-blue-700 text-white p-2 rounded-full shadow-lg cursor-pointer transition-colors ring-2 ring-white z-10"
-                  title="Cambiar foto"
                 >
                   <CameraIcon />
                 </label>
@@ -112,9 +133,8 @@ const UpdateProfileDesign: React.FC<UpdateProfileDesignProps> = ({
               Editar Información
             </h1>
 
-            {/* --- CAMPOS --- */}
-            <div className="space-y-5">
-              {/* Username */}
+            {/* CAMPOS DEL FORMULARIO */}
+            <div className="space-y-5 mb-8">
               <div>
                 <label className={labelClass}>Usuario</label>
                 <input
@@ -128,7 +148,6 @@ const UpdateProfileDesign: React.FC<UpdateProfileDesignProps> = ({
                 )}
               </div>
 
-              {/* Nombre y Apellido (2 Columnas) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                   <label className={labelClass}>Nombre</label>
@@ -154,7 +173,6 @@ const UpdateProfileDesign: React.FC<UpdateProfileDesignProps> = ({
                 </div>
               </div>
 
-              {/* Teléfono y Dirección (2 Columnas) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
                   <label className={labelClass}>Teléfono</label>
@@ -181,9 +199,25 @@ const UpdateProfileDesign: React.FC<UpdateProfileDesignProps> = ({
               </div>
             </div>
 
-            {/* --- BOTONES --- */}
-            <div className="mt-8 flex flex-col gap-3 pt-4 border-t border-gray-100">
-              {/* 1. Guardar */}
+            {/* --- SECCIÓN SEGURIDAD (SOLO PASSWORD) --- */}
+            <div className="mb-8">
+              <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 border-b border-gray-100 pb-1">
+                Seguridad de la cuenta
+              </h3>
+              {/* Ahora es un div simple, sin grid, porque solo hay un botón */}
+              <div className="w-full">
+                <button
+                  type="button"
+                  onClick={onChangePassword}
+                  className={securityBtnClass}
+                >
+                  <LockIcon /> Cambiar Contraseña
+                </button>
+              </div>
+            </div>
+
+            {/* BOTONES PRINCIPALES */}
+            <div className="flex flex-col gap-3 pt-4 border-t border-gray-100">
               <button
                 type="submit"
                 disabled={isPending}
@@ -192,7 +226,6 @@ const UpdateProfileDesign: React.FC<UpdateProfileDesignProps> = ({
                 {isPending ? "Guardando cambios..." : "Guardar Cambios"}
               </button>
 
-              {/* 2. Volver al Perfil */}
               <button
                 type="button"
                 onClick={onCancel}
@@ -201,7 +234,6 @@ const UpdateProfileDesign: React.FC<UpdateProfileDesignProps> = ({
                 Cancelar y Volver al Perfil
               </button>
 
-              {/* 3. Volver al Inicio */}
               <button
                 type="button"
                 onClick={onGoHome}
