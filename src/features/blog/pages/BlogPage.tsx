@@ -1,41 +1,50 @@
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { USER_ROLES } from "../../../config/constants";
 import { useBlogsQuery } from "../hooks/useBlogsQuery";
-import { useAuth } from "../../auth/context/auth.context";
 import { useDeleteBlogMutation } from "../hooks/useBlogsMutation";
+import { useAuth } from "../../auth/context/auth.context";
+import { USER_ROLES } from "../../../config/constants";
 
 const BlogPage = () => {
-  const { user } = useAuth();
-  const { data: blogs } = useBlogsQuery();
+  const { data: blogs, isLoading } = useBlogsQuery();
   const { mutate: deleteBlog } = useDeleteBlogMutation();
-  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const { user } = useAuth();
 
-  //permisos:
-  const isAdminOrModerator =
+  const canEdit =
     user?.role === USER_ROLES.ADMIN || user?.role === USER_ROLES.MODERATOR;
-  const handleDeleteClick = (id: string) => {
-    setDeleteId(id);
-  };
-  const handleConfirmDelete = () => {
-    if (deleteId) {
-      deleteBlog(deleteId);
-      setDeleteId(null);
-    }
-  };
 
-  //OJO: NO USEIS ESTOS RETURNS. SON PARA QUE SEPAIS QUE ESTAN AQUI.
-  //USAD LO QUE FALTE DE ARRIBA AL HACER EL FORMULARIO ETC.
+  if (isLoading) return <div>Cargando blog...</div>;
+
   return (
     <div>
-      <h2>Blog</h2>
+      <h1>Blog</h1>
+      {canEdit && (
+        <RouterLink to="/blog/new">
+          <button>+ Crear Entrada</button>
+        </RouterLink>
+      )}
+
       <ul>
         {blogs?.map((blog) => (
-          <li key={blog.id}>
+          <li
+            key={blog._id}
+            style={{
+              marginBottom: "20px",
+              borderBottom: "1px solid #eee",
+              paddingBottom: "10px",
+            }}
+          >
             <h3>{blog.title}</h3>
-            <p>{blog.content}</p>
-            {isAdminOrModerator && (
-              <button onClick={() => handleDeleteClick(blog.id)}>
+            <p>{blog.content.substring(0, 100)}...</p>
+            <RouterLink to={`/blog/${blog._id}`}>Leer más</RouterLink>
+
+            {canEdit && (
+              <button
+                onClick={() => {
+                  if (window.confirm("¿Borrar entrada?")) deleteBlog(blog._id);
+                }}
+                style={{ marginLeft: "10px", color: "red" }}
+              >
                 Eliminar
               </button>
             )}

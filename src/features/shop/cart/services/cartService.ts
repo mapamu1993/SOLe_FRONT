@@ -1,0 +1,23 @@
+import axiosClient from "../../../../api/axios.client";
+import { API_ROUTES } from "../../../../config/constants";
+import { type Cart } from "../types/cartTypes";
+
+interface UpdateCartData {
+  productId: string;
+  quantity: number;
+}
+
+export const fetchCartService = async (): Promise<Cart> => {
+  const { data } = await axiosClient.get(API_ROUTES.CART);
+  return data.data.cart;
+};
+
+export const updateCartService = async (data: UpdateCartData) => {
+  const response = await axiosClient.post(`${API_ROUTES.CART}/add`, data);
+  return response.data;
+};
+
+export const removeItemFromCartService = async (productId: string) => {
+  const response = await axiosClient.delete(`${API_ROUTES.CART}/${productId}`);
+  return response.data;
+};
