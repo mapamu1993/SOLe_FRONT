@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
+import Home from "../pages/Home/Home.tsx";
 
 // Auth Pages
 import RegisterPage from "../features/auth/pages/RegisterPage";
@@ -27,7 +28,7 @@ const AppRouter = () => {
   return (
     <Routes>
       {/* Redirección inicial */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<Navigate to="/Home" replace />} />
 
       {/* --- AUTH --- */}
       <Route path="/register" element={<RegisterPage />} />
