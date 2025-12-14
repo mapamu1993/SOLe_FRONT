@@ -5,7 +5,7 @@ import {
   createProductSchema,
   type CreateProductFields,
 } from "../validators/ProductSchema";
-import { useCreateProductMutation } from "../hooks/useProductMutation";
+import { useCreateProductMutation } from "../hooks/useProductsMutations";
 import { ProductFormDesign } from "../components/ProductoFormDesign";
 
 const CreateProductPage = () => {

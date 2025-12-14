@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { type FieldErrors, type UseFormRegister } from "react-hook-form";
 import { type LoginFormFields } from "../validators/authSchema";
-import { Label } from "./ui/label";
+import { Label } from "./ui/label"; // Asegúrate de que estas rutas son correctas en tu proyecto
 import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
 
@@ -24,18 +24,17 @@ export const LoginDesign = ({
   return (
     // FONDO
     <div className="flex min-h-screen w-full items-center justify-center bg-[#C2C5AA] p-4">
-      
       {/* TARJETA */}
       <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl border border-[#A4AC86]">
-        
         {/* Cabecera */}
         <div className="mb-6">
-            <h2 className="text-2xl font-bold text-[#333D29]">
+          <h2 className="text-2xl font-bold text-[#333D29]">
             Bienvenido de nuevo
-            </h2>
-            <p className="mt-2 text-sm text-[#656D4A]">
-            Ingresa a tu cuenta para continuar en <span className="font-bold text-[#582F0E]">SOL-e</span>
-            </p>
+          </h2>
+          <p className="mt-2 text-sm text-[#656D4A]">
+            Ingresa a tu cuenta para continuar en{" "}
+            <span className="font-bold text-[#582F0E]">SOL-e</span>
+          </p>
         </div>
 
         {/* Mensaje de Error */}
@@ -46,10 +45,12 @@ export const LoginDesign = ({
         )}
 
         <form onSubmit={onSubmit}>
-          
+          {/* Email */}
           <LabelInputContainer className="mb-4">
-            <Label htmlFor="email" className="text-[#333D29]">Correo Electrónico</Label>
-            
+            <Label htmlFor="email" className="text-[#333D29]">
+              Correo Electrónico
+            </Label>
+
             <Input
               id="email"
               placeholder="tu@email.com"
@@ -57,14 +58,19 @@ export const LoginDesign = ({
               {...register("email")}
             />
             {errors.email && (
-              <span className="text-xs font-medium text-red-600">{errors.email.message}</span>
+              <span className="text-xs font-medium text-red-600">
+                {errors.email.message}
+              </span>
             )}
           </LabelInputContainer>
 
-          <LabelInputContainer className="mb-8">
-            <Label htmlFor="password" className="text-[#333D29]">Contraseña</Label>
-            
-            {/* --- CORRECCIÓN AQUÍ --- */}
+          {/* Password */}
+          <LabelInputContainer className="mb-2">
+            {" "}
+            {/* Reduje el margen inferior aquí para acercar el link */}
+            <Label htmlFor="password" className="text-[#333D29]">
+              Contraseña
+            </Label>
             <Input
               id="password"
               placeholder="••••••••"
@@ -72,9 +78,22 @@ export const LoginDesign = ({
               {...register("password")}
             />
             {errors.password && (
-              <span className="text-xs font-medium text-red-600">{errors.password.message}</span>
+              <span className="text-xs font-medium text-red-600">
+                {errors.password.message}
+              </span>
             )}
           </LabelInputContainer>
+
+          {/* --- AQUÍ ESTÁ EL NUEVO BOTÓN "OLVIDASTE TU CONTRASEÑA" --- */}
+          <div className="mb-6 flex justify-end">
+            <Link
+              to="/forgotpassword"
+              className="text-sm font-medium text-[#7F4F24] hover:text-[#582F0E] hover:underline transition-colors"
+            >
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </div>
+          {/* --------------------------------------------------------- */}
 
           {/* BOTÓN (Marrón Cálido) */}
           <button
@@ -83,12 +102,12 @@ export const LoginDesign = ({
             disabled={isSubmitting}
           >
             {isSubmitting ? (
-                <span className="flex items-center justify-center gap-2">
-                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"/>
-                    Entrando...
-                </span>
+              <span className="flex items-center justify-center gap-2">
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                Entrando...
+              </span>
             ) : (
-                <>Iniciar Sesión &rarr;</>
+              <>Iniciar Sesión &rarr;</>
             )}
             <BottomGradient />
           </button>
@@ -96,17 +115,14 @@ export const LoginDesign = ({
 
         {/* Footer */}
         <div className="mt-8 border-t border-[#C2C5AA] pt-6 text-center">
-            <p className="text-sm text-[#656D4A]">
-              ¿Aún no tienes cuenta?
-            </p>
-            <Link
-                to="/register"
-                className="mt-1 inline-block text-sm font-bold text-[#7F4F24] transition-colors hover:text-[#582F0E] hover:underline"
-            >
-                Regístrate aquí
-            </Link>
+          <p className="text-sm text-[#656D4A]">¿Aún no tienes cuenta?</p>
+          <Link
+            to="/register"
+            className="mt-1 inline-block text-sm font-bold text-[#7F4F24] transition-colors hover:text-[#582F0E] hover:underline"
+          >
+            Regístrate aquí
+          </Link>
         </div>
-
       </div>
     </div>
   );
@@ -122,6 +138,16 @@ const BottomGradient = () => {
   );
 };
 
-const LabelInputContainer = ({ children, className }: { children: React.ReactNode; className?: string }) => {
-  return <div className={cn("flex flex-col space-y-2 w-full", className)}>{children}</div>;
+const LabelInputContainer = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return (
+    <div className={cn("flex flex-col space-y-2 w-full", className)}>
+      {children}
+    </div>
+  );
 };
