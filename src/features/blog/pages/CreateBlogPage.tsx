@@ -7,6 +7,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { BlogFormDesign } from "../components/BlogFormDesign";
 
 const CreateBlogPage = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -30,6 +31,37 @@ const CreateBlogPage = () => {
     mutate({ data, file });
   };
 
+
+
+
+// (COMPONENTE BLOGFROMDESIGN) 
+
+  // SOLO CAMBIA EL RETURN:
+  return (
+    <BlogFormDesign
+      register={register}
+      errors={errors}
+      // Si usas isPending o isSubmitting en tu lógica, ponlo aquí:
+      isSubmitting={isPending} // O {isPending} si usas el mutation hook
+      onSubmit={handleSubmit(onSubmit)}
+      
+      // Textos
+      pageTitle="Crear Nuevo Blog"
+      buttonText="Publicar Entrada"
+      serverError={localError} // Usamos tu variable de estado localError
+      
+      // Archivos (Conectamos tu setFile con el diseño)
+      onFileChange={(e) => setFile(e.target.files?.[0] || null)}
+      currentFile={file}
+    />
+  );
+};
+
+export default CreateBlogPage;
+
+
+ {/* //OJO: NO USEIS ESTOS RETURNS. SON PARA QUE SEPAIS QUE ESTAN AQUI.
+  //USAD LO QUE FALTE DE ARRIBA AL HACER EL FORMULARIO ETC.
   return (
     <div>
       <h1>Crear Nueva Entrada</h1>
@@ -81,3 +113,4 @@ const CreateBlogPage = () => {
 };
 
 export default CreateBlogPage;
+*/}

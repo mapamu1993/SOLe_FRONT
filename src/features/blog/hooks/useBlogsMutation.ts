@@ -38,7 +38,7 @@ export const useCreateBlogMutation = () => {
       //sale una alerta de exito
       enqueueSnackbar("Blog creado exitosamente", { variant: "success" });
       //vuelve a la pagina de blogs
-      navigate("/blogs");
+      navigate("/blog");
     },
     //si sale mal: SÓLO EN ESE CASO SE EJECUTA
     onError: (error: AxiosError<ErrorResponse>) => {
@@ -93,7 +93,7 @@ export const useEditBlogMutation = () => {
         queryKey: ["blogs"],
       });
       enqueueSnackbar("Blog editado exitosamente", { variant: "success" });
-      navigate("/blogs");
+      navigate("/blog");
     },
     onError: (error: AxiosError<ErrorResponse>) => {
       const msg = error.response?.data?.message || "Error al editar el blog";

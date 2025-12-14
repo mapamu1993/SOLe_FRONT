@@ -1,24 +1,26 @@
-// Nota: Importamos el hook aunque la lógica actual usa el servicio directamente (ver reporte de fallos)
 import { useEditBlogMutation } from "../hooks/useBlogsMutation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate, useParams, Link as RouterLink } from "react-router-dom";
-import { useSnackbar } from "notistack";
+import { useParams } from "react-router-dom"; // Quitamos useNavigate y useSnackbar porque el hook ya los tiene
 import {
   createBlogSchema,
   type CreateBlogFields,
 } from "../validators/blogSchema";
-import { getBlogByIdService, editBlogService } from "../services/blogService";
+import { getBlogByIdService } from "../services/blogService"; // Quitamos editBlogService
+import { BlogFormDesign } from "../components/BlogFormDesign";
+import { IMAGE_URL } from "../../../config/constants";
 
 const EditBlogPage = () => {
   const { id } = useParams<{ id: string }>();
   const [file, setFile] = useState<File | null>(null);
   const [currentImage, setCurrentImage] = useState<string | null>(null);
   const [loadingData, setLoadingData] = useState(true);
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
+  const [loadError, setLoadError] = useState(""); // Cambié el nombre para no confundir con el error de edición
+
+  // 1. AQUÍ USAMOS TU HOOK (El robot que hace el trabajo sucio)
+  // Extraemos 'mutate' para disparar la acción y 'isPending' para saber si está cargando
+  const { mutate, isPending, error: mutationError } = useEditBlogMutation();
 
   const {
     register,
@@ -29,20 +31,20 @@ const EditBlogPage = () => {
     resolver: zodResolver(createBlogSchema),
   });
 
+  // Carga inicial de datos (Esto está bien, es solo lectura)
   useEffect(() => {
     const fetchBlog = async () => {
       if (!id) return;
       try {
-        // Llamada directa al servicio según tu lógica actual
         const BlogData = await getBlogByIdService(id);
-
-        // Cuidado: getBlogByIdService en tu código devuelve Promise<Blog[]> o Promise<Blog>.
-        // Si devuelve array, esto fallará. Asumimos que devuelve un objeto Blog.
-        setValue("title", BlogData.title);
-        setValue("content", BlogData.content);
-        setCurrentImage(BlogData.image);
+        // OJO: Si BlogData llega undefined, esto fallará.
+        if (BlogData) {
+            setValue("title", BlogData.title);
+            setValue("content", BlogData.content);
+            setCurrentImage(BlogData.image);
+        }
       } catch (error) {
-        setError("Error al cargar el blog");
+        setLoadError("Error al cargar el blog");
       } finally {
         setLoadingData(false);
       }
@@ -50,18 +52,47 @@ const EditBlogPage = () => {
     fetchBlog();
   }, [id, setValue]);
 
-  const onSubmit = async (data: CreateBlogFields) => {
+  // 2. CORREGIMOS EL ONSUBMIT
+  const onSubmit = (data: CreateBlogFields) => {
     if (!id) return;
-    try {
-      // Lógica actual: Llamada directa al servicio
-      await editBlogService(id, data, file);
-      enqueueSnackbar("Blog editado correctamente", { variant: "success" });
-      navigate("/blog");
-    } catch (error: any) {
-      setError(error.response?.data?.message || "Error al editar blog");
-    }
+    
+    // En lugar de hacer try/catch manual aquí, le pasamos la pelota al hook
+    // El hook ya tiene configurado el onSuccess (navegar) y onError (alerta)
+    mutate({ id, data, file });
   };
 
+  const formattedExistingImage = currentImage?.startsWith("http")
+    ? currentImage
+    : currentImage
+    ? `${IMAGE_URL}/uploads/blogs/${currentImage}`
+    : null;
+
+  if (loadingData) return <div>Cargando...</div>;
+  if (loadError) return <div>{loadError}</div>;
+
+  return (
+    <BlogFormDesign
+      register={register}
+      errors={errors}
+      // 3. Conectamos el estado de carga del hook
+      isSubmitting={isPending} 
+      onSubmit={handleSubmit(onSubmit)}
+      pageTitle="Editar Blog"
+      buttonText="Guardar Cambios"
+      // 4. Si el hook devuelve error, lo mostramos (o null)
+      serverError={mutationError?.response?.data?.message || ""} 
+      onFileChange={(e) => setFile(e.target.files?.[0] || null)}
+      currentFile={file}
+      existingImageUrl={formattedExistingImage}
+    />
+  );
+};
+
+export default EditBlogPage;
+
+
+ {/* //OJO: NO USEIS ESTOS RETURNS. SON PARA QUE SEPAIS QUE ESTAN AQUI.
+  //USAD LO QUE FALTE DE ARRIBA AL HACER EL FORMULARIO ETC.
   if (loadingData) return <div>Cargando datos para editar...</div>;
 
   return (
@@ -115,6 +146,4 @@ const EditBlogPage = () => {
       <RouterLink to="/blog">Cancelar</RouterLink>
     </div>
   );
-};
-
-export default EditBlogPage;
+};*/}

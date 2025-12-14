@@ -9,6 +9,9 @@ import UpdateProfilePage from "../features/auth/pages/UpdateProfilePage";
 import ForgotPasswordPage from "../features/auth/pages/ForgotPasswordPage";
 import ResetPasswordPage from "../features/auth/pages/ResetPasswordPage";
 
+// Contact Page
+import ContactPage from "../features/contact/pages/ContactPage";
+
 // Blog Pages
 import BlogPage from "../features/blog/pages/BlogPage";
 import CreateBlogPage from "../features/blog/pages/CreateBlogPage";
@@ -55,6 +58,9 @@ const AppRouter = () => {
       <Route path="/cart" element={<CartPage />} />
       <Route path="/orders" element={<OrdersPage />} />
       <Route path="/kits" element={<KitsPage />} />
+
+      {/* --- CONTACT --- */}
+      <Route path="/contact" element={<ContactPage />} />
 
       {/* Fallback 404 */}
       <Route path="*" element={<div>404 - Página no encontrada</div>} />

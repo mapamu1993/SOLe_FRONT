@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 // Importamos el esquema y el tipo
 import { registerSchema, type RegisterFields } from "../validators/authSchema";
 
-// Importamos el servicio que acabamos de crear
-// (Asegúrate de ajustar la ruta según dónde guardes el archivo service)
+// Importamos el servicio
 import { registerUserService } from "../../auth/services/authService";
+
+// IMPORTANTE: Importamos el diseño nuevo
+import { RegisterDesign } from "../components/RegisterDesign";
 
 const RegisterPage = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -53,81 +55,17 @@ const RegisterPage = () => {
     }
   };
 
+  // AQUÍ CONECTAMOS LA LÓGICA CON EL DISEÑO
   return (
-    <div className="register-container">
-      <h2>Registro</h2>
-
-      {serverError && <p style={{ color: "red" }}>{serverError}</p>}
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* Nombre */}
-        <div>
-          <label>Nombre:</label>
-          <input type="text" {...register("name")} />
-          {errors.name && (
-            <span style={{ color: "red" }}>{errors.name.message}</span>
-          )}
-        </div>
-
-        {/* Apellido */}
-        <div>
-          <label>Apellido:</label>
-          <input type="text" {...register("lastName")} />
-          {errors.lastName && (
-            <span style={{ color: "red" }}>{errors.lastName.message}</span>
-          )}
-        </div>
-
-        {/* Usuario */}
-        <div>
-          <label>Usuario:</label>
-          <input type="text" {...register("username")} />
-          {errors.username && (
-            <span style={{ color: "red" }}>{errors.username.message}</span>
-          )}
-        </div>
-
-        {/* Email */}
-        <div>
-          <label>Email:</label>
-          <input type="email" {...register("email")} />
-          {errors.email && (
-            <span style={{ color: "red" }}>{errors.email.message}</span>
-          )}
-        </div>
-
-        {/* Contraseña */}
-        <div>
-          <label>Contraseña:</label>
-          <input type="password" {...register("password")} />
-          {errors.password && (
-            <span style={{ color: "red" }}>{errors.password.message}</span>
-          )}
-        </div>
-
-        {/* Imagen de perfil */}
-        <div>
-          <label>Imagen de perfil:</label>
-          <input type="file" accept="image/*" onChange={handleFileChange} />
-          {previewUrl && (
-            <img
-              src={previewUrl}
-              alt="Vista previa"
-              style={{ marginTop: "10px", maxWidth: "100px", display: "block" }}
-            />
-          )}
-        </div>
-
-        {/* Botón Submit */}
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Registrando..." : "Registrarse"}
-        </button>
-      </form>
-
-      <p>
-        ¿Ya tienes cuenta? <RouterLink to="/login">Inicia sesión</RouterLink>
-      </p>
-    </div>
+    <RegisterDesign 
+      register={register}
+      errors={errors}
+      isSubmitting={isSubmitting}
+      onSubmit={handleSubmit(onSubmit)}
+      serverError={serverError}
+      handleFileChange={handleFileChange}
+      previewUrl={previewUrl}
+    />
   );
 };
 
