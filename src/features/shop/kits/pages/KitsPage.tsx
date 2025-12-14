@@ -1,98 +1,123 @@
-import React, { useState } from "react";
-// import { useKitsQuery } from "../../hooks/useKitsQuery"; // <--- COMENTAMOS ESTO DE MOMENTO
+import { useMemo, useState } from "react";
+import { useSnackbar } from "notistack";
+
+// 1. Hooks y Tipos
+import { useKitsQuery } from "../hooks/useKitsQuery";
+import { useAddToCartMutation } from "../../cart/hooks/useCartMutations";
+import { type Kit } from "../types/kitTypes";
+
+// 2. Componente de Diseño
 import { KitsPageDesign } from "../components/KitsPageDesign";
 
-// --- DATOS DE PRUEBA (MOCK) ---
-const MOCK_KITS = [
-  {
-    _id: "1",
-    name: "Kit Peregrino Básico",
-    price: 199,
-    description:
-      "La opción auténtica para quienes buscan la esencia. Incluye lo imprescindible para albergues públicos.",
-    image:
-      "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    _id: "2",
-    name: "Kit Confort Personalizable",
-    price: 450,
-    description:
-      "Céntrate en disfrutar. Nosotros transportamos tu mochila y te garantizamos descanso en habitación privada.",
-    image:
-      "https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    _id: "3",
-    name: "Kit Santiago Premium VIP",
-    price: 1200,
-    description:
-      "Historia, gastronomía y lujo. Vive el Camino alojándote en Paradores con servicio exclusivo.",
-    image:
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
-  },
-];
-
 const KitsPage = () => {
-  // En lugar de llamar a la API, usamos nuestros datos falsos
-  // const { data: kits, isLoading, isError } = useKitsQuery();
+  // --- DATA FETCHING ---
+  const { data: products, isLoading, isError } = useKitsQuery();
+  const { mutate: addToCart, isPending: isAdding } = useAddToCartMutation();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const kits = MOCK_KITS;
-  const isLoading = false;
-  const isError = false;
-
-  // ESTADOS
+  // --- ESTADOS DE UI (Modales) ---
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
+  const [selectedKit, setSelectedKit] = useState<Kit | null>(null);
 
-  const [selectedKitBasePrice, setSelectedKitBasePrice] = useState(0);
-  const [selectedKitName, setSelectedKitName] = useState("");
+  // --- TRANSFORMACIÓN DE DATOS (Product -> Kit) ---
+  // Convertimos los productos planos en Kits con propiedades visuales
+  const kits: Kit[] | undefined = useMemo(() => {
+    return products?.map((product) => {
+      // Lógica para determinar si es VIP o Personalizable basada en precio o nombre
+      // Esto simula la lógica de negocio visual
+      const isVip =
+        product.price >= 1000 || product.name.toLowerCase().includes("premium");
 
-  // --- LOGICA DE CLICKS ---
+      // Generamos features dinámicas si no vienen del backend
+      const defaultFeatures = [
+        "Envío Gratuito",
+        "Credencial del Peregrino",
+        isVip ? "Asistencia 24h Premium" : "Guía Básica en PDF",
+      ];
+
+      return {
+        ...product,
+        features: defaultFeatures,
+        isRecommended: isVip,
+      };
+    });
+  }, [products]);
+
+  // --- HANDLERS ---
+
+  // Acción principal al pulsar el botón de la tarjeta
   const handleKitAction = (kit: any) => {
-    const price = kit.price || 0;
-    const name = kit.name?.toLowerCase() || "";
+    // Casteamos a Kit para estar seguros
+    const currentKit = kit as Kit;
+    setSelectedKit(currentKit);
 
-    // 1. CASO VIP (>1000€) -> Formulario Contacto
-    if (price > 1000 || name.includes("premium") || name.includes("vip")) {
-      setSelectedKitName(kit.name);
+    // Lógica de redirección según el tipo de Kit
+    if (currentKit.isRecommended) {
+      // Si es VIP -> Formulario de Contacto
       setIsContactOpen(true);
-    }
-    // 2. CASO PERSONALIZABLE (>300€) -> Modal Extras
-    else if (price >= 300) {
-      setSelectedKitBasePrice(price);
+    } else if (currentKit.price >= 300) {
+      // Si es gama media -> Personalizador
       setIsCustomizerOpen(true);
-    }
-    // 3. CASO BÁSICO -> Alerta / Carrito
-    else {
-      alert(`¡Has añadido el ${kit.name} al carrito por ${kit.price}€!`);
+    } else {
+      // Si es básico -> Añadir al carrito directo
+      handleAddToCart(currentKit._id);
     }
   };
 
-  const handleCustomBuy = (total: number, items: string[]) => {
-    alert(
-      `Añadido Kit Personalizado.\nTotal: ${total}€\nExtras: ${items.join(
-        ", "
-      )}`
+  // Añadir al carrito (Conexión con tu hook existente)
+  const handleAddToCart = (productId: string) => {
+    addToCart(
+      { productId, quantity: 1 },
+      {
+        onSuccess: () => {
+          // El hook ya muestra snackbar, pero si quieres feedback extra aquí
+        },
+      }
     );
-    setIsCustomizerOpen(false); // Cerramos modal al terminar
   };
 
-  const handleCloseCustomizer = () => setIsCustomizerOpen(false);
-  const handleCloseContact = () => setIsContactOpen(false);
+  // Compra desde el personalizador
+  const handleCustomBuy = (total: number, items: string[]) => {
+    if (!selectedKit) return;
 
+    // NOTA: Como el endpoint 'addCart' actual solo soporta ID y cantidad,
+    // añadimos el producto base. Idealmente enviaríamos los extras al backend.
+    addToCart(
+      { productId: selectedKit._id, quantity: 1 },
+      {
+        onSuccess: () => {
+          enqueueSnackbar(`Kit personalizado añadido por ${total}€`, {
+            variant: "success",
+          });
+          setIsCustomizerOpen(false);
+        },
+      }
+    );
+  };
+
+  const handleCloseModals = () => {
+    setIsCustomizerOpen(false);
+    setIsContactOpen(false);
+    setSelectedKit(null);
+  };
+
+  // --- RENDER ---
   return (
     <KitsPageDesign
       kits={kits}
-      isLoading={isLoading}
+      isLoading={isLoading || isAdding}
       isError={isError}
+      // Props Personalizador
       isCustomizerOpen={isCustomizerOpen}
-      onCloseCustomizer={handleCloseCustomizer}
-      selectedKitBasePrice={selectedKitBasePrice}
+      onCloseCustomizer={handleCloseModals}
+      selectedKitBasePrice={selectedKit?.price || 0}
       onCustomBuy={handleCustomBuy}
+      // Props Contacto
       isContactOpen={isContactOpen}
-      onCloseContact={handleCloseContact}
-      selectedKitName={selectedKitName}
+      onCloseContact={handleCloseModals}
+      selectedKitName={selectedKit?.name || ""}
+      // Acción
       onKitAction={handleKitAction}
     />
   );
