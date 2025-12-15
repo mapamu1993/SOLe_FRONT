@@ -40,7 +40,6 @@ export const ProductFormDesign = ({
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-[#C2C5AA] p-4">
       <div className="mx-auto w-full max-w-3xl rounded-2xl bg-white p-8 shadow-2xl border border-[#A4AC86]">
-        
         {/* Cabecera */}
         <div className="mb-6 flex items-center justify-between border-b border-[#C2C5AA] pb-4">
           <div>
@@ -65,10 +64,11 @@ export const ProductFormDesign = ({
         )}
 
         <form onSubmit={onSubmit} className="space-y-6">
-          
           {/* NOMBRE */}
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-[#333D29]">Nombre del Producto</Label>
+            <Label htmlFor="name" className="text-[#333D29]">
+              Nombre del Producto
+            </Label>
             <Input
               id="name"
               placeholder="Ej: Kit de Supervivencia..."
@@ -84,7 +84,9 @@ export const ProductFormDesign = ({
 
           {/* DESCRIPCIÓN */}
           <div className="space-y-2">
-            <Label htmlFor="description" className="text-[#333D29]">Descripción</Label>
+            <Label htmlFor="description" className="text-[#333D29]">
+              Descripción
+            </Label>
             <textarea
               id="description"
               rows={4}
@@ -106,7 +108,9 @@ export const ProductFormDesign = ({
           {/* FILA DOBLE: PRECIO Y STOCK */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="price" className="text-[#333D29]">Precio (€)</Label>
+              <Label htmlFor="price" className="text-[#333D29]">
+                Precio (€)
+              </Label>
               <Input
                 id="price"
                 type="number"
@@ -123,7 +127,9 @@ export const ProductFormDesign = ({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="stock" className="text-[#333D29]">Stock</Label>
+              <Label htmlFor="stock" className="text-[#333D29]">
+                Stock
+              </Label>
               <Input
                 id="stock"
                 type="number"
@@ -141,7 +147,9 @@ export const ProductFormDesign = ({
 
           {/* CATEGORÍA */}
           <div className="space-y-2">
-            <Label htmlFor="category" className="text-[#333D29]">Categoría</Label>
+            <Label htmlFor="category" className="text-[#333D29]">
+              Categoría
+            </Label>
             <Input
               id="category"
               placeholder="Ej: Accesorios, Ropa..."

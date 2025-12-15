@@ -1,25 +1,30 @@
 import { useProductsQuery } from "../hooks/useProductsQuery";
 import { useAddToCartMutation } from "../../cart/hooks/useCartMutations";
+// Importar la mutación de borrar
+import { useDeleteProductMutation } from "../hooks/useProductsMutations";
 import { useAuth } from "../../../auth/context/auth.context";
 import { USER_ROLES } from "../../../../config/constants";
-// Importamos el diseño nuevo
 import { ProductsListDesign } from "../components/ProductListDesign";
 
 const ProductsPage = () => {
-  // LÓGICA ORIGINAL INTACTA
   const { data: products, isLoading, isError, error } = useProductsQuery();
   const { mutate: addToCart, isPending } = useAddToCartMutation();
+  // Usar hook de borrar
+  const { mutate: deleteProduct } = useDeleteProductMutation();
   const { user } = useAuth();
 
   const isAdmin =
     user?.role === USER_ROLES.ADMIN || user?.role === USER_ROLES.MODERATOR;
 
-  // Handler simple para conectar el botón del diseño con la mutación
   const handleAddToCart = (productId: string) => {
     addToCart({ productId, quantity: 1 });
   };
 
-  // RENDERIZAMOS EL DISEÑO
+  // Handler para borrar
+  const handleDeleteProduct = (id: string) => {
+    deleteProduct(id);
+  };
+
   return (
     <ProductsListDesign
       products={products}
@@ -29,6 +34,8 @@ const ProductsPage = () => {
       isAdmin={isAdmin}
       onAddToCart={handleAddToCart}
       isAddingToCart={isPending}
+      // Pasamos la prop
+      onDeleteProduct={handleDeleteProduct}
     />
   );
 };

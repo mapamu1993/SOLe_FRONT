@@ -102,7 +102,7 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
                 <KitCard
                   title={kit.name}
                   price={kit.price}
-                  // AQUÍ USAMOS LA NUEVA FUNCIÓN MÁGICA 👇
+                  // AQUÍ USAMOS LA NUEVA FUNCIÓN MÁGICA
                   image={getImageUrl(kit.image)}
                   isRecommended={isVip}
                   tagLabel={

@@ -32,6 +32,7 @@ import CreateProductPage from "../features/shop/products/pages/CreateProductPage
 import CartPage from "../features/shop/cart/pages/CartPage";
 import OrdersPage from "../features/shop/orders/pages/OrdersPage";
 import KitsPage from "../features/shop/kits/pages/KitsPage";
+import EditProductPage from "../features/shop/products/pages/EditProductPage";
 
 const ProtectedRoute = ({
   children,
@@ -79,6 +80,7 @@ const AppRouter = () => {
         {/* TIENDA */}
         <Route path="/tienda" element={<ProductsPage />} />
         <Route path="/kits" element={<KitsPage />} />
+        <Route path="/products/edit/:id" element={<EditProductPage />} />
         <Route
           path="/products/:id"
           element={<div>Detalle producto pendiente</div>}

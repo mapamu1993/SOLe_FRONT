@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { type Product } from "../types/productTypes";
 import { IMAGE_URL } from "../../../../config/constants";
-import { getImageUrl } from "../../../../utils/imageUtil";
 
 interface ProductsListDesignProps {
   products: Product[] | undefined;
@@ -11,6 +10,8 @@ interface ProductsListDesignProps {
   isAdmin: boolean;
   onAddToCart: (productId: string) => void;
   isAddingToCart: boolean;
+  // Nueva prop para manejar el borrado
+  onDeleteProduct: (id: string) => void;
 }
 
 export const ProductsListDesign = ({
@@ -21,6 +22,7 @@ export const ProductsListDesign = ({
   isAdmin,
   onAddToCart,
   isAddingToCart,
+  onDeleteProduct,
 }: ProductsListDesignProps) => {
   return (
     // FONDO GENERAL (Beige verdoso)
@@ -56,7 +58,7 @@ export const ProductsListDesign = ({
         {/* ESTADO: ERROR */}
         {isError && (
           <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-center text-red-700">
-            <p className="font-bold text-lg">⚠️ ¡Ups! Algo salió mal</p>
+            <p className="font-bold text-lg">Ups! Algo salió mal</p>
             <p>{errorMessage}</p>
           </div>
         )}
@@ -73,14 +75,73 @@ export const ProductsListDesign = ({
                 // TARJETA DE PRODUCTO
                 <div
                   key={product._id}
-                  className="flex flex-col overflow-hidden rounded-xl border border-[#A4AC86] bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group"
+                  // Añadimos 'relative' para posicionar los botones de admin
+                  className="relative flex flex-col overflow-hidden rounded-xl border border-[#A4AC86] bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group"
                 >
+                  {/* --- BOTONES DE ADMIN (FLOTANTES) --- */}
+                  {isAdmin && (
+                    <div className="absolute top-2 right-2 flex gap-2 z-10">
+                      {/* Botón Editar */}
+                      <Link
+                        to={`/products/edit/${product._id}`}
+                        className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white shadow-md transition-colors hover:bg-blue-700"
+                        title="Editar"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                          <path d="m15 5 4 4" />
+                        </svg>
+                      </Link>
+
+                      {/* Botón Eliminar */}
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault(); // Evita que se dispare el link de la tarjeta si hubiera uno global
+                          if (
+                            confirm("¿Seguro que quieres borrar este producto?")
+                          ) {
+                            onDeleteProduct(product._id);
+                          }
+                        }}
+                        className="flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-white shadow-md transition-colors hover:bg-red-700"
+                        title="Eliminar"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M3 6h18" />
+                          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                          <line x1="10" x2="10" y1="11" y2="17" />
+                          <line x1="14" x2="14" y1="11" y2="17" />
+                        </svg>
+                      </button>
+                    </div>
+                  )}
+
                   {/* Imagen */}
                   <div className="relative h-48 w-full overflow-hidden bg-[#EBECE2]">
                     {product.image ? (
                       <img
-                        // Usamos la utilidad y construimos la ruta relativa
-                        src={getImageUrl(`uploads/products/${product.image}`)}
+                        src={`${IMAGE_URL}/uploads/products/${product.image}`}
                         alt={product.name}
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
@@ -100,9 +161,6 @@ export const ProductsListDesign = ({
                       >
                         {product.name}
                       </h3>
-                      {/* Si quisieras mostrar la categoría: 
-                          <span className="text-xs font-semibold text-[#A4AC86] uppercase tracking-wider">{product.category}</span> 
-                      */}
                     </div>
 
                     <div className="mt-4 flex items-end justify-between border-t border-[#EBECE2] pt-4">
