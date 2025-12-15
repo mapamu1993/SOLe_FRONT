@@ -1,8 +1,10 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import Home from "../features/Home/Home"
 import { useAuth } from "@/features/auth/context/auth.context";
 import {USER_ROLES} from "../config/constants"
+
+// Homepage
+import Home from "../features/home/Home";
 
 // Auth Pages
 import RegisterPage from "../features/auth/pages/RegisterPage";
@@ -24,8 +26,6 @@ import BlogDetailsPage from "../features/blog/pages/BlogDetailsPage";
 // Shop Pages
 import ProductsPage from "../features/shop/products/pages/ProductsPage";
 import CreateProductPage from "../features/shop/products/pages/CreateProductPage";
-// Nota: No importaste EditProductPage en tu ejemplo,
-// pero he dejado el hueco en la lógica de rutas más abajo.
 import CartPage from "../features/shop/cart/pages/CartPage";
 import OrdersPage from "../features/shop/orders/pages/OrdersPage";
 import KitsPage from "../features/shop/kits/pages/KitsPage";
