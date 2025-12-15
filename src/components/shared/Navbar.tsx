@@ -5,6 +5,8 @@ import { IconUser, IconMenu2, IconX, IconShoppingBag, IconTrash, IconPlus, IconM
 import { useCartQuery } from "../../features/shop/cart/hooks/useCartQuery";
 import { useRemoveItemMutation, useUpdateCartMutation } from "../../features/shop/cart/hooks/useCartMutations";
 import { IMAGE_URL } from "../../config/constants"; 
+// --- NUEVO: Importamos el hook de autenticación ---
+import { useAuth } from "../../features/auth/context/auth.context";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -16,6 +18,9 @@ const Navbar = () => {
   const { data: cart, isLoading } = useCartQuery();
   const { mutate: removeItem } = useRemoveItemMutation();
   const { mutate: updateCart } = useUpdateCartMutation();
+  
+  // --- NUEVO: Obtenemos el estado de autenticación ---
+  const { isAuthenticated } = useAuth(); 
 
   const totalItems = useMemo(() => {
     if (!cart?.items) return 0;
@@ -64,11 +69,19 @@ const Navbar = () => {
             <IconShoppingBag size={20} stroke={1.5} />
             {totalItems > 0 && <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-[#333D29]"></span>}
           </button>
-          <Link to="/login"><button className="flex items-center justify-center w-10 h-10 rounded-full bg-[#582F0E] text-white border border-[#7F4F24] hover:bg-[#7F4F24] hover:scale-105 transition-all shadow-lg"><IconUser size={20} stroke={1.5} /></button></Link>
+          
+          {/* --- NUEVO: Lógica condicional para el enlace del perfil/login --- */}
+          <Link to={isAuthenticated ? "/profile" : "/login"}>
+            <button className="flex items-center justify-center w-10 h-10 rounded-full bg-[#582F0E] text-white border border-[#7F4F24] hover:bg-[#7F4F24] hover:scale-105 transition-all shadow-lg">
+              <IconUser size={20} stroke={1.5} />
+            </button>
+          </Link>
+
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all"><IconMenu2 size={20} /></button>
         </div>
       </nav>
 
+      {/* ... (El resto del código del Cart Drawer sigue igual) ... */}
       <div className={`fixed inset-0 z-[1000] bg-black/60 backdrop-blur-sm transition-opacity duration-500 ${isCartOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`} onClick={() => setIsCartOpen(false)} />
       <div className={`fixed top-0 right-0 z-[1001] h-full w-full md:w-[450px] shadow-2xl bg-[#F2F2EF]/85 backdrop-blur-xl border-l border-white/40 transform transition-transform duration-500 ease-out flex flex-col ${isCartOpen ? "translate-x-0" : "translate-x-full"}`}>
         <div className="flex items-center justify-between p-6 border-b border-[#333D29]/10">

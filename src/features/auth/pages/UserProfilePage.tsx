@@ -1,4 +1,4 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom"; // 1. Añadimos useNavigate
 import { useAuth } from "../context/auth.context";
 import {
   getUserProfileUrl,
@@ -8,42 +8,33 @@ import {
 } from "../../../utils/imageUtil";
 
 const UserProfilePage = () => {
-  const { user } = useAuth();
+  // 2. Extraemos 'logout' del contexto
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   if (!user) return null;
 
-  //IMPLEMENTAMOS EL UTIL 
   const profileImageUrl =
     getUserProfileUrl(user.profilePicture) ||
     "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
-  
   const displayName = getDisplayName(user);
   const formattedRole = formatUserRole(user.role);
   const initial = getUserInitials(user.name, user.username);
 
   const profileDetails = [
-    {
-      label: "Usuario",
-      value: user.username,
-    },
-    {
-      label: "Email",
-      value: user.email,
-    },
-    {
-      label: "Rol",
-      value: formattedRole,
-    },
-    {
-      label: "Teléfono",
-      value: user.phone || "No proporcionado",
-    },
-    {
-      label: "Dirección",
-      value: user.address || "No proporcionado",
-    },
+    { label: "Usuario", value: user.username },
+    { label: "Email", value: user.email },
+    { label: "Rol", value: formattedRole },
+    { label: "Teléfono", value: user.phone || "No proporcionado" },
+    { label: "Dirección", value: user.address || "No proporcionado" },
   ];
+
+  // 3. Función para manejar el Cierre de Sesión
+  const handleLogout = () => {
+    logout(); // Limpia el estado y localStorage
+    navigate("/"); // Redirige a home
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#C2C5AA] p-4">
@@ -102,6 +93,14 @@ const UserProfilePage = () => {
             >
               Ver Mis Pedidos
             </RouterLink>
+
+            {/* 4. AQUI ESTÁ EL NUEVO BOTÓN DE LOGOUT */}
+            <button
+              onClick={handleLogout}
+              className="block w-full rounded-lg border border-red-600 py-2 text-center text-sm font-bold text-red-600 transition-colors hover:bg-red-600 hover:text-white"
+            >
+              Cerrar Sesión
+            </button>
           </div>
         </div>
       </div>

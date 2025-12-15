@@ -4,23 +4,20 @@ import AboutSection from './components/AboutSection';
 import KitsSection from './components/KitsPreview';
 import BlogPreview from './components/BlogPreview';
 import TestimonialsSection from './components/Testimonials';
-import Navbar from '../../components/shared/Navbar';
-import Footer from '../../components/shared/Footer';
+// Eliminamos Navbar y Footer de los imports
 
 const Home = () => {
   return (
     <div className="w-full">
-      <Navbar /> 
+      {/* El Navbar ya vendrá por el Layout */}
       
-
       <HeroSection />
       <AboutSection/>
       <KitsSection/>
       <BlogPreview/>
       <TestimonialsSection/>
 
-
-      <Footer />
+      {/* El Footer ya vendrá por el Layout */}
     </div>
   );
 };
