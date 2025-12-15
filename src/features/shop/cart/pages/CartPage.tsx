@@ -8,7 +8,7 @@ import {
 import { CartListDesign } from "../components/CartListDesign";
 
 const CartPage = () => {
-  // --- LÓGICA INTACTA ---
+  // LÓGICA 
   const { data: cart, isLoading, isError } = useCartQuery();
   const { mutate: updateCart } = useUpdateCartMutation();
   const { mutate: removeItem } = useRemoveItemMutation();
@@ -39,7 +39,7 @@ const CartPage = () => {
     alert("Ir a Checkout (Pendiente)");
   };
 
-  // --- RENDERIZAMOS EL DISEÑO ---
+  //  RENDERIZAMOS EL DISEÑO 
   return (
     <CartListDesign
       items={validItems}

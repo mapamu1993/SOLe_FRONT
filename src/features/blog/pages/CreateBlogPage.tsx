@@ -34,23 +34,21 @@ const CreateBlogPage = () => {
 
 
 
-// (COMPONENTE BLOGFROMDESIGN) 
 
   // SOLO CAMBIA EL RETURN:
   return (
     <BlogFormDesign
       register={register}
       errors={errors}
-      // Si usas isPending o isSubmitting en tu lógica, ponlo aquí:
-      isSubmitting={isPending} // O {isPending} si usas el mutation hook
+      isSubmitting={isPending} 
       onSubmit={handleSubmit(onSubmit)}
       
       // Textos
       pageTitle="Crear Nuevo Blog"
       buttonText="Publicar Entrada"
-      serverError={localError} // Usamos tu variable de estado localError
+      serverError={localError} 
       
-      // Archivos (Conectamos tu setFile con el diseño)
+      // Archivos 
       onFileChange={(e) => setFile(e.target.files?.[0] || null)}
       currentFile={file}
     />

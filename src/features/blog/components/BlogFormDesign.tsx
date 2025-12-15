@@ -81,7 +81,7 @@ export const BlogFormDesign = ({
             {errors.title && <span className="text-xs font-medium text-red-600">{errors.title.message}</span>}
           </div>
 
-          {/* CONTENIDO (Textarea simulado con estilos de Input) */}
+          {/* CONTENIDO */}
           <div className="space-y-2">
             <Label htmlFor="content" className="text-[#333D29]">Contenido</Label>
             <textarea
@@ -98,12 +98,12 @@ export const BlogFormDesign = ({
             {errors.content && <span className="text-xs font-medium text-red-600">{errors.content.message}</span>}
           </div>
 
-          {/* IMAGEN DE PORTADA */}
+          {/* IMAGEN DE LA PORTADA */}
           <div className="space-y-2">
             <Label className="text-[#333D29]">Imagen Destacada</Label>
             
             <div className="flex flex-col gap-4 rounded-lg border border-[#A4AC86] bg-[#EBECE2] p-4">
-                {/* Visualizador de imagen */}
+                {/* VER IMAGEN  */}
                 <div className="relative h-48 w-full overflow-hidden rounded-md bg-[#A4AC86]/20">
                     {previewUrl ? (
                         <img 
