@@ -1,8 +1,8 @@
 import React from "react";
 import { createRoot } from "react-dom/client"; // 1. Importar la función real, no el tipo
 import { BrowserRouter } from "react-router-dom";
-import "./index.css";
 import App from "./App";
+import "./index.css";
 import { AuthProvider } from "./features/auth/context/auth.context";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 

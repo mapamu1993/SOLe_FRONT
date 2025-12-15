@@ -6,5 +6,6 @@ export const useKitsQuery = () => {
   return useQuery<Product[], Error>({
     queryKey: ["kits"],
     queryFn: getAllKitsService,
+    staleTime: 1000 * 60 * 5, // 5 minutos de caché
   });
 };

@@ -56,24 +56,22 @@ const ProtectedRoute = ({
 const AppRouter = () => {
   return (
     <Routes>
-
       {/* Páginas sin Layout (sin navbar ni footer) */}
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/login" element={<LoginPage />} />
 
       {/* ENVOLVEMOS TODO EN EL LAYOUT 
           Así el Navbar y Footer aparecen en todas estas páginas 
       */}
 
       <Route element={<Layout />}>
-        
         {/* PÚBLICAS */}
         <Route path="/" element={<Home />} />
         <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
         <Route path="/resetpassword" element={<ResetPasswordPage />} />
-        
+
         <Route path="/contacto" element={<ContactPage />} />
-        
+
         {/* BLOG */}
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/blog/:id" element={<BlogDetailsPage />} />
@@ -151,9 +149,14 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
-        
+
         {/* 404 dentro del layout también */}
-        <Route path="*" element={<div className="text-center py-20">404 - Página no encontrada</div>} />
+        <Route
+          path="*"
+          element={
+            <div className="text-center py-20">404 - Página no encontrada</div>
+          }
+        />
       </Route>
     </Routes>
   );

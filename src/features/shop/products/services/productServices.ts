@@ -32,3 +32,9 @@ export const createProductService = async (
   });
   return data;
 };
+
+export const getProductByIdService = async (id: string): Promise<Product> => {
+  const { data } = await axiosClient.get(`${API_ROUTES.PRODUCTS}/${id}`);
+  // Asumimos que el backend devuelve { data: { product: ... } }
+  return data.data.product; 
+};

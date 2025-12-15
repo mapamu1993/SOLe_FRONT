@@ -2,26 +2,29 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-// CORRECCIÓN 1: Importar el esquema (valor) además del tipo
 import { profileSchema, type ProfileFields } from "../validators/authSchema";
 import { useAuth } from "../context/auth.context";
 import useUpdateProfile from "../hooks/useUpdateProfile";
 import { getUserProfileUrl } from "../utils/userUtil";
+// Importamos el componente de diseño que creamos antes
+import UpdateProfileDesign from "../components/UpdateProfilePageDesign";
 
 const UpdateProfilePage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { mutate, isPending } = useUpdateProfile(); // isPending puede usarse para deshabilitar el botón
+  const { mutate, isPending } = useUpdateProfile();
+
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
+  // Configuración del formulario con Zod
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<ProfileFields>({
-    resolver: zodResolver(profileSchema), // Ahora esto funcionará
+    resolver: zodResolver(profileSchema),
     defaultValues: {
       username: "",
       name: "",
@@ -31,6 +34,7 @@ const UpdateProfilePage = () => {
     },
   });
 
+  // Cargar los datos del usuario en el formulario al entrar
   useEffect(() => {
     if (user) {
       reset({
@@ -45,6 +49,7 @@ const UpdateProfilePage = () => {
     }
   }, [user, reset]);
 
+  // Manejar la selección de nueva foto de perfil
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0] || null;
     setFile(selectedFile);
@@ -56,12 +61,10 @@ const UpdateProfilePage = () => {
     }
   };
 
+  // Enviar los cambios al backend
   const onSubmit = (data: ProfileFields) => {
     mutate(
-      {
-        data,
-        file,
-      },
+      { data, file },
       {
         onSuccess: () => {
           navigate("/profile");
@@ -70,63 +73,36 @@ const UpdateProfilePage = () => {
     );
   };
 
+  // --- FUNCIONES DE NAVEGACIÓN ---
+
+  // 1. Volver al perfil sin guardar
+  const handleCancel = () => navigate("/profile");
+
+  // 2. Volver a la página principal (Home)
+  const handleGoHome = () => navigate("/");
+
+  // 3. Ir a cambiar contraseña
+  const handleChangePassword = () => {
+    navigate("/resetpassword", { state: { email: user?.email } });
+  };
+
+  // Obtener inicial para el avatar por defecto
+  const initial = user?.username ? user.username[0].toUpperCase() : "U";
+
+  // Renderizamos el diseño pasando toda la lógica
   return (
-    <div>
-      <h1>Update Profile</h1>
-
-      {/* Opcional: Mostrar previsualización */}
-      {previewUrl && <img src={previewUrl} alt="Preview" width={100} />}
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* CORRECCIÓN 2: Mostrar feedback visual */}
-        <div>
-          <label>Username</label>
-          <input type="text" {...register("username")} />
-          {errors.username && (
-            <p style={{ color: "red" }}>{errors.username.message}</p>
-          )}
-        </div>
-
-        <div>
-          <label>Name</label>
-          <input type="text" {...register("name")} />
-          {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
-        </div>
-
-        <div>
-          <label>Last Name</label>
-          <input type="text" {...register("lastName")} />
-          {errors.lastName && (
-            <p style={{ color: "red" }}>{errors.lastName.message}</p>
-          )}
-        </div>
-
-        <div>
-          <label>Address</label>
-          <input type="text" {...register("address")} />
-          {errors.address && (
-            <p style={{ color: "red" }}>{errors.address.message}</p>
-          )}
-        </div>
-
-        <div>
-          <label>Phone</label>
-          <input type="text" {...register("phone")} />
-          {errors.phone && (
-            <p style={{ color: "red" }}>{errors.phone.message}</p>
-          )}
-        </div>
-
-        <div>
-          <label>Profile Picture</label>
-          <input type="file" accept="image/*" onChange={handleFileChange} />
-        </div>
-
-        <button type="submit" disabled={isPending}>
-          {isPending ? "Updating..." : "Update"}
-        </button>
-      </form>
-    </div>
+    <UpdateProfileDesign
+      register={register}
+      errors={errors}
+      isPending={isPending}
+      previewUrl={previewUrl}
+      initial={initial}
+      onFileChange={handleFileChange}
+      onSubmit={handleSubmit(onSubmit)}
+      onCancel={handleCancel}
+      onGoHome={handleGoHome}
+      onChangePassword={handleChangePassword}
+    />
   );
 };
 

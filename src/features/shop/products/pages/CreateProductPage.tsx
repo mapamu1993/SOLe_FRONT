@@ -44,14 +44,11 @@ const CreateProductPage = () => {
       // Esto hace de puente entre el tipo flexible del padre y el estricto del hijo.
       register={register as any}
       errors={errors as any}
-      
       isSubmitting={isPending}
       onSubmit={handleSubmit(onSubmit)}
-      
       pageTitle="Nuevo Producto"
       buttonText="Crear Producto"
       serverError={localError}
-      
       onFileChange={(e) => setFile(e.target.files?.[0] || null)}
       currentFile={file}
     />

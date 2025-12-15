@@ -12,7 +12,6 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
@@ -27,7 +26,7 @@ const LoginPage = () => {
       const response = await loginUserService(data);
       const userData = response.user;
       login(userData);
-      navigate("/");
+      navigate("/profile");
     } catch (err: any) {
       const errorMessage =
         err.response?.data?.message || "Error al iniciar sesión";
@@ -37,16 +36,13 @@ const LoginPage = () => {
 
   // CONEXIÓN CON EL DISEÑO
   return (
-
-    <LoginDesign 
+    <LoginDesign
       register={register}
       errors={errors}
       isSubmitting={isSubmitting}
       onSubmit={handleSubmit(onSubmit)}
       serverError={error}
     />
-
-
   );
 };
 
