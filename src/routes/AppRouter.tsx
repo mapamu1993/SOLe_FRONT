@@ -1,7 +1,10 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useAuth } from "@/features/auth/context/auth.context";
-import {USER_ROLES} from "../config/constants"
+import { USER_ROLES } from "../config/constants";
+
+// IMPORTAMOS EL LAYOUT
+import Layout from "../components/layout/Layout";
 
 // Homepage
 import Home from "../features/home/Home";
@@ -30,8 +33,6 @@ import CartPage from "../features/shop/cart/pages/CartPage";
 import OrdersPage from "../features/shop/orders/pages/OrdersPage";
 import KitsPage from "../features/shop/kits/pages/KitsPage";
 
-
-// --- COMPONENTE DE PROTECCIÓN DE RUTAS ---
 const ProtectedRoute = ({
   children,
   requiredRoles,
@@ -41,13 +42,10 @@ const ProtectedRoute = ({
 }) => {
   const { isAuthenticated, user, loading } = useAuth();
 
-  // Si auth tiene estado de carga, puedes retornar null o un simple div para evitar parpadeos
   if (loading) return null;
 
-  // 1. Si no está logueado -> Login
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
-  // 2. Si hay roles requeridos y el usuario no los tiene -> Home o Página de error
   if (requiredRoles && !requiredRoles.includes(user?.role || "")) {
     return <Navigate to="/" replace />;
   }
@@ -55,122 +53,108 @@ const ProtectedRoute = ({
   return children;
 };
 
-// --- ROUTER PRINCIPAL ---
 const AppRouter = () => {
   return (
     <Routes>
-      {/* Redirección inicial */}
-      <Route path="/" element={<Home />} />
-      {/* --- AUTH --- */}
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
-      <Route path="/resetpassword" element={<ResetPasswordPage />} />
 
-      {/* --- CONTENIDO PÚBLICO (BLOG & SHOP) --- */}
-      <Route path="/contact" element={<ContactPage />} />
+      {/* Páginas sin Layout (sin navbar ni footer) */}
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
 
-      <Route path="/blog" element={<BlogPage />} />
-      <Route path="/blog/:id" element={<BlogDetailsPage />} />
-
-      <Route path="/tienda" element={<ProductsPage />} />
-      <Route path="/kits" element={<KitsPage />} />
-      <Route
-        path="/products/:id"
-        element={<div>Detalle producto pendiente</div>}
-      />
-
-      {/* =========================================
-          RUTAS PRIVADAS (USUARIOS LOGUEADOS)
-      ========================================= */}
-
-      {/* Estas rutas requieren estar logueado, pero cualquier rol sirve */}
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute>
-            <UserProfilePage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/update"
-        element={
-          <ProtectedRoute>
-            <UpdateProfilePage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/cart"
-        element={
-          <ProtectedRoute>
-            <CartPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/orders"
-        element={
-          <ProtectedRoute>
-            <OrdersPage />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* =========================================
-          RUTAS ADMIN / MODERATOR
-      ========================================= */}
-
-      {/* --- GESTIÓN DE BLOG --- */}
-      <Route
-        path="/blog/new"
-        element={
-          <ProtectedRoute
-            requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
-          >
-            <CreateBlogPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/blog/edit/:id"
-        element={
-          <ProtectedRoute
-            requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
-          >
-            <EditBlogPage />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* --- GESTIÓN DE PRODUCTOS --- */}
-      <Route
-        path="/products/new"
-        element={
-          <ProtectedRoute
-            requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
-          >
-            <CreateProductPage />
-          </ProtectedRoute>
-        }
-      />
-
-      {/* Ejemplo para editar producto (cuando tengas la página) */}
-      {/* <Route
-        path="/products/edit/:id"
-        element={
-          <ProtectedRoute requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}>
-            <EditProductPage />
-          </ProtectedRoute>
-        }
-      /> 
+      {/* ENVOLVEMOS TODO EN EL LAYOUT 
+          Así el Navbar y Footer aparecen en todas estas páginas 
       */}
 
-      {/* =========================================
-          FALLBACK (404)
-      ========================================= */}
-      <Route path="*" element={<div>404 - Página no encontrada</div>} />
+      <Route element={<Layout />}>
+        
+        {/* PÚBLICAS */}
+        <Route path="/" element={<Home />} />
+        <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
+        <Route path="/resetpassword" element={<ResetPasswordPage />} />
+        
+        <Route path="/contacto" element={<ContactPage />} />
+        
+        {/* BLOG */}
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:id" element={<BlogDetailsPage />} />
+
+        {/* TIENDA */}
+        <Route path="/tienda" element={<ProductsPage />} />
+        <Route path="/kits" element={<KitsPage />} />
+        <Route
+          path="/products/:id"
+          element={<div>Detalle producto pendiente</div>}
+        />
+
+        {/* PRIVADAS */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <UserProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/update"
+          element={
+            <ProtectedRoute>
+              <UpdateProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <CartPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <OrdersPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ADMIN */}
+        <Route
+          path="/blog/new"
+          element={
+            <ProtectedRoute
+              requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
+            >
+              <CreateBlogPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/blog/edit/:id"
+          element={
+            <ProtectedRoute
+              requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
+            >
+              <EditBlogPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/products/new"
+          element={
+            <ProtectedRoute
+              requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
+            >
+              <CreateProductPage />
+            </ProtectedRoute>
+          }
+        />
+        
+        {/* 404 dentro del layout también */}
+        <Route path="*" element={<div className="text-center py-20">404 - Página no encontrada</div>} />
+      </Route>
     </Routes>
   );
 };
