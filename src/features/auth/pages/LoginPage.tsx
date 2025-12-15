@@ -11,7 +11,7 @@ const LoginPage = () => {
   // LÓGICA (NO TOCAR)
   const [error, setError] = useState("");
   const { login } = useAuth();
-
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,

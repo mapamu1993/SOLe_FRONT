@@ -25,6 +25,7 @@ import BlogDetailsPage from "../features/blog/pages/BlogDetailsPage";
 // Shop Pages
 import ProductsPage from "../features/shop/products/pages/ProductsPage";
 import CreateProductPage from "../features/shop/products/pages/CreateProductPage";
+import ProductDetailsPage from "../features/shop/products/pages/ProductsDetailsPage";
 // Nota: No importaste EditProductPage en tu ejemplo,
 // pero he dejado el hueco en la lógica de rutas más abajo.
 import CartPage from "../features/shop/cart/pages/CartPage";
@@ -80,10 +81,7 @@ const AppRouter = () => {
 
       <Route path="/tienda" element={<ProductsPage />} />
       <Route path="/kits" element={<KitsPage />} />
-      <Route
-        path="/products/:id"
-        element={<div>Detalle producto pendiente</div>}
-      />
+      <Route path="/products/:id" element={<ProductDetailsPage />} />
 
       {/* =========================================
           RUTAS PRIVADAS (USUARIOS LOGUEADOS)

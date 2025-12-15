@@ -3,15 +3,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-// Imports de tu lógica
+// Imports de la lógica
 import {
   resetPasswordSchema,
   type ResetPasswordFields,
 } from "../validators/authSchema";
 import { useResetPasswordMutation } from "../hooks/usePasswordRecovery";
 
-// IMPORTE DEL DISEÑO (Asegúrate de que la ruta es correcta)
-// Subimos niveles: features -> auth -> pages -> src -> components
+// IMPORTE DEL DISEÑO
 import ResetPasswordDesign from "../components/ResetPasswordDesign";
 
 const ResetPasswordPage = () => {
@@ -52,12 +51,10 @@ const ResetPasswordPage = () => {
     });
   };
 
-  // 2. ESTA ES LA FUNCIÓN PARA VOLVER ATRÁS
   const handleCancel = () => {
-    navigate("/profile/edit"); // Volvemos a la edición del perfil
+    navigate(-1);
   };
 
-  // 3. Renderizamos el diseño bonito
   return (
     <ResetPasswordDesign
       register={register}
