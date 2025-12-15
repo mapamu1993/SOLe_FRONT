@@ -1,9 +1,8 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import { useAuth } from "../features/auth/context/auth.context"; // Asegúrate de que la extensión .tsx no sea necesaria en el import
-import { USER_ROLES } from "../config/constants";
-
-// --- PAGES IMPORTS ---
+import Home from "../features/Home/Home"
+import { useAuth } from "@/features/auth/context/auth.context";
+import {USER_ROLES} from "../config/constants"
 
 // Auth Pages
 import RegisterPage from "../features/auth/pages/RegisterPage";
@@ -30,6 +29,7 @@ import CreateProductPage from "../features/shop/products/pages/CreateProductPage
 import CartPage from "../features/shop/cart/pages/CartPage";
 import OrdersPage from "../features/shop/orders/pages/OrdersPage";
 import KitsPage from "../features/shop/kits/pages/KitsPage";
+
 
 // --- COMPONENTE DE PROTECCIÓN DE RUTAS ---
 const ProtectedRoute = ({
@@ -60,12 +60,7 @@ const AppRouter = () => {
   return (
     <Routes>
       {/* Redirección inicial */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
-
-      {/* =========================================
-          RUTAS PÚBLICAS (ACCESO LIBRE)
-      ========================================= */}
-
+      <Route path="/" element={<Home />} />
       {/* --- AUTH --- */}
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />

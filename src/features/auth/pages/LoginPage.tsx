@@ -8,7 +8,7 @@ import { loginUserService } from "../services/authService";
 import { LoginDesign } from "../components/LoginDesign"; // Importamos el diseño
 
 const LoginPage = () => {
-  // LÓGICA (NO TOCAR)
+  // LÓGICA 
   const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
