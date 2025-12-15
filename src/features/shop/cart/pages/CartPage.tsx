@@ -4,21 +4,23 @@ import {
   useUpdateCartMutation,
   useRemoveItemMutation,
 } from "../hooks/useCartMutations";
-// Importamos el nuevo diseño
+// IMPORTANTE: Aquí importamos el diseño visual estilo Amazon que creamos antes
 import { CartListDesign } from "../components/CartListDesign";
 
 const CartPage = () => {
-  // LÓGICA 
+  // 1. LÓGICA DE DATOS (El Cerebro)
   const { data: cart, isLoading, isError } = useCartQuery();
   const { mutate: updateCart } = useUpdateCartMutation();
   const { mutate: removeItem } = useRemoveItemMutation();
 
-  // Filtrar items que tienen producto (por si se borró de la BD)
+  // 2. FILTRADO SEGURO
+  // Nos aseguramos de que no haya productos "fantasma" (nulos)
   const validItems = useMemo(() => {
     if (!cart?.items) return [];
     return cart.items.filter((item) => item.product != null);
   }, [cart]);
 
+  // 3. CÁLCULO DEL TOTAL
   const subtotal = useMemo(() => {
     return validItems.reduce(
       (acc, item) => acc + item.product.price * item.quantity,
@@ -26,7 +28,7 @@ const CartPage = () => {
     );
   }, [validItems]);
 
-  // Handlers simples para conectar lógica con diseño
+  // 4. FUNCIONES DE ACCIÓN
   const handleUpdateQuantity = (productId: string, change: number) => {
     updateCart({ productId, quantity: change });
   };
@@ -36,10 +38,12 @@ const CartPage = () => {
   };
 
   const handleCheckout = () => {
-    alert("Ir a Checkout (Pendiente)");
+    // Aquí conectarás tu pasarela de pago (Stripe, PayPal, etc.) más adelante
+    alert("¡Procesando pedido! (Lógica de pago pendiente)");
   };
 
-  //  RENDERIZAMOS EL DISEÑO 
+  // 5. RENDERIZADO DEL DISEÑO
+  // Le pasamos todo al componente visual "CartListDesign"
   return (
     <CartListDesign
       items={validItems}

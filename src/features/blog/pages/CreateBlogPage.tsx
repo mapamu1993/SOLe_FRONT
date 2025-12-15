@@ -6,7 +6,6 @@ import {
 } from "../validators/blogSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
 import { BlogFormDesign } from "../components/BlogFormDesign";
 
 const CreateBlogPage = () => {
@@ -25,17 +24,12 @@ const CreateBlogPage = () => {
   const onSubmit = (data: CreateBlogFields) => {
     setLocalError("");
     if (!file) {
-      setLocalError("Por favor, selecciona una imagen válida");
+      setLocalError("Una imagen vale más que mil palabras. Por favor, sube una.");
       return;
     }
     mutate({ data, file });
   };
 
-
-
-
-
-  // SOLO CAMBIA EL RETURN:
   return (
     <BlogFormDesign
       register={register}
@@ -43,12 +37,12 @@ const CreateBlogPage = () => {
       isSubmitting={isPending} 
       onSubmit={handleSubmit(onSubmit)}
       
-      // Textos
-      pageTitle="Crear Nuevo Blog"
+      // Textos personalizados
+      pageTitle="Nueva Historia"
       buttonText="Publicar Entrada"
       serverError={localError} 
       
-      // Archivos 
+      // Archivos
       onFileChange={(e) => setFile(e.target.files?.[0] || null)}
       currentFile={file}
     />
@@ -56,59 +50,3 @@ const CreateBlogPage = () => {
 };
 
 export default CreateBlogPage;
-
-
- {/* //OJO: NO USEIS ESTOS RETURNS. SON PARA QUE SEPAIS QUE ESTAN AQUI.
-  //USAD LO QUE FALTE DE ARRIBA AL HACER EL FORMULARIO ETC.
-  return (
-    <div>
-      <h1>Crear Nueva Entrada</h1>
-      {localError && <p style={{ color: "red" }}>{localError}</p>}
-
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-          maxWidth: "400px",
-        }}
-      >
-        <div>
-          <label>Título:</label>
-          <input type="text" {...register("title")} />
-          {errors.title && (
-            <span style={{ color: "red" }}>{errors.title.message}</span>
-          )}
-        </div>
-
-        <div>
-          <label>Contenido:</label>
-          <textarea rows={5} {...register("content")} />
-          {errors.content && (
-            <span style={{ color: "red" }}>{errors.content.message}</span>
-          )}
-        </div>
-
-        <div>
-          <label>Imagen:</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
-          />
-        </div>
-
-        <button type="submit" disabled={isPending}>
-          {isPending ? "Creando..." : "Publicar Blog"}
-        </button>
-      </form>
-
-      <br />
-      <RouterLink to="/blog">Cancelar</RouterLink>
-    </div>
-  );
-};
-
-export default CreateBlogPage;
-*/}
