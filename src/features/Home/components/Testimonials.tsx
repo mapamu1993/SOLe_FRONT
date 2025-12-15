@@ -60,7 +60,7 @@ export function TestimonialsSection() {
   return (
     <section className="w-full py-32 md:py-40 bg-[#EBECE2] overflow-hidden relative">
       
-      {/* CABECERA ESTILO KITS/BLOG (Alineada Izquierda + Mix Fuentes) */}
+      {/* CABECERA ENTRE KISTS Y BLOGS*/}
       <div className="max-w-7xl mx-auto px-4 md:px-6 mb-16">
         <div className="flex flex-col md:flex-row justify-between items-end gap-6">
           
@@ -71,7 +71,7 @@ export function TestimonialsSection() {
             </span>
           </h2>
 
-          {/* Icono de cita decorativo a la derecha (opcional, para equilibrar) */}
+          {/* Icono */}
           <IconQuote 
             size={48} 
             className="text-[#582F0E] opacity-20 hidden md:block" 

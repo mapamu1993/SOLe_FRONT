@@ -44,7 +44,7 @@ const BlogPage = () => {
             <p>{blog.content.substring(0, 100)}...</p>
             
             <div style={{ marginTop: "10px", display: "flex", gap: "10px", alignItems: "center" }}>
-                {/* Botón para todos: Leer más */}
+                {/*BOTON PARA TODOS: Leer más */}
                 <RouterLink to={`/blog/${blog._id}`} style={{ color: "#582F0E", fontWeight: "bold" }}>
                     Leer más
                 </RouterLink>
@@ -52,14 +52,14 @@ const BlogPage = () => {
                 {/* Botones SOLO para Admin/Moderador */}
                 {canEdit && (
                 <>
-                    {/* 1. BOTÓN DE EDITAR (El que te faltaba) */}
+                    {/* BOTÓN DE EDITAR  */}
                     <RouterLink to={`/blog/edit/${blog._id}`}>
                         <button style={{ cursor: "pointer", color: "blue", background: "none", border: "none", textDecoration: "underline" }}>
                             Editar
                         </button>
                     </RouterLink>
 
-                    {/* 2. BOTÓN DE ELIMINAR */}
+                    {/* BOTÓN DE ELIMINAR */}
                     <button
                         onClick={() => {
                             if (window.confirm("¿Borrar entrada?")) deleteBlog(blog._id);

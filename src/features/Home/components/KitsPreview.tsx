@@ -27,7 +27,6 @@ const kitsData = [
 
 export function KitsSection() {
   return (
-    // CAMBIO AQUI: py-32 md:py-40 (Más separación vertical)
     <section className="w-full px-4 md:px-6 py-32 md:py-40 bg-[#EBECE2]">
       
       {/* HEADER SECCIÓN */}
@@ -43,7 +42,7 @@ export function KitsSection() {
         </button>
       </div>
 
-      {/* GRID DE TARJETAS */}
+      {/* GRID DE LAS TARJETAS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {kitsData.map((kit, index) => (
           <div

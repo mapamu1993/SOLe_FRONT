@@ -12,7 +12,7 @@ const Navbar = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const location = useLocation();
 
-  // CONEXIÓN CON LA LÓGICA DE TUS COMPAÑEROS
+  // CONEXIÓN CON LA LÓGICA 
   const { data: cart, isLoading } = useCartQuery();
   const { mutate: removeItem } = useRemoveItemMutation();
   const { mutate: updateCart } = useUpdateCartMutation();
@@ -69,7 +69,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* CARRITO DESLIZANTE CON DATOS REALES */}
       <div className={`fixed inset-0 z-[1000] bg-black/60 backdrop-blur-sm transition-opacity duration-500 ${isCartOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`} onClick={() => setIsCartOpen(false)} />
       <div className={`fixed top-0 right-0 z-[1001] h-full w-full md:w-[450px] shadow-2xl bg-[#F2F2EF]/85 backdrop-blur-xl border-l border-white/40 transform transition-transform duration-500 ease-out flex flex-col ${isCartOpen ? "translate-x-0" : "translate-x-full"}`}>
         <div className="flex items-center justify-between p-6 border-b border-[#333D29]/10">
@@ -78,9 +77,9 @@ const Navbar = () => {
         </div>
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {isLoading ? (
-             <div className="flex justify-center p-10 text-[#656D4A]">Cargando...</div>
+            <div className="flex justify-center p-10 text-[#656D4A]">Cargando...</div>
           ) : !cart?.items || cart.items.length === 0 ? (
-             <div className="text-center py-10 text-[#656D4A]">Tu carrito está vacío.</div>
+            <div className="text-center py-10 text-[#656D4A]">Tu carrito está vacío.</div>
           ) : (
             cart.items.map((item) => (
               <div key={item.product._id} className="flex gap-4 items-center bg-white/60 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-white/50">

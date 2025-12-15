@@ -18,7 +18,7 @@ const EditBlogPage = () => {
   const [loadingData, setLoadingData] = useState(true);
   const [loadError, setLoadError] = useState(""); // Cambié el nombre para no confundir con el error de edición
 
-  // 1. AQUÍ USAMOS TU HOOK (El robot que hace el trabajo sucio)
+  //  AQUÍ USAMOS TU HOOK 
   // Extraemos 'mutate' para disparar la acción y 'isPending' para saber si está cargando
   const { mutate, isPending, error: mutationError } = useEditBlogMutation();
 
@@ -36,8 +36,8 @@ const EditBlogPage = () => {
     const fetchBlog = async () => {
       if (!id) return;
       try {
-        const BlogData = await getBlogByIdService(id);
-        // OJO: Si BlogData llega undefined, esto fallará.
+        const BlogData = await getBlogByIdService(id)
+        
         if (BlogData) {
             setValue("title", BlogData.title);
             setValue("content", BlogData.content);
@@ -52,12 +52,11 @@ const EditBlogPage = () => {
     fetchBlog();
   }, [id, setValue]);
 
-  // 2. CORREGIMOS EL ONSUBMIT
+  // CORREGIMOS EL ONSUBMIT
   const onSubmit = (data: CreateBlogFields) => {
     if (!id) return;
     
     // En lugar de hacer try/catch manual aquí, le pasamos la pelota al hook
-    // El hook ya tiene configurado el onSuccess (navegar) y onError (alerta)
     mutate({ id, data, file });
   };
 
@@ -74,12 +73,12 @@ const EditBlogPage = () => {
     <BlogFormDesign
       register={register}
       errors={errors}
-      // 3. Conectamos el estado de carga del hook
+      //  Conectamos el estado de carga del hook
       isSubmitting={isPending} 
       onSubmit={handleSubmit(onSubmit)}
       pageTitle="Editar Blog"
       buttonText="Guardar Cambios"
-      // 4. Si el hook devuelve error, lo mostramos (o null)
+      //  Si el hook devuelve error, lo mostramos (o null)
       serverError={mutationError?.response?.data?.message || ""} 
       onFileChange={(e) => setFile(e.target.files?.[0] || null)}
       currentFile={file}

@@ -35,7 +35,7 @@ export function BlogPreview() {
       
       <div className="max-w-6xl mx-auto">
         
-        {/* CABECERA (Estilo Kits: Flex con botón a la derecha) */}
+        {/* CABECERA BOTON DE LA DERECHA*/}
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 px-4">
           <h2 className="text-4xl md:text-5xl font-bold text-[#333D29] tracking-tight">
             Diario del{" "}

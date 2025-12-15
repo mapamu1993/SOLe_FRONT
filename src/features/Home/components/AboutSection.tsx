@@ -27,7 +27,7 @@ export function AboutSection() {
         min-h-[750px]
         shadow-2xl"
       >
-        {/* 1. TEXTURA TOPOGRÁFICA DE FONDO (El toque "Montaña") */}
+        {/* TIPOGRAFIA DISTINTA EN (MONTAÑA) */}
         <div
           className="
           absolute
@@ -40,7 +40,7 @@ export function AboutSection() {
           }}
         />
 
-        {/* COLUMNA IZQUIERDA: CONTENIDO */}
+        {/* COLUMNA IZQUIERDA*/}
         <div
           className="
           relative
@@ -116,7 +116,7 @@ export function AboutSection() {
             preocupes de la cima.
           </p>
 
-          {/* 2. GRID DE ICONOS (Rellena el espacio vacío con valor) */}
+          {/* ICONOS */}
           <div
             className="
             grid
@@ -128,21 +128,21 @@ export function AboutSection() {
             border-white/10
             pt-8"
           >
-            {/* Feature 1 */}
+            {/* ICONO 1 */}
             <div className="space-y-2">
               <IconMountain className="text-[#B6AD90]" size={28} stroke={1.5} />
               <h4 className="text-white font-bold text-sm uppercase tracking-wide">
                 Resistencia
               </h4>
             </div>
-            {/* Feature 2 */}
+            {/* ICONO 2 */}
             <div className="space-y-2">
               <IconLeaf className="text-[#B6AD90]" size={28} stroke={1.5} />
               <h4 className="text-white font-bold text-sm uppercase tracking-wide">
                 Sostenible
               </h4>
             </div>
-            {/* Feature 3 */}
+            {/* ICONO 3 */}
             <div className="space-y-2">
               <IconCompass className="text-[#B6AD90]" size={28} stroke={1.5} />
               <h4 className="text-white font-bold text-sm uppercase tracking-wide">
@@ -151,7 +151,7 @@ export function AboutSection() {
             </div>
           </div>
 
-          {/* BOTÓN (Mismo estilo que te gusta) */}
+          {/* BOTÓN */}
           <div>
             <button
               className="
@@ -198,7 +198,7 @@ export function AboutSection() {
           </div>
         </div>
 
-        {/* COLUMNA DERECHA: CARRUSEL */}
+        {/* COLUMNA DE LA DERECHA (CARRUSEL) */}
         <div
           className="
           w-full
@@ -221,7 +221,7 @@ export function AboutSection() {
             <ReviewsCarousel />
           </div>
 
-          {/* Degradado de unión */}
+          {/* Degradado */}
           <div
             className="
             absolute
@@ -235,7 +235,7 @@ export function AboutSection() {
             pointer-events-none"
           />
 
-          {/* 3. INSIGNIA FLOTANTE (Detalle Premium) */}
+          {/* INSIGNIA FLOTANTE */}
           <div
             className="
             absolute

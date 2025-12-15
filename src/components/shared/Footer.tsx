@@ -27,7 +27,7 @@ const Footer = () => {
       justify-between
       min-h-[400px]"
       >
-        {/* TOP: LINKS */}
+        {/* LINKS */}
         <div
           className="
         grid
@@ -100,7 +100,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* BOTTOM: BIG LOGO */}
+        {/* LOGO GRANDE */}
         <div
           className="
         border-t

@@ -6,9 +6,9 @@ const HeroSection = () => {
 
   return (
     // ESTRUCTURA FRAMER:
-    // 1. h-screen: Ocupa toda la pantalla.
-    // 2. p-4: Deja un pequeño borde "marco" alrededor de la imagen.
-    // 3. bg-[#EBECE2]: El color del borde del marco.
+    //  h-screen: Ocupa toda la pantalla
+    //  p-4: Deja el marco chiquito
+    //  bg-[#EBECE2]: es el color del marco, osea el blanco 
     <section
       className="
     relative
@@ -20,7 +20,7 @@ const HeroSection = () => {
     flex-col
     justify-end"
     >
-      {/* TARJETA DE IMAGEN (El contenido real) */}
+      {/* TARJETA DE IMAGEN  */}
       <div
         className="
       relative
@@ -48,8 +48,7 @@ const HeroSection = () => {
           }}
         />
 
-        {/* GRADIENTE (Overlay) */}
-        {/* Oscuro abajo para leer el texto, transparente arriba para ver el cielo/navbar */}
+        {/* GRADIENTE OSCURO ABAJO Y MAS CLARO ARRIBA  */}
         <div
           className="
         absolute
@@ -60,7 +59,7 @@ const HeroSection = () => {
         to-transparent"
         />
 
-        {/* Capa extra superior sutil para que el Navbar blanco se lea bien si la foto es muy clara */}
+        {/* CAPA SUTIL PARA QUE EL NAVBAR SE VEA BIEN */}
         <div
           className="
         absolute
@@ -73,7 +72,7 @@ const HeroSection = () => {
         pointer-events-none"
         />
 
-        {/* CONTENIDO (Abajo) */}
+        {/* CONTENIDO DE ABAJO */}
         <div
           className="
         absolute
@@ -156,7 +155,7 @@ const HeroSection = () => {
             </p>
           </div>
 
-          {/* BOTÓN GIGANTE (Framer Style) */}
+          {/* BOTÓN GIGANTE */}
           <button
             onClick={() => navigate("/kits")}
             className="
