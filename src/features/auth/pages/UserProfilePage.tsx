@@ -1,6 +1,7 @@
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 // 1. IMPORTAMOS useNavigate
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
 import {
   getUserProfileUrl,
@@ -47,15 +48,15 @@ const UserProfilePage: React.FC = () => {
   ];
 
   // Función existente para editar
-  const handleEdit = () => {
-    navigate("/profile/edit");
-  };
+  // const handleEdit = () => {
+  //   navigate("/profile/edit");
+  // };
 
   // 3. NUEVA FUNCIÓN PARA VOLVER AL INICIO
-  const handleGoHome = () => {
-    // Navega a la ruta raíz "/"
-    navigate("/");
-  };
+  // const handleGoHome = () => {
+  //   // Navega a la ruta raíz "/"
+  //   navigate("/");
+  // };
 
   // --- RENDERIZADO DEL DISEÑO ---
   return (
