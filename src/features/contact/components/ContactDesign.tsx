@@ -1,150 +1,116 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { 
+  IconMail, 
+  IconBrandWhatsapp, 
+  IconBrandInstagram, 
+  IconBrandFacebook, 
+  IconBrandX, 
+  IconArrowLeft 
+} from "@tabler/icons-react";
 
 export const ContactDesign = () => {
   return (
-    // FONDO GENERAL (Beige verdoso)
-    <div className="flex min-h-screen w-full items-center justify-center bg-[#C2C5AA] p-4 font-sans">
-      {/* TARJETA PRINCIPAL */}
-      <div className="mx-auto w-full max-w-2xl rounded-2xl bg-white p-8 shadow-2xl border border-[#A4AC86] text-center">
-        {/* Cabecera */}
-        <div className="mb-10">
-          <h2 className="text-3xl font-bold text-[#333D29] md:text-4xl">
-            Conecta con Nosotros
-          </h2>
-          <p className="mt-4 text-[#656D4A] text-lg">
-            Estamos aquí para escucharte. Elige el canal que prefieras.
-          </p>
-        </div>
+    // 1. FONDO BASE (Gris Sole) + Padding superior para el Navbar
+    <div className="flex min-h-screen w-full items-center justify-center bg-[#EBECE2] p-4 pt-24 md:pt-32 font-sans">
+      
+      {/* 2. ANIMACIÓN DE ENTRADA */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mx-auto w-full max-w-3xl"
+      >
+        {/* TARJETA PRINCIPAL */}
+        <div className="rounded-[2.5rem] bg-white p-8 md:p-12 shadow-2xl border border-[#333D29]/5 text-center relative overflow-hidden">
+          
+          {/* Decoración de fondo sutil */}
+          <div className="absolute top-0 left-0 w-64 h-64 bg-[#B6AD90] opacity-10 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2" />
 
-        {/* GRID DE CONTACTO PRINCIPAL */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {/* EMAIL */}
-          <a
-            href="mailto:info@elcamino.com"
-            className="group flex flex-col items-center justify-center rounded-xl border-2 border-[#EBECE2] p-6 transition-all hover:border-[#582F0E] hover:bg-[#F5F5F0]"
-          >
-            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#EBECE2] text-[#582F0E] transition-colors group-hover:bg-[#582F0E] group-hover:text-white">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-7 w-7"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                />
-              </svg>
-            </div>
-            <h3 className="font-bold text-[#333D29]">Correo Electrónico</h3>
-            <p className="mt-1 text-sm text-[#656D4A]">info@elcamino.com</p>
-          </a>
+          {/* Cabecera */}
+          <div className="mb-12 relative z-10">
+            <h2 className="text-3xl font-bold text-[#333D29] md:text-5xl font-serif tracking-tight">
+              Conecta con <span className="italic text-[#582F0E]">Nosotros</span>
+            </h2>
+            <p className="mt-4 text-[#656D4A] text-lg font-medium">
+              Estamos aquí para escucharte. Elige tu canal preferido.
+            </p>
+          </div>
 
-          {/* WHATSAPP */}
-          <a
-            href="https://wa.me/34600000000"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex flex-col items-center justify-center rounded-xl border-2 border-[#EBECE2] p-6 transition-all hover:border-[#582F0E] hover:bg-[#F5F5F0]"
-          >
-            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#EBECE2] text-[#582F0E] transition-colors group-hover:bg-[#582F0E] group-hover:text-white">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-7 w-7"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                />
-              </svg>
-            </div>
-            <h3 className="font-bold text-[#333D29]">WhatsApp</h3>
-            <p className="mt-1 text-sm text-[#656D4A]">+34 600 000 000</p>
-          </a>
-        </div>
-
-        {/* REDES SOCIALES */}
-        <div className="mt-10 border-t border-[#EBECE2] pt-8">
-          <h3 className="mb-6 font-bold text-[#333D29]">Síguenos en Redes</h3>
-          <div className="flex justify-center gap-8 items-center">
-            {/* Instagram */}
+          {/* GRID DE CONTACTO PRINCIPAL */}
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 mb-12 relative z-10">
+            {/* EMAIL */}
             <a
-              href="#"
-              aria-label="Instagram"
-              className="transform text-[#656D4A] transition-transform hover:scale-110 hover:text-[#582F0E]"
+              href="mailto:info@elcamino.com"
+              className="group flex flex-col items-center justify-center rounded-[2rem] border border-[#A4AC86]/30 bg-[#Fdfcf5] p-8 transition-all hover:border-[#582F0E] hover:shadow-lg hover:-translate-y-1"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-              </svg>
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#EBECE2] text-[#582F0E] transition-colors group-hover:bg-[#582F0E] group-hover:text-white">
+                <IconMail size={32} stroke={1.5} />
+              </div>
+              <h3 className="font-bold text-[#333D29] text-xl mb-1">Correo Electrónico</h3>
+              <p className="text-sm text-[#656D4A] font-medium">info@elcamino.com</p>
             </a>
 
-            {/* Facebook */}
+            {/* WHATSAPP */}
             <a
-              href="#"
-              aria-label="Facebook"
-              className="transform text-[#656D4A] transition-transform hover:scale-110 hover:text-[#582F0E]"
+              href="https://wa.me/34600000000"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col items-center justify-center rounded-[2rem] border border-[#A4AC86]/30 bg-[#Fdfcf5] p-8 transition-all hover:border-[#582F0E] hover:shadow-lg hover:-translate-y-1"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-              </svg>
-            </a>
-
-            {/* X (Twitter) - NUEVO LOGO */}
-            <a
-              href="#"
-              aria-label="X (Twitter)"
-              className="transform text-[#656D4A] transition-transform hover:scale-110 hover:text-[#582F0E]"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-7 w-7"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg>
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#EBECE2] text-[#582F0E] transition-colors group-hover:bg-[#582F0E] group-hover:text-white">
+                <IconBrandWhatsapp size={32} stroke={1.5} />
+              </div>
+              <h3 className="font-bold text-[#333D29] text-xl mb-1">WhatsApp</h3>
+              <p className="text-sm text-[#656D4A] font-medium">+34 600 000 000</p>
             </a>
           </div>
-        </div>
 
-        {/* BOTÓN VOLVER */}
-        <div className="mt-10">
-          <Link
-            to="/"
-            className="text-sm font-bold text-[#7F4F24] hover:underline"
-          >
-            &larr; Volver al inicio
-          </Link>
+          {/* REDES SOCIALES */}
+          <div className="border-t border-[#EBECE2] pt-10 relative z-10">
+            <h3 className="mb-8 font-bold text-[#333D29] uppercase tracking-widest text-xs">Síguenos en Redes</h3>
+            <div className="flex justify-center gap-6 items-center">
+              {/* Instagram */}
+              <a
+                href="#"
+                aria-label="Instagram"
+                className="transform text-[#656D4A] transition-all hover:scale-110 hover:text-[#582F0E] bg-[#F5F5F0] p-4 rounded-full hover:bg-[#EBECE2]"
+              >
+                <IconBrandInstagram size={28} stroke={1.5} />
+              </a>
+
+              {/* Facebook */}
+              <a
+                href="#"
+                aria-label="Facebook"
+                className="transform text-[#656D4A] transition-all hover:scale-110 hover:text-[#582F0E] bg-[#F5F5F0] p-4 rounded-full hover:bg-[#EBECE2]"
+              >
+                <IconBrandFacebook size={28} stroke={1.5} />
+              </a>
+
+              {/* X (Twitter) */}
+              <a
+                href="#"
+                aria-label="X (Twitter)"
+                className="transform text-[#656D4A] transition-all hover:scale-110 hover:text-[#582F0E] bg-[#F5F5F0] p-4 rounded-full hover:bg-[#EBECE2]"
+              >
+                <IconBrandX size={28} stroke={1.5} />
+              </a>
+            </div>
+          </div>
+
+          {/* BOTÓN VOLVER */}
+          <div className="mt-12 relative z-10">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 text-sm font-bold text-[#7F4F24] hover:text-[#582F0E] transition-colors group"
+            >
+              <IconArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
+              Volver al inicio
+            </Link>
+          </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

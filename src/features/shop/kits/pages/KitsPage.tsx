@@ -3,12 +3,16 @@ import { useSnackbar } from "notistack";
 
 // 1. Hooks y Tipos
 import { useKitsQuery } from "../hooks/useKitsQuery";
-import { IMAGE_URL } from "../../../../config/constants";
-import { getImageUrl } from "@/utils/imageUtil";
+import { useAddToCartMutation } from "../../cart/hooks/useCartMutations";
+import { type Kit } from "../types/kitTypes";
+
+// 2. IMPORTAMOS EL DISEÑO BONITO (Aquí está la clave)
+import { KitsPageDesign } from "../components/KitsPageDesign";
+
 const KitsPage = () => {
   // --- DATA FETCHING ---
   const { data: products, isLoading, isError } = useKitsQuery();
-  const { mutate: addToCart, isPending: isAdding } = useAddToCartMutation();
+  const { mutate: addToCart } = useAddToCartMutation();
   const { enqueueSnackbar } = useSnackbar();
 
   // --- ESTADOS DE UI (Modales) ---
@@ -17,73 +21,71 @@ const KitsPage = () => {
   const [selectedKit, setSelectedKit] = useState<Kit | null>(null);
 
   // --- TRANSFORMACIÓN DE DATOS (Product -> Kit) ---
-  // Convertimos los productos planos en Kits con propiedades visuales
-  const kits: Kit[] | undefined = useMemo(() => {
+  // Convertimos los productos "raw" en "Kits" con características visuales
+  const kits: any[] | undefined = useMemo(() => {
     return products?.map((product) => {
-      // Lógica para determinar si es VIP o Personalizable basada en precio o nombre
-      // Esto simula la lógica de negocio visual
+      // Si vale más de 1000 o dice "Premium", lo tratamos como VIP
       const isVip =
         product.price >= 1000 || product.name.toLowerCase().includes("premium");
 
-      // Generamos features dinámicas si no vienen del backend
+      // Características ficticias para que la tarjeta se vea llena
+      // (Idealmente esto vendría de la base de datos)
       const defaultFeatures = [
-        "Envío Gratuito",
-        "Credencial del Peregrino",
+        "Envío Gratuito a toda España",
+        "Credencial del Peregrino Oficial",
         isVip ? "Asistencia 24h Premium" : "Guía Básica en PDF",
       ];
 
       return {
         ...product,
         features: defaultFeatures,
-        isRecommended: isVip,
+        isRecommended: isVip, // Esto hará que la tarjeta destaque
       };
     });
   }, [products]);
 
-  // --- HANDLERS ---
+  // --- HANDLERS (Qué pasa al hacer click) ---
 
-  // Acción principal al pulsar el botón de la tarjeta
-  const handleKitAction = (kit: any) => {
-    // Casteamos a Kit para estar seguros
-    const currentKit = kit as Kit;
-    setSelectedKit(currentKit);
-
-    // Lógica de redirección según el tipo de Kit
-    if (currentKit.isRecommended) {
-      // Si es VIP -> Formulario de Contacto
-      setIsContactOpen(true);
-    } else if (currentKit.price >= 300) {
-      // Si es gama media -> Personalizador
-      setIsCustomizerOpen(true);
-    } else {
-      // Si es básico -> Añadir al carrito directo
-      handleAddToCart(currentKit._id);
-    }
-  };
-
-  // Añadir al carrito (Conexión con tu hook existente)
+  // 1. Añadir directo al carrito
   const handleAddToCart = (productId: string) => {
     addToCart(
       { productId, quantity: 1 },
       {
         onSuccess: () => {
-          // El hook ya muestra snackbar, pero si quieres feedback extra aquí
+           // El hook ya muestra una notificación global
         },
       }
     );
   };
 
-  // Compra desde el personalizador
+  // 2. Decidir qué acción tomar según el tipo de kit
+  const handleKitAction = (kit: any) => {
+    const currentKit = kit as Kit;
+    setSelectedKit(currentKit);
+
+    if (currentKit.isRecommended) {
+      // Si es VIP -> Abrimos formulario de contacto
+      setIsContactOpen(true);
+    } else if (currentKit.price >= 300) {
+      // Si es caro pero no VIP -> Abrimos personalizador
+      setIsCustomizerOpen(true);
+    } else {
+      // Si es normal -> Al carrito directo
+      handleAddToCart(currentKit._id);
+    }
+  };
+
+  // 3. Comprar desde el personalizador (con extras)
   const handleCustomBuy = (total: number, items: string[]) => {
     if (!selectedKit) return;
-
-    // NOTA: Como el endpoint 'addCart' actual solo soporta ID y cantidad,
-    // añadimos el producto base. Idealmente enviaríamos los extras al backend.
+    
+    // Aquí solo añadimos el producto base.
+    // (En el futuro podrías enviar los "items" extra al backend)
     addToCart(
       { productId: selectedKit._id, quantity: 1 },
       {
         onSuccess: () => {
-          enqueueSnackbar(`Kit personalizado añadido por ${total}€`, {
+          enqueueSnackbar(`Pack personalizado añadido (${total}€)`, {
             variant: "success",
           });
           setIsCustomizerOpen(false);
@@ -92,41 +94,35 @@ const KitsPage = () => {
     );
   };
 
+  // 4. Cerrar todo
   const handleCloseModals = () => {
     setIsCustomizerOpen(false);
     setIsContactOpen(false);
     setSelectedKit(null);
   };
 
-  // --- RENDER ---
+  // --- RENDERIZADO ---
+  // En lugar de HTML feo, usamos el componente de diseño
   return (
-    <div>
-      <h1>Kits del Peregrino</h1>
-      <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
-        {kits?.map((kit) => (
-          <div
-            key={kit._id}
-            style={{
-              border: "1px solid #ccc",
-              padding: "10px",
-              width: "250px",
-            }}
-          >
-            {kit.image && (
-              <img
-                src={getImageUrl(`uploads/products/${kit.image}`)}
-                alt={kit.name}
-                style={{ width: "100%", height: "auto" }}
-              />
-            )}
-            <h3>{kit.name}</h3>
-            <p>${kit.price}</p>
-            <p>{kit.description}</p>
-            <RouterLink to={`/products/${kit._id}`}>Ver Detalles</RouterLink>
-          </div>
-        ))}
-      </div>
-    </div>
+    <KitsPageDesign
+      kits={kits}
+      isLoading={isLoading}
+      isError={isError}
+      
+      // Props para el Personalizador
+      isCustomizerOpen={isCustomizerOpen}
+      onCloseCustomizer={handleCloseModals}
+      selectedKitBasePrice={selectedKit?.price || 0}
+      onCustomBuy={handleCustomBuy}
+
+      // Props para Contacto
+      isContactOpen={isContactOpen}
+      onCloseContact={handleCloseModals}
+      selectedKitName={selectedKit?.name || ""}
+
+      // Acción principal
+      onKitAction={handleKitAction}
+    />
   );
 };
 

@@ -1,5 +1,6 @@
 import React from "react";
-import { X, Send, Calendar, Mail, User, MessageSquare } from "lucide-react";
+// CORRECCIÓN: Usamos Tabler Icons
+import { IconX, IconSend, IconCalendar, IconMail, IconUser, IconMessageCircle } from "@tabler/icons-react";
 
 interface ContactFormProps {
   open: boolean;
@@ -44,7 +45,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
             onClick={onClose}
             className="text-[#656D4A] hover:text-[#582F0E] transition-colors"
           >
-            <X className="w-6 h-6" />
+            <IconX size={24} />
           </button>
         </div>
 
@@ -59,7 +60,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="relative">
               <label className={labelClass}>Nombre Completo</label>
-              <User className={iconClass} />
+              <IconUser className={iconClass} />
               <input
                 type="text"
                 required
@@ -70,7 +71,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
 
             <div className="relative">
               <label className={labelClass}>Email de Contacto</label>
-              <Mail className={iconClass} />
+              <IconMail className={iconClass} />
               <input
                 type="email"
                 required
@@ -81,7 +82,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
 
             <div className="relative">
               <label className={labelClass}>Fechas Aproximadas</label>
-              <Calendar className={iconClass} />
+              <IconCalendar className={iconClass} />
               <input
                 type="text"
                 placeholder="Ej: Mayo 2024"
@@ -92,7 +93,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
             <div className="relative">
               <label className={labelClass}>Preferencias o Necesidades</label>
               <div className="absolute left-3 top-[38px] pointer-events-none">
-                <MessageSquare className="w-5 h-5 text-[#656D4A]" />
+                <IconMessageCircle className="w-5 h-5 text-[#656D4A]" />
               </div>
               <textarea
                 rows={3}
@@ -113,7 +114,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({
                 type="submit"
                 className="flex items-center gap-2 px-6 py-2.5 bg-[#582F0E] text-white rounded-xl font-bold hover:bg-[#7F4F24] shadow-lg transition-all active:scale-95"
               >
-                <Send className="w-4 h-4" />
+                <IconSend size={16} />
                 Enviar Solicitud
               </button>
             </div>
