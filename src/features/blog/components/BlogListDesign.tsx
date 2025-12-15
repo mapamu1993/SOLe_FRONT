@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { type Blog } from "../types/blogTypes";
 import { IMAGE_URL } from "../../../config/constants";
+import { getImageUrl } from "@/utils/imageUtil";
 
 interface BlogListDesignProps {
   blogs: Blog[] | undefined;
@@ -18,10 +19,8 @@ export const BlogListDesign = ({
   return (
     // FONDO GENERAL (Beige verdoso)
     <div className="min-h-screen w-full bg-[#C2C5AA] p-4 font-sans">
-      
       {/* CONTENEDOR PRINCIPAL */}
       <div className="mx-auto w-full max-w-7xl rounded-2xl bg-white p-6 shadow-2xl border border-[#A4AC86] sm:p-8">
-        
         {/* CABECERA */}
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-[#C2C5AA] pb-6">
           <div>
@@ -66,9 +65,10 @@ export const BlogListDesign = ({
                   <div className="relative h-48 w-full overflow-hidden bg-[#EBECE2]">
                     {blog.image ? (
                       <img
-                        src={blog.image.startsWith('http') ? blog.image : `${IMAGE_URL}/uploads/blogs/${blog.image}`}
+                        // CORRECCIÓN: Usamos blog.image directo porque ya incluye 'uploads/blogs/...'
+                        src={getImageUrl(blog.image)}
                         alt={blog.title}
-                        className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                        className="h-full w-full object-cover"
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center text-[#A4AC86]">
@@ -79,10 +79,13 @@ export const BlogListDesign = ({
 
                   {/* Contenido */}
                   <div className="flex flex-1 flex-col p-5">
-                    <h3 className="mb-2 text-xl font-bold text-[#333D29] line-clamp-2" title={blog.title}>
+                    <h3
+                      className="mb-2 text-xl font-bold text-[#333D29] line-clamp-2"
+                      title={blog.title}
+                    >
                       {blog.title}
                     </h3>
-                    
+
                     <p className="mb-4 flex-1 text-sm text-[#656D4A] line-clamp-3">
                       {blog.content}
                     </p>

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { type Product } from "../types/productTypes";
 import { IMAGE_URL } from "../../../../config/constants";
+import { getImageUrl } from "../../../../utils/imageUtil";
 
 interface ProductsListDesignProps {
   products: Product[] | undefined;
@@ -24,10 +25,8 @@ export const ProductsListDesign = ({
   return (
     // FONDO GENERAL (Beige verdoso)
     <div className="min-h-screen w-full bg-[#C2C5AA] p-4 font-sans">
-      
       {/* CONTENEDOR PRINCIPAL */}
       <div className="mx-auto w-full max-w-7xl rounded-2xl bg-white p-6 shadow-2xl border border-[#A4AC86] sm:p-8">
-        
         {/* CABECERA: Título y Botón Crear */}
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-[#C2C5AA] pb-6">
           <div>
@@ -80,7 +79,8 @@ export const ProductsListDesign = ({
                   <div className="relative h-48 w-full overflow-hidden bg-[#EBECE2]">
                     {product.image ? (
                       <img
-                        src={`${IMAGE_URL}/uploads/products/${product.image}`}
+                        // Usamos la utilidad y construimos la ruta relativa
+                        src={getImageUrl(`uploads/products/${product.image}`)}
                         alt={product.name}
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
@@ -94,7 +94,10 @@ export const ProductsListDesign = ({
                   {/* Contenido Tarjeta */}
                   <div className="flex flex-1 flex-col p-4">
                     <div className="mb-2 flex-1">
-                      <h3 className="text-lg font-bold text-[#333D29] line-clamp-1" title={product.name}>
+                      <h3
+                        className="text-lg font-bold text-[#333D29] line-clamp-1"
+                        title={product.name}
+                      >
                         {product.name}
                       </h3>
                       {/* Si quisieras mostrar la categoría: 

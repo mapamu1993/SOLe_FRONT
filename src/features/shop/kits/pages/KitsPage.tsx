@@ -1,7 +1,7 @@
 import { Link as RouterLink } from "react-router-dom";
 import { useKitsQuery } from "../hooks/useKitsQuery";
 import { IMAGE_URL } from "../../../../config/constants";
-
+import { getImageUrl } from "@/utils/imageUtil";
 const KitsPage = () => {
   const { data: kits, isLoading, isError } = useKitsQuery();
 
@@ -23,7 +23,7 @@ const KitsPage = () => {
           >
             {kit.image && (
               <img
-                src={`${IMAGE_URL}/uploads/products/${kit.image}`}
+                src={getImageUrl(`uploads/products/${kit.image}`)}
                 alt={kit.name}
                 style={{ width: "100%", height: "auto" }}
               />

@@ -1,13 +1,16 @@
 import { Link as RouterLink } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
 import { IMAGE_URL } from "../../../config/constants";
+import { getImageUrl } from "../../../utils/imageUtil";  
 
 const UserProfilePage = () => {
   const { user } = useAuth();
   if (!user) return null;
   let profileImageUrl = user.profilePicture;
   if (profileImageUrl && !profileImageUrl.startsWith("http")) {
-    profileImageUrl = `${IMAGE_URL}/uploads/users/${profileImageUrl}`;
+    const profileImageUrl = getImageUrl(
+    user.profilePicture ? `uploads/users/${user.profilePicture}` : null
+  );
   }
 
   const displayName = user.name || user.username || "Usuario";
