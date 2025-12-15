@@ -4,7 +4,7 @@ import { useAuth } from "@/features/auth/context/auth.context";
 import {USER_ROLES} from "../config/constants"
 
 // Homepage
-import Home from "../features/home/Home";
+import Home from "@/features/Home/Home";
 
 // Auth Pages
 import RegisterPage from "../features/auth/pages/RegisterPage";
