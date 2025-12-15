@@ -1,5 +1,6 @@
 import React from "react";
-import { CheckCircle, Mountain } from "lucide-react";
+// CORRECCIÓN: Usamos Tabler Icons (ya instalado)
+import { IconCircleCheck, IconMountain } from "@tabler/icons-react";
 
 interface KitCardProps {
   image: string;
@@ -28,12 +29,12 @@ export const KitCard: React.FC<KitCardProps> = ({
         relative flex flex-col h-full bg-white rounded-2xl overflow-hidden transition-all duration-300
         ${
           isRecommended
-            ? "border-2 border-[#582F0E] shadow-xl -translate-y-1" // Marrón oscuro para el VIP
-            : "border border-[#A4AC86] shadow-md hover:-translate-y-1 hover:shadow-lg" // Verde suave para normales
+            ? "border-2 border-[#582F0E] shadow-xl -translate-y-1"
+            : "border border-[#A4AC86] shadow-md hover:-translate-y-1 hover:shadow-lg"
         }
       `}
     >
-      {/* Etiqueta Recomendado (Top Right) */}
+      {/* Etiqueta Recomendado */}
       {isRecommended && (
         <span className="absolute top-3 right-3 z-10 bg-[#582F0E] text-white text-xs font-bold px-3 py-1 rounded-full shadow-md tracking-wide">
           {tagLabel || "RECOMENDADO"}
@@ -49,17 +50,15 @@ export const KitCard: React.FC<KitCardProps> = ({
         />
       </div>
 
-      {/* Contenido de la tarjeta */}
+      {/* Contenido */}
       <div className="flex flex-col flex-grow p-6 gap-4">
-        {/* Pequeño header con icono */}
         <div className="flex items-center gap-2 text-[#656D4A]">
-          <Mountain className="w-5 h-5" />
+          <IconMountain size={20} stroke={1.5} />
           <span className="text-xs font-bold tracking-widest uppercase">
             CAMINO DE SANTIAGO
           </span>
         </div>
 
-        {/* Título y Precio */}
         <div>
           <h3 className="text-2xl font-bold text-[#333D29] font-serif mb-1 leading-tight">
             {title}
@@ -71,7 +70,7 @@ export const KitCard: React.FC<KitCardProps> = ({
 
         <hr className="border-[#A4AC86]/30" />
 
-        {/* Lista de características (Checks) */}
+        {/* Features */}
         {features.length > 0 && (
           <ul className="space-y-3 mb-2">
             {features.map((feature, index) => (
@@ -79,8 +78,9 @@ export const KitCard: React.FC<KitCardProps> = ({
                 key={index}
                 className="flex items-start gap-2 text-sm text-[#333D29]/90"
               >
-                <CheckCircle
-                  className={`w-5 h-5 min-w-[20px] ${
+                <IconCircleCheck
+                  size={20}
+                  className={`min-w-[20px] ${
                     isRecommended ? "text-[#582F0E]" : "text-[#656D4A]"
                   }`}
                 />
@@ -90,7 +90,7 @@ export const KitCard: React.FC<KitCardProps> = ({
           </ul>
         )}
 
-        {/* Botón de acción */}
+        {/* Botón */}
         <button
           onClick={onAction}
           className={`

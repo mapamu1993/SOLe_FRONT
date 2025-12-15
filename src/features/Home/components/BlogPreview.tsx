@@ -99,8 +99,8 @@ export function BlogPreview() {
 
         {/* Botón Móvil */}
         <div className="mt-16 text-center md:hidden">
-           <Link to="/blog" className="inline-block border-b border-[#333D29] text-[#333D29] font-bold pb-1">
-             Explorar el Blog
+          <Link to="/blog" className="inline-block border-b border-[#333D29] text-[#333D29] font-bold pb-1">
+            Explorar el Blog
            </Link>
         </div>
 

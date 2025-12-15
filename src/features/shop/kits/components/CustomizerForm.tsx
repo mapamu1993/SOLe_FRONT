@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { X, Check } from "lucide-react";
+// CORRECCIÓN: Usamos Tabler Icons
+import { IconX, IconCheck } from "@tabler/icons-react";
 
 interface CustomizerFormProps {
   open: boolean;
@@ -24,7 +25,6 @@ export const CustomizerForm: React.FC<CustomizerFormProps> = ({
 }) => {
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
 
-  // Si no está abierto, no renderizamos nada
   if (!open) return null;
 
   const handleToggle = (id: string) => {
@@ -40,11 +40,9 @@ export const CustomizerForm: React.FC<CustomizerFormProps> = ({
   const finalPrice = basePrice + extrasTotal;
 
   return (
-    // Fondo oscuro
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm transition-opacity">
-      {/* Tarjeta del Modal (Animación estándar 'scale' en lugar de 'zoom-in') */}
       <div className="bg-[#fdfcf5] w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-[#A4AC86] transform transition-all scale-100">
-        {/* Cabecera */}
+        
         <div className="p-6 bg-[#C2C5AA]/20 border-b border-[#A4AC86] flex justify-between items-center">
           <h2 className="text-xl font-bold text-[#333D29] font-serif">
             Personaliza tu Kit
@@ -53,11 +51,10 @@ export const CustomizerForm: React.FC<CustomizerFormProps> = ({
             onClick={onClose}
             className="text-[#656D4A] hover:text-[#582F0E] transition-colors"
           >
-            <X className="w-6 h-6" />
+            <IconX size={24} />
           </button>
         </div>
 
-        {/* Contenido */}
         <div className="p-6">
           <p className="text-[#656D4A] mb-5 text-sm">
             El kit base incluye alojamiento seleccionado y transporte. Añade
@@ -90,7 +87,7 @@ export const CustomizerForm: React.FC<CustomizerFormProps> = ({
                           }
                       `}
                     >
-                      {isSelected && <Check className="w-3 h-3 text-white" />}
+                      {isSelected && <IconCheck size={12} className="text-white" stroke={3} />}
                     </div>
                     <span
                       className={`font-medium ${
@@ -125,7 +122,6 @@ export const CustomizerForm: React.FC<CustomizerFormProps> = ({
           </div>
         </div>
 
-        {/* Footer */}
         <div className="p-6 bg-white border-t border-[#A4AC86]/30 flex gap-3 justify-end">
           <button
             onClick={onClose}

@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { type Product } from "../types/productTypes";
-import { IMAGE_URL } from "../../../../config/constants";
 import { getImageUrl } from "../../../../utils/imageUtil";
+// 1. IMPORTAMOS 'Variants' PARA CORREGIR EL ERROR DE TIPADO
+import { motion, type Variants } from "framer-motion"; 
+import { IconPlus, IconShoppingBag } from "@tabler/icons-react";
 
 interface ProductsListDesignProps {
   products: Product[] | undefined;
@@ -22,114 +24,168 @@ export const ProductsListDesign = ({
   onAddToCart,
   isAddingToCart,
 }: ProductsListDesignProps) => {
+
+  // --- DEFINICIÓN DE ANIMACIONES CON TIPADO ---
+  
+  // 2. AÑADIMOS ': Variants' AQUÍ
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  // 3. Y AQUÍ TAMBIÉN PARA EVITAR EL ERROR EN EL MAP
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    show: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { type: "spring", stiffness: 50 } 
+    }
+  };
+
   return (
-    // FONDO GENERAL (Beige verdoso)
-    <div className="min-h-screen w-full bg-[#C2C5AA] p-4 font-sans">
-      {/* CONTENEDOR PRINCIPAL */}
-      <div className="mx-auto w-full max-w-7xl rounded-2xl bg-white p-6 shadow-2xl border border-[#A4AC86] sm:p-8">
-        {/* CABECERA: Título y Botón Crear */}
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-[#C2C5AA] pb-6">
-          <div>
-            <h1 className="text-3xl font-bold text-[#333D29]">Tienda</h1>
-            <p className="mt-2 text-[#656D4A]">
-              Explora nuestros productos seleccionados para ti
+    <div className="min-h-screen w-full bg-[#EBECE2] p-4 md:p-8 font-sans pt-24 md:pt-32">
+      
+      <div className="mx-auto w-full max-w-7xl">
+        
+        {/* CABECERA */}
+        <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            <h1 className="text-4xl md:text-5xl font-bold text-[#333D29] tracking-tight">
+              Explora la <span className="italic font-serif text-[#582F0E]">Tienda</span>
+            </h1>
+            <p className="mt-2 text-[#656D4A] uppercase tracking-widest text-xs font-bold">
+              Equipamiento técnico para espíritus libres
             </p>
-          </div>
+          </motion.div>
 
           {isAdmin && (
             <Link to="/products/new">
-              <button className="rounded-lg bg-[#582F0E] px-6 py-3 text-sm font-bold text-white shadow-md transition-transform hover:scale-105 hover:bg-[#7F4F24]">
-                + Crear Producto
-              </button>
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2 rounded-full bg-[#582F0E] px-8 py-3 text-sm font-bold text-white shadow-lg transition-colors hover:bg-[#7F4F24]"
+              >
+                <IconPlus size={18} />
+                Crear Producto
+              </motion.button>
             </Link>
           )}
         </div>
 
         {/* ESTADO: CARGANDO */}
         {isLoading && (
-          <div className="flex h-64 flex-col items-center justify-center text-[#582F0E]">
-            <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#A4AC86] border-t-[#582F0E]" />
-            <p className="mt-4 font-medium">Cargando productos...</p>
+          <div className="flex h-96 flex-col items-center justify-center text-[#582F0E]">
+             <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#333D29] border-t-transparent mb-4" />
+             <p className="font-bold text-lg animate-pulse">Buscando equipamiento...</p>
           </div>
         )}
 
         {/* ESTADO: ERROR */}
         {isError && (
-          <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-center text-red-700">
-            <p className="font-bold text-lg">⚠️ ¡Ups! Algo salió mal</p>
-            <p>{errorMessage}</p>
+          <div className="rounded-[2rem] border border-red-200 bg-red-50 p-10 text-center">
+            <p className="font-bold text-xl text-red-800 mb-2">⚠️ Conexión interrumpida</p>
+            <p className="text-red-600">{errorMessage || "No pudimos cargar los productos."}</p>
           </div>
         )}
 
-        {/* LISTA DE PRODUCTOS (GRID) */}
+        {/* LISTA DE PRODUCTOS */}
         {!isLoading && !isError && products && (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+          >
             {products.length === 0 ? (
-              <div className="col-span-full py-12 text-center text-[#656D4A]">
-                <p>No hay productos disponibles en este momento.</p>
+              <div className="col-span-full py-20 text-center">
+                <div className="inline-block p-6 rounded-full bg-white mb-4 shadow-sm">
+                    <IconShoppingBag size={48} className="text-[#333D29]/30" />
+                </div>
+                <p className="text-[#656D4A] font-medium text-lg">No hay productos disponibles por ahora.</p>
               </div>
             ) : (
               products.map((product) => (
-                // TARJETA DE PRODUCTO
-                <div
+                <motion.div
                   key={product._id}
-                  className="flex flex-col overflow-hidden rounded-xl border border-[#A4AC86] bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group"
+                  variants={itemVariants}
+                  className="group relative flex flex-col bg-white rounded-[2.5rem] p-4 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-transparent hover:border-[#B6AD90]/30"
                 >
-                  {/* Imagen */}
-                  <div className="relative h-48 w-full overflow-hidden bg-[#EBECE2]">
+                  {/* IMAGEN */}
+                  <Link to={`/products/${product._id}`} className="block relative h-64 w-full overflow-hidden rounded-[2rem] bg-[#EBECE2]">
                     {product.image ? (
                       <img
-                        // Usamos la utilidad y construimos la ruta relativa
                         src={getImageUrl(`uploads/products/${product.image}`)}
                         alt={product.name}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center text-[#A4AC86]">
-                        <span className="text-sm">Sin imagen</span>
+                        <span className="text-sm font-bold uppercase tracking-widest">Sin imagen</span>
                       </div>
                     )}
-                  </div>
+                    
+                    {/* Badge Categoría */}
+                    <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-[#333D29]">
+                        {product.category || "Equipo"}
+                    </div>
+                  </Link>
 
-                  {/* Contenido Tarjeta */}
-                  <div className="flex flex-1 flex-col p-4">
-                    <div className="mb-2 flex-1">
-                      <h3
-                        className="text-lg font-bold text-[#333D29] line-clamp-1"
-                        title={product.name}
-                      >
-                        {product.name}
-                      </h3>
-                      {/* Si quisieras mostrar la categoría: 
-                          <span className="text-xs font-semibold text-[#A4AC86] uppercase tracking-wider">{product.category}</span> 
-                      */}
+                  {/* INFO */}
+                  <div className="flex flex-1 flex-col pt-6 px-2">
+                    <div className="flex justify-between items-start mb-2">
+                        <Link to={`/products/${product._id}`} className="flex-1 pr-4">
+                            <h3 
+                                className="text-lg font-bold text-[#333D29] leading-tight group-hover:text-[#582F0E] transition-colors line-clamp-2"
+                                title={product.name}
+                            >
+                                {product.name}
+                            </h3>
+                        </Link>
+                        <span className="text-xl font-bold text-[#582F0E] shrink-0">
+                            ${product.price.toFixed(0)}
+                        </span>
                     </div>
 
-                    <div className="mt-4 flex items-end justify-between border-t border-[#EBECE2] pt-4">
-                      <p className="text-xl font-bold text-[#582F0E]">
-                        ${product.price.toFixed(2)}
-                      </p>
-                      <Link
-                        to={`/products/${product._id}`}
-                        className="text-sm font-medium text-[#7F4F24] hover:underline"
-                      >
-                        Ver detalle
-                      </Link>
-                    </div>
+                    <p className="text-sm text-[#656D4A] line-clamp-2 mb-6 font-medium opacity-80">
+                        {product.description}
+                    </p>
 
-                    {/* Botón Añadir */}
+                    {/* BOTÓN (Swipe) */}
                     <button
                       onClick={() => onAddToCart(product._id)}
                       disabled={isAddingToCart}
-                      className="mt-4 w-full rounded-lg bg-[#582F0E] py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#7F4F24] disabled:cursor-not-allowed disabled:opacity-70 active:scale-95"
+                      className="mt-auto group/btn relative w-full h-12 bg-[#333D29] text-white font-bold text-xs uppercase tracking-widest rounded-full overflow-hidden shadow-lg hover:shadow-[#B6AD90]/40 transition-all active:scale-95 disabled:opacity-70 disabled:active:scale-100"
                     >
-                      {isAddingToCart ? "Añadiendo..." : "Añadir al Carrito"}
+                      <span className="absolute inset-0 w-full h-full bg-[#B6AD90] transform scale-x-0 origin-left transition-transform duration-500 group-hover/btn:scale-x-100 ease-out" />
+                      
+                      <span className="relative z-10 flex items-center justify-center gap-2 group-hover/btn:text-[#333D29] transition-colors">
+                        {isAddingToCart ? (
+                            <>
+                                <span className="h-3 w-3 rounded-full border-2 border-current border-t-transparent animate-spin"/>
+                                Añadiendo...
+                            </>
+                        ) : (
+                            <>
+                                Añadir al Carrito
+                                <IconShoppingBag size={16} />
+                            </>
+                        )}
+                      </span>
                     </button>
                   </div>
-                </div>
+                </motion.div>
               ))
             )}
-          </div>
+          </motion.div>
         )}
       </div>
     </div>
