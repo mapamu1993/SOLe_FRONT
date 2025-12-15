@@ -3,12 +3,8 @@ import { useSnackbar } from "notistack";
 
 // 1. Hooks y Tipos
 import { useKitsQuery } from "../hooks/useKitsQuery";
-import { useAddToCartMutation } from "../../cart/hooks/useCartMutations";
-import { type Kit } from "../types/kitTypes";
-
-// 2. Componente de Diseño
-import { KitsPageDesign } from "../components/KitsPageDesign";
-
+import { IMAGE_URL } from "../../../../config/constants";
+import { getImageUrl } from "@/utils/imageUtil";
 const KitsPage = () => {
   // --- DATA FETCHING ---
   const { data: products, isLoading, isError } = useKitsQuery();
@@ -104,22 +100,33 @@ const KitsPage = () => {
 
   // --- RENDER ---
   return (
-    <KitsPageDesign
-      kits={kits}
-      isLoading={isLoading || isAdding}
-      isError={isError}
-      // Props Personalizador
-      isCustomizerOpen={isCustomizerOpen}
-      onCloseCustomizer={handleCloseModals}
-      selectedKitBasePrice={selectedKit?.price || 0}
-      onCustomBuy={handleCustomBuy}
-      // Props Contacto
-      isContactOpen={isContactOpen}
-      onCloseContact={handleCloseModals}
-      selectedKitName={selectedKit?.name || ""}
-      // Acción
-      onKitAction={handleKitAction}
-    />
+    <div>
+      <h1>Kits del Peregrino</h1>
+      <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+        {kits?.map((kit) => (
+          <div
+            key={kit._id}
+            style={{
+              border: "1px solid #ccc",
+              padding: "10px",
+              width: "250px",
+            }}
+          >
+            {kit.image && (
+              <img
+                src={getImageUrl(`uploads/products/${kit.image}`)}
+                alt={kit.name}
+                style={{ width: "100%", height: "auto" }}
+              />
+            )}
+            <h3>{kit.name}</h3>
+            <p>${kit.price}</p>
+            <p>{kit.description}</p>
+            <RouterLink to={`/products/${kit._id}`}>Ver Detalles</RouterLink>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 
