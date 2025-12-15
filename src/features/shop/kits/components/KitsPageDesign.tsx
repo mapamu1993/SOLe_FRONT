@@ -7,6 +7,8 @@ import { KitCard } from "./KitCard";
 import { KitDetail } from "./KitDetail";
 import { CustomizerForm } from "./CustomizerForm";
 import { ContactForm } from "./ContactForm";
+import { getImageUrl } from "../../../../utils/imageUtil";
+
 
 interface KitsPageDesignProps {
   kits: any[] | undefined;
@@ -41,12 +43,6 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
   selectedKitName,
   onKitAction,
 }) => {
-  // --- FUNCIÓN PARA DETECTAR SI LA IMAGEN ES DE INTERNET O LOCAL ---
-  const getImageUrl = (img: string) => {
-    if (!img) return "https://via.placeholder.com/400"; // Si no hay imagen
-    if (img.startsWith("http")) return img; // Si es una URL completa (Mocks/Internet)
-    return `${IMAGE_URL}/uploads/products/${img}`; // Si es un archivo local (Tu Backend)
-  };
 
   if (isLoading)
     return (

@@ -80,7 +80,7 @@ export const ProductsListDesign = ({
                     {product.image ? (
                       <img
                         // Usamos la utilidad y construimos la ruta relativa
-                        src={getImageUrl(`uploads/products/${product.image}`)}
+                        src={getImageUrl(product.image)}
                         alt={product.name}
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />

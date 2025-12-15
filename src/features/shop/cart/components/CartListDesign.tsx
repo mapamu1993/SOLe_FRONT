@@ -91,7 +91,7 @@ export const CartListDesign = ({
                           {item.product.image ? (
                             <img
                               src={getImageUrl(
-                                `uploads/products/${item.product.image}`
+                                item.product.image
                               )}
                               alt={item.product.name}
                               className="h-full w-full object-cover"

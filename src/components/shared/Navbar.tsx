@@ -7,6 +7,7 @@ import { useRemoveItemMutation, useUpdateCartMutation } from "../../features/sho
 import { IMAGE_URL } from "../../config/constants"; 
 // --- NUEVO: Importamos el hook de autenticación ---
 import { useAuth } from "../../features/auth/context/auth.context";
+import { getImageUrl } from "../../utils/imageUtil";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -97,7 +98,7 @@ const Navbar = () => {
             cart.items.map((item) => (
               <div key={item.product._id} className="flex gap-4 items-center bg-white/60 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-white/50">
                 <div className="w-20 h-20 rounded-xl overflow-hidden bg-gray-100 shrink-0">
-                  <img src={item.product.image?.startsWith('http') ? item.product.image : `${IMAGE_URL}/uploads/products/${item.product.image}`} alt={item.product.name} className="w-full h-full object-cover" />
+                  <img src={getImageUrl(item.product.image)} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-bold text-[#333D29] text-sm mb-1">{item.product.name}</h3>
