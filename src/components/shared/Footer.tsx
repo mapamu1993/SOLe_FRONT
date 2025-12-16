@@ -1,12 +1,9 @@
-// Importa la librería React para la creación de componentes
-import React from "react";
 // Importa el componente Link para la navegación interna sin recargar la página
 import { Link } from "react-router-dom";
 // Importa los iconos de redes sociales y correo desde la librería tabler-icons
 import {
   IconBrandInstagram,
   IconBrandX,
-  IconMail,
 } from "@tabler/icons-react";
 
 // Define el componente funcional Footer
