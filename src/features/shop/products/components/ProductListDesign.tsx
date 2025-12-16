@@ -123,7 +123,7 @@ export const ProductsListDesign = ({
                   <Link to={`/products/${product._id}`} className="block relative h-64 w-full overflow-hidden rounded-[2rem] bg-[#EBECE2]">
                     {product.image ? (
                       <img
-                        src={getImageUrl(`uploads/products/${product.image}`)}
+                        src={getImageUrl(product.image)}
                         alt={product.name}
                         className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />

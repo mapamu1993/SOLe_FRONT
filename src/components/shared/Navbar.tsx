@@ -1,15 +1,15 @@
-import React, { useEffect, useState, useMemo } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { IconUser, IconMenu2, IconX, IconShoppingBag, IconTrash, IconPlus, IconMinus } from "@tabler/icons-react";
-
-// HOOKS REALES
-import { useCartQuery } from "../../features/shop/cart/hooks/useCartQuery";
-import { useRemoveItemMutation, useUpdateCartMutation } from "../../features/shop/cart/hooks/useCartMutations";
-import { IMAGE_URL } from "../../config/constants"; 
-
 // --- IMPORTACIONES ---
 import { useAuth } from "../../features/auth/context/auth.context";
 import { getUserProfileUrl } from "../../utils/imageUtil"; 
+import { useEffect, useState, useMemo } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { IconUser, IconMenu2, IconX, IconShoppingBag, IconTrash, IconPlus, IconMinus } from "@tabler/icons-react";
+import { getImageUrl } from "../../utils/imageUtil";
+
+// HOOKS
+import { useCartQuery } from "../../features/shop/cart/hooks/useCartQuery";
+import { useRemoveItemMutation, useUpdateCartMutation } from "../../features/shop/cart/hooks/useCartMutations";
+
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -24,7 +24,7 @@ const Navbar = () => {
   
   const { isAuthenticated, user } = useAuth(); 
 
-  // --- 1. PROTECCIÓN EN CÁLCULO DE ITEMS ---
+  // --- PROTECCIÓN EN CÁLCULO DE ITEMS ---
   const totalItems = useMemo(() => {
     if (!cart?.items) return 0;
     return cart.items.reduce((acc, item) => {
@@ -34,11 +34,11 @@ const Navbar = () => {
     }, 0);
   }, [cart]);
 
-  // --- 2. PROTECCIÓN CRÍTICA EN SUBTOTAL (Aquí estaba el error) ---
+  // --- PROTECCIÓN CRÍTICA EN SUBTOTAL ---
   const subtotal = useMemo(() => {
     if (!cart?.items) return 0;
     return cart.items.reduce((acc, item) => {
-      // Si el producto no existe, saltamos esta iteración para que no explote
+      // Si el producto no existe, saltamos esta iteración para que no haya errores
       if (!item.product) return acc;
       return acc + (item.product.price * item.quantity);
     }, 0);
@@ -122,13 +122,13 @@ const Navbar = () => {
           ) : !cart?.items || cart.items.length === 0 ? (
             <div className="text-center py-10 text-[#656D4A]">Tu carrito está vacío.</div>
           ) : (
-            // --- 3. PROTECCIÓN VISUAL: FILTRAR ITEMS ROTOS ---
+            // --- PROTECCIÓN VISUAL: FILTRAR ITEMS ROTOS ---
             cart.items
               .filter(item => item.product != null) // ¡Esto evita que el drawer explote!
               .map((item) => (
                 <div key={item.product._id} className="flex gap-4 items-center bg-white/60 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-white/50">
                   <div className="w-20 h-20 rounded-xl overflow-hidden bg-gray-100 shrink-0">
-                    <img src={item.product.image?.startsWith('http') ? item.product.image : `${IMAGE_URL}/uploads/products/${item.product.image}`} alt={item.product.name} className="w-full h-full object-cover" />
+                    <img src={getImageUrl(item.product.image)} alt={item.product.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="flex-1">
                     <h3 className="font-bold text-[#333D29] text-sm mb-1">{item.product.name}</h3>

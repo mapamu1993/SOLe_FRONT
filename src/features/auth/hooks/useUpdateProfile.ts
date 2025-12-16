@@ -21,6 +21,7 @@ const useUpdateProfile = () => {
     },
     onError: (error: any) => {
       error.response?.data?.message || "Hubo un error al actualizar el perfil";
+      console.error("Error updating profile:", error);
     },
   });
 };

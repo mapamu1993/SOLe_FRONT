@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useSnackbar } from "notistack";
 import { useKitsQuery } from "../hooks/useKitsQuery";
 import { useAddToCartMutation } from "../../cart/hooks/useCartMutations";
 import { type Kit } from "../types/kitTypes";
 
-// 2. IMPORTAMOS EL DISEÑO BONITO (Aquí está la clave)
+//IMPORTAMOS EL DISEÑO 
 import { KitsPageDesign } from "../components/KitsPageDesign";
 
 const KitsPage = () => {

@@ -47,7 +47,7 @@ export const getMyProfileService = async () => {
   return response.data;
 };
 
-//servicio para actualizar el perfil REVISAR!!!!!
+//servicio para actualizar el perfil REVISADO Y CORREGIDO OLEOLE
 export const updateProfileService = async (
   data: ProfileFields,
   file: File | null
@@ -66,7 +66,7 @@ export const updateProfileService = async (
   }
 
   const response = await axiosClient.patch(
-    `${API_ROUTES.USERS}/update/`,
+    `${API_ROUTES.USERS}/update`,
     formData
   );
 

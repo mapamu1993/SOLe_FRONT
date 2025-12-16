@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { type Product } from "../types/productTypes";
-import { IMAGE_URL } from "../../../../config/constants";
+import { getImageUrl } from "../../../../utils/imageUtil";
 // 1. CAMBIO: Usamos Tabler Icons (ya instalado) en lugar de Lucide
 import {
   IconShoppingCart,
@@ -26,12 +26,7 @@ export const ProductDetailsDesign = ({
   isAddingToCart,
 }: ProductDetailsDesignProps) => {
   
-  // Función para resolver imagen
-  const getImageUrl = (img: string) => {
-    if (!img) return null;
-    if (img.startsWith("http")) return img;
-    return `${IMAGE_URL}/uploads/products/${img}`;
-  };
+
 
   return (
     // FONDO GENERAL
