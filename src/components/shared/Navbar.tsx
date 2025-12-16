@@ -84,7 +84,6 @@ const Navbar = () => {
   return (
     <>
       <nav className={navClasses}>
-<<<<<<< HEAD
         <Link
           to="/"
           className="
@@ -105,10 +104,6 @@ const Navbar = () => {
           >
             Sole
           </span>
-=======
-        <Link to="/" className="flex items-center gap-2 group">
-          <span className="text-xl font-bold text-white tracking-wide group-hover:text-[#B6AD90] transition-colors">SOL-e</span>
->>>>>>> main
         </Link>
 
         <div
