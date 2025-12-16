@@ -44,7 +44,7 @@ const UpdateProfilePage = () => {
         address: user.address ?? "",
         phone: user.phone ?? "",
       });
-      const initialUrl = getUserProfileUrl(user.profilePicture);
+      const initialUrl = getUserProfileUrl(user.image);
       if (initialUrl) setPreviewUrl(initialUrl);
     }
   }, [user, reset]);
@@ -56,7 +56,7 @@ const UpdateProfilePage = () => {
     if (selectedFile) {
       setPreviewUrl(URL.createObjectURL(selectedFile));
     } else {
-      const originalUrl = getUserProfileUrl(user?.profilePicture);
+      const originalUrl = getUserProfileUrl(user?.image);
       setPreviewUrl(originalUrl || null);
     }
   };

@@ -88,9 +88,9 @@ const Navbar = () => {
           <Link to={isAuthenticated ? "/profile" : "/login"}>
             {isAuthenticated ? (
               <button className="flex items-center justify-center w-10 h-10 rounded-full bg-[#582F0E] text-white border border-[#7F4F24] hover:bg-[#7F4F24] hover:scale-105 transition-all shadow-lg overflow-hidden">
-                {user?.profilePicture ? (
+                {user?.image ? (
                   <img 
-                    src={getUserProfileUrl(user.profilePicture)} 
+                    src={getUserProfileUrl(user.image)} 
                     alt="Perfil" 
                     className="w-full h-full object-cover"
                   />

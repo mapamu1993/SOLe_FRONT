@@ -18,7 +18,7 @@ export const createBlogService = async (data: CreateBlogFields, file: File) => {
   const formData = new FormData();
   formData.append("title", data.title);
   formData.append("content", data.content);
-  formData.append("blogImage", file);
+  formData.append("image", file);
 
   const response = await axiosClient.post(API_ROUTES.BLOGS, formData);
   return response.data;
@@ -33,7 +33,7 @@ export const editBlogService = async (
   formData.append("title", data.title);
   formData.append("content", data.content);
   if (file) {
-    formData.append("blogImage", file);
+    formData.append("image", file);
   }
 
   const response = await axiosClient.patch(

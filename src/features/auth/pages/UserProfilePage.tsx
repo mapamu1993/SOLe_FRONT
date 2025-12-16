@@ -15,7 +15,7 @@ const UserProfilePage = () => {
   if (!user) return null;
 
   const profileImageUrl =
-    getUserProfileUrl(user.profilePicture) ||
+    getUserProfileUrl(user.image) ||
     "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
   const displayName = getDisplayName(user);

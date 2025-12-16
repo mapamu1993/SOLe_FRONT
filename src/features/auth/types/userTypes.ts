@@ -5,7 +5,7 @@ export interface User {
   lastName: string;
   email: string;
   role: "user" | "moderator" | "admin";
-  profilePicture?: string;
+  image?: string;
   phone?: string;
   address?: string;
 }

@@ -56,13 +56,13 @@ export const updateProfileService = async (
 
   Object.keys(data).forEach((key) => {
     const value = data[key as keyof ProfileFields];
-    if (value !== undefined && value !== null && key !== "profilePicture") {
+    if (value !== undefined && value !== null && key !== "image") {
       formData.append(key, String(value));
     }
   });
 
   if (file) {
-    formData.append("profilePicture", file);
+    formData.append("image", file);
   }
 
   const response = await axiosClient.patch(
