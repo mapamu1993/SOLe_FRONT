@@ -6,9 +6,9 @@ export const useKitsQuery = () => {
   return useQuery<Kit[], Error>({
     queryKey: ["kits"],
     queryFn: getAllKitsService,
-    staleTime: 0, 
-    refetchOnMount: true, 
-    refetchOnWindowFocus: true,
+    staleTime: 1000 * 60 * 5, // 5 minutos (Confiamos en la actualización manual)
+    refetchOnMount: true,
+    refetchOnWindowFocus: false, // Evitamos recargas innecesarias al cambiar de ventana
   });
 };
 
@@ -17,6 +17,6 @@ export const useKitByIdQuery = (id: string) => {
     queryKey: ["kit", id],
     queryFn: () => getKitByIdService(id),
     enabled: !!id,
-    staleTime: 0,
+    staleTime: 0, // El detalle sí queremos que sea fresco siempre
   });
 };
