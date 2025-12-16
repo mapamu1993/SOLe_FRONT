@@ -1,26 +1,30 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useCartQuery } from "../hooks/useCartQuery";
 import {
   useUpdateCartMutation,
   useRemoveItemMutation,
+  useCheckoutMutation
 } from "../hooks/useCartMutations";
-// IMPORTANTE: Aquí importamos el diseño visual estilo Amazon que creamos antes
 import { CartListDesign } from "../components/CartListDesign";
 
 const CartPage = () => {
-  // 1. LÓGICA DE DATOS (El Cerebro)
+  // 1. ESTADOS LOCALES PARA EL FLUJO
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [successOrder, setSuccessOrder] = useState<any | null>(null); // Guardamos la orden creada
+
+  // 2. LÓGICA DE DATOS (Queries & Mutations)
   const { data: cart, isLoading, isError } = useCartQuery();
   const { mutate: updateCart } = useUpdateCartMutation();
   const { mutate: removeItem } = useRemoveItemMutation();
+  const checkoutMutation = useCheckoutMutation();
 
-  // 2. FILTRADO SEGURO
-  // Nos aseguramos de que no haya productos "fantasma" (nulos)
+  // 3. FILTRADO SEGURO DE ITEMS
   const validItems = useMemo(() => {
     if (!cart?.items) return [];
     return cart.items.filter((item) => item.product != null);
   }, [cart]);
 
-  // 3. CÁLCULO DEL TOTAL
+  // 4. CÁLCULO DEL TOTAL
   const subtotal = useMemo(() => {
     return validItems.reduce(
       (acc, item) => acc + item.product.price * item.quantity,
@@ -28,7 +32,7 @@ const CartPage = () => {
     );
   }, [validItems]);
 
-  // 4. FUNCIONES DE ACCIÓN
+  // 5. HANDLERS
   const handleUpdateQuantity = (productId: string, change: number) => {
     updateCart({ productId, quantity: change });
   };
@@ -37,13 +41,29 @@ const CartPage = () => {
     removeItem(productId);
   };
 
-  const handleCheckout = () => {
-    // Aquí conectarás tu pasarela de pago (Stripe, PayPal, etc.) más adelante
-    alert("¡Procesando pedido! (Lógica de pago pendiente)");
+  // Paso 1 del Checkout: Abrir modal de dirección
+  const handleInitiateCheckout = () => {
+    setIsAddressModalOpen(true);
   };
 
-  // 5. RENDERIZADO DEL DISEÑO
-  // Le pasamos todo al componente visual "CartListDesign"
+  // Paso 2 del Checkout: Confirmar compra con dirección
+  const handleConfirmCheckout = async (shippingAddress: string) => {
+    try {
+      // Usamos mutateAsync para esperar la respuesta del backend
+      const response = await checkoutMutation.mutateAsync({ shippingAddress });
+      
+      // El backend devuelve { status: "success", data: { order: ... } }
+      // Guardamos la orden para mostrar el resumen final
+      if (response && response.data && response.data.order) {
+        setSuccessOrder(response.data.order);
+        setIsAddressModalOpen(false); // Cerramos el modal
+      }
+    } catch (error) {
+      console.error("Error en checkout:", error);
+      // El hook useCheckoutMutation ya maneja las notificaciones de error (snackbars)
+    }
+  };
+
   return (
     <CartListDesign
       items={validItems}
@@ -52,7 +72,12 @@ const CartPage = () => {
       subtotal={subtotal}
       onUpdateQuantity={handleUpdateQuantity}
       onRemoveItem={handleRemoveItem}
-      onCheckout={handleCheckout}
+      onCheckoutClick={handleInitiateCheckout} // Abre el modal
+      onConfirmCheckout={handleConfirmCheckout} // Ejecuta la compra
+      isCheckoutLoading={checkoutMutation.isPending}
+      isAddressModalOpen={isAddressModalOpen}
+      setIsAddressModalOpen={setIsAddressModalOpen}
+      successOrder={successOrder} // Si existe, mostramos pantalla de éxito
     />
   );
 };

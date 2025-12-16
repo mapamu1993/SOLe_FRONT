@@ -31,9 +31,7 @@ export function BlogPreview() {
       return {
         id: blog._id,
         title: blog.title,
-        // Como tu backend no tiene campo "category" aún, ponemos uno por defecto
         category: "Blog",
-        // Creamos un resumen cortando el contenido a 100 caracteres
         excerpt: blog.content.substring(0, 100) + "...",
         image: getImageUrl(blog.image),
         date: formattedDate,
@@ -41,8 +39,6 @@ export function BlogPreview() {
     });
   }, [blogs]);
 
-  // Si está cargando, podrías mostrar un spinner, o simplemente mantener la estructura vacía
-  // Para que no de un salto visual, renderizamos la sección de todas formas.
 
   return (
     <section className="w-full py-32 md:py-40 px-4 md:px-6 bg-[#F2F2EF] relative z-10">
@@ -79,7 +75,7 @@ export function BlogPreview() {
             </div>
           )}
 
-          {/* BLOGS REALES */}
+          {/* ENTRADAS DE BLOG */}
           {!isLoading &&
             recentBlogs.map((blog) => (
               <Link
@@ -87,7 +83,7 @@ export function BlogPreview() {
                 key={blog.id}
                 className="group bg-white rounded-[2rem] p-4 flex flex-col md:flex-row gap-6 md:gap-8 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 overflow-hidden"
               >
-                {/* IMAGEN */}
+                {/* IMAGEN DE LA ENTRADA */}
                 <div className="w-full md:w-1/3 lg:w-1/4 h-56 md:h-auto rounded-[1.5rem] overflow-hidden relative shrink-0">
                   <img
                     src={blog.image}
@@ -104,7 +100,6 @@ export function BlogPreview() {
                   <div className="flex items-center gap-3 text-xs font-bold text-[#B6AD90] uppercase tracking-wider mb-3">
                     <span>{blog.date}</span>
                     <span className="w-1 h-1 rounded-full bg-[#B6AD90]" />
-                    {/* Calculamos lectura aprox. (200 palabras/min) o lo dejamos estático */}
                     <span>Lectura rápida</span>
                   </div>
 

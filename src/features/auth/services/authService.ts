@@ -41,6 +41,12 @@ export const loginUserService = async (data: LoginFormFields) => {
   return response.data;
 };
 
+//servicio para cerrar sesion
+export const logoutUserService = async () => {
+  const response = await axiosClient.post("/user/logout");
+  return response.data;
+};
+
 //servicio para mostrar el perfil
 export const getMyProfileService = async () => {
   const response = await axiosClient.get(`${API_ROUTES.USERS}`);
