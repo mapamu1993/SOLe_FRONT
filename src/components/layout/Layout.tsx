@@ -1,30 +1,38 @@
+// Importa componentes de 'react-router-dom': Outlet para el contenido anidado y useLocation para saber la ruta actual
 import { Outlet, useLocation } from "react-router-dom";
+// Importa el componente de barra de navegación compartida
 import Navbar from "../shared/Navbar";
+// Importa el componente de pie de página compartido
 import Footer from "../shared/Footer";
 
+// Define el componente funcional Layout que servirá de estructura base para todas las páginas
 const Layout = () => {
+  // Obtiene el objeto location que contiene información sobre la URL actual
   const location = useLocation();
-  // Detectamos si es la Home para saber si aplicar relleno superior o no
+  // Determina si la página actual es la 'Home' (ruta raíz) para aplicar estilos condicionales
   const isHome = location.pathname === "/";
 
+  // Retorna la estructura JSX que compone la interfaz
   return (
+    // Contenedor principal flex que asegura ocupar al menos toda la altura de la pantalla (min-h-screen)
     <div className="flex flex-col min-h-screen">
-      {/* 1. Navbar fija siempre visible */}
+      
+      {/* Renderiza la barra de navegación en la parte superior */}
       <Navbar />
 
-      {/* 2. Contenido de la página (Outlet) */}
-      {/* Si NO es la Home, añadimos 'pt-32' (padding-top) para que el contenido 
-         no quede oculto detrás de la Navbar flotante.
-         Si es la Home, lo dejamos en 0 para que el HeroSection cubra la pantalla.
-      */}
+      
+      {/* Contenedor principal del contenido; añade padding superior (pt-28) si no es la home para compensar el navbar fijo */}
       <main className={`flex-grow ${!isHome ? "pt-28" : ""}`}>
+        {/* Renderiza el componente hijo correspondiente a la ruta activa en ese momento */}
         <Outlet />
       </main>
 
-      {/* 3. Footer siempre al final */}
+      
+      {/* Renderiza el pie de página al final del contenedor */}
       <Footer />
     </div>
   );
 };
 
+// Exporta el componente Layout por defecto para ser utilizado en el enrutador
 export default Layout;

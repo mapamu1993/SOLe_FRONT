@@ -1,11 +1,11 @@
 import { IMAGE_URL } from "../../../config/constants";
 
 export const getUserProfileUrl = (
-  profilePicture: string | undefined | null
+  image: string | undefined | null
 ) => {
-  if (!profilePicture) return undefined;
-  if (profilePicture.startsWith("http")) return profilePicture;
-  return `${IMAGE_URL}/uploads/users/${profilePicture}`;
+  if (!image) return undefined;
+  if (image.startsWith("http")) return image;
+  return `${IMAGE_URL}/uploads/users/${image}`;
 };
 
 export const getUserInitials = (name?: string, username?: string) => {

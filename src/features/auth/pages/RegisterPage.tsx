@@ -50,7 +50,6 @@ const RegisterPage = () => {
       navigate("/login");
     } catch (error) {
       console.error("Error en petición:", error);
-      // Aquí podrías mejorar el manejo de errores si tu backend devuelve un mensaje específico
       setServerError("Ocurrió un error, inténtalo de nuevo.");
     }
   };

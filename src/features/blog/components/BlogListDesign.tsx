@@ -105,7 +105,7 @@ export const BlogListDesign = ({
                     {blog.image ? (
                       <img
                         // Construimos la URL correctamente usando tu utilidad
-                        src={getImageUrl(`uploads/blogs/${blog.image}`)}
+                        src={getImageUrl(blog.image)}
                         alt={blog.title}
                         className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />

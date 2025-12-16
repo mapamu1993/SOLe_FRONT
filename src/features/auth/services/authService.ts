@@ -47,7 +47,7 @@ export const getMyProfileService = async () => {
   return response.data;
 };
 
-//servicio para actualizar el perfil REVISAR!!!!!
+//servicio para actualizar el perfil REVISADO Y CORREGIDO OLEOLE
 export const updateProfileService = async (
   data: ProfileFields,
   file: File | null
@@ -56,17 +56,17 @@ export const updateProfileService = async (
 
   Object.keys(data).forEach((key) => {
     const value = data[key as keyof ProfileFields];
-    if (value !== undefined && value !== null && key !== "profilePicture") {
+    if (value !== undefined && value !== null && key !== "image") {
       formData.append(key, String(value));
     }
   });
 
   if (file) {
-    formData.append("profilePicture", file);
+    formData.append("image", file);
   }
 
   const response = await axiosClient.patch(
-    `${API_ROUTES.USERS}/update/`,
+    `${API_ROUTES.USERS}/update`,
     formData
   );
 
@@ -88,6 +88,18 @@ export const resetPasswordService = async (data: ResetPasswordFields) => {
     email: data.email,
     pin: data.pin,
     password: data.password,
+  });
+  return response.data;
+};
+
+//servicio para actualizar la contraseña
+export const changePasswordService = async (
+  currentPassword: string,
+  newPassword: string
+) => { 
+  const response = await axiosClient.patch(`${API_ROUTES.USERS}/updatepassword`, {
+    currentPassword,
+    newPassword,
   });
   return response.data;
 };

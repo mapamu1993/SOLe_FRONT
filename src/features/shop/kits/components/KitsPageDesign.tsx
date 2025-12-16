@@ -1,5 +1,4 @@
 import React from "react";
-import { IMAGE_URL } from "../../../../config/constants";
 import { motion, type Variants } from "framer-motion";
 import { IconPackage } from "@tabler/icons-react";
 
@@ -8,6 +7,7 @@ import { KitCard } from "./KitCard";
 import { KitDetail } from "./KitDetail";
 import { CustomizerForm } from "./CustomizerForm";
 import { ContactForm } from "./ContactForm";
+import { getImageUrl } from "../../../../utils/imageUtil";
 
 interface KitsPageDesignProps {
   kits: any[] | undefined;
@@ -40,13 +40,6 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
   selectedKitName,
   onKitAction,
 }) => {
-  // --- UTILIDAD DE IMAGEN ---
-  const getImageUrl = (img: string) => {
-    if (!img) return "https://via.placeholder.com/400";
-    if (img.startsWith("http")) return img;
-    return `${IMAGE_URL}/uploads/products/${img}`;
-  };
-
   // --- ANIMACIONES (Igual que Blog y Tienda) ---
   const containerVariants: Variants = {
     hidden: { opacity: 0 },

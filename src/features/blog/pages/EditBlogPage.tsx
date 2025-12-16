@@ -18,6 +18,8 @@ const EditBlogPage = () => {
   const [loadingData, setLoadingData] = useState(true);
   const [loadError, setLoadError] = useState("");
 
+  
+
   const { mutate, isPending, error: mutationError } = useEditBlogMutation();
 
   const {
@@ -55,11 +57,20 @@ const EditBlogPage = () => {
   };
 
   // Construir la URL de la imagen existente
-  const formattedExistingImage = currentImage?.startsWith("http")
-    ? currentImage
-    : currentImage
-    ? `${IMAGE_URL}/uploads/blogs/${currentImage}`
-    : null;
+  const formattedExistingImage = (() => {
+    if (!currentImage) return null;
+    
+    // Si es una URL completa (Firebase/Externa), úsala
+    if (currentImage.startsWith("http")) {
+      return currentImage;
+    }
+    
+    if (currentImage.includes("/") || currentImage.match(/\.(jpeg|jpg|png|webp)$/i)) {
+        return `${IMAGE_URL}/uploads/blogs/${currentImage}`;
+    }
+
+    return null; 
+  })();
 
   if (loadingData) return (
     <div className="flex h-screen items-center justify-center bg-[#EBECE2]">

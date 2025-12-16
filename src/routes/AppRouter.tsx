@@ -17,6 +17,7 @@ import UserProfilePage from "../features/auth/pages/UserProfilePage";
 import UpdateProfilePage from "../features/auth/pages/UpdateProfilePage";
 import ForgotPasswordPage from "../features/auth/pages/ForgotPasswordPage";
 import ResetPasswordPage from "../features/auth/pages/ResetPasswordPage";
+import EditPasswordPage from "../features/auth/pages/EditPasswordPage";
 
 // Contact Page
 import ContactPage from "../features/contact/pages/ContactPage";
@@ -33,7 +34,7 @@ import CreateProductPage from "../features/shop/products/pages/CreateProductPage
 import CartPage from "../features/shop/cart/pages/CartPage";
 import OrdersPage from "../features/shop/orders/pages/OrdersPage";
 import KitsPage from "../features/shop/kits/pages/KitsPage";
-import EditProductPage from "../features/shop/products/pages/EditProductPage";
+import ProductsDetailsPage from "../features/shop/products/pages/ProductsDetailsPage";
 
 const ProtectedRoute = ({
   children,
@@ -72,6 +73,7 @@ const AppRouter = () => {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
         <Route path="/resetpassword" element={<ResetPasswordPage />} />
+        <Route path="/editpassword" element={<EditPasswordPage />} />
 
         <Route path="/contacto" element={<ContactPage />} />
 
@@ -82,11 +84,7 @@ const AppRouter = () => {
         {/* TIENDA */}
         <Route path="/tienda" element={<ProductsPage />} />
         <Route path="/kits" element={<KitsPage />} />
-        <Route path="/products/edit/:id" element={<EditProductPage />} />
-        <Route
-          path="/products/:id"
-          element={<div>Detalle producto pendiente</div>}
-        />
+        <Route path="/products/:id" element={<ProductsDetailsPage />} />
 
         {/* PRIVADAS */}
         <Route
