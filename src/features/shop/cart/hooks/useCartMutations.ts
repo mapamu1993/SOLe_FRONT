@@ -5,8 +5,15 @@ import {
   updateCartService,
   removeItemFromCartService,
 } from "../services/cartService";
+import { API_ROUTES } from "@/config/constants"; 
+import { checkoutService } from "../services/cartService";
+
 
 const CART_QUERY_KEY = ["cart"];
+const ORDERS_QUERY_KEY = ["orders"]; 
+type UpdateCartData = { productId: string, quantity: number };
+type CheckoutData = {shippingAddress: string};
+
 
 interface ErrorResponse {
   message: string;
@@ -55,6 +62,26 @@ export const useRemoveItemMutation = () => {
     },
   });
 };
+
+export const useCheckoutMutation = () => {
+const queryClient = useQueryClient();
+const { enqueueSnackbar } = useSnackbar();
+return useMutation({
+  mutationFn: (data: CheckoutData) => checkoutService(data.shippingAddress),
+
+onSuccess: () => {
+  queryClient.invalidateQueries({ queryKey: CART_QUERY_KEY });
+  queryClient.invalidateQueries({ queryKey: ORDERS_QUERY_KEY });
+  enqueueSnackbar("Checkout realizado con éxito.", { variant: "success" });
+},
+
+onError: (error: AxiosError<ErrorResponse>) => {
+  const errorMessage =
+    error.response?.data?.message || "Error al realizar el checkout.";
+  enqueueSnackbar(errorMessage, { variant: "error" });
+},
+});
+}
 
 // Alias para mantener compatibilidad si se usa en otros lados
 export const useAddToCartMutation = useUpdateCartMutation;

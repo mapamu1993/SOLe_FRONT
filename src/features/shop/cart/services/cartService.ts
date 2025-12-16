@@ -2,9 +2,15 @@ import axiosClient from "../../../../api/axios.client";
 import { API_ROUTES } from "../../../../config/constants";
 import { type Cart } from "../types/cartTypes";
 
+
 interface UpdateCartData {
   productId: string;
   quantity: number;
+}
+
+interface CheckoutResponse {
+  status: "success";
+  data: {order: any};
 }
 
 export const fetchCartService = async (): Promise<Cart> => {
@@ -19,5 +25,10 @@ export const updateCartService = async (data: UpdateCartData) => {
 
 export const removeItemFromCartService = async (productId: string) => {
   const response = await axiosClient.delete(`${API_ROUTES.CART}/${productId}`);
+  return response.data;
+};
+
+export const checkoutService = async (shippingAddress: string) : Promise<CheckoutResponse> => {
+  const response = await axiosClient.post(`${API_ROUTES.CART}/checkout`, { shippingAddress });
   return response.data;
 };
