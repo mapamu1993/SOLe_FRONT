@@ -264,7 +264,7 @@ export const ProductFormDesign = ({
               </div>
             </div>
 
-            {/* BOTÓN SUBMIT (Estilo Swipe) */}
+            {/* BOTON SUBMIT */}
             <div className="pt-4">
               <button
                 type="submit"

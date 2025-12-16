@@ -145,7 +145,7 @@ const ResetPasswordDesign: React.FC<ResetPasswordDesignProps> = ({
                 type="password"
                 {...register("password")}
                 className={inputClass}
-                placeholder="••••••••"
+                placeholder="Nueva contraseña"
               />
               <div className={iconContainerClass}>
                 <LockIcon />
@@ -162,7 +162,7 @@ const ResetPasswordDesign: React.FC<ResetPasswordDesignProps> = ({
                 type="password"
                 {...register("confirmPassword")}
                 className={inputClass}
-                placeholder="••••••••"
+                placeholder="Confirma tu contraseña"
               />
               <div className={iconContainerClass}>
                 <LockIcon />

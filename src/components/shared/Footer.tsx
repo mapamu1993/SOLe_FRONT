@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 // Importa los iconos de redes sociales y correo desde la librería tabler-icons
 import {
   IconBrandInstagram,
-  IconBrandTwitter,
+  IconBrandX,
   IconMail,
 } from "@tabler/icons-react";
 
@@ -115,7 +115,7 @@ const Footer = () => {
               transition-all
               cursor-pointer"
               >
-                <IconBrandTwitter size={20} />
+                <IconBrandX size={20} />
               </div>
             </div>
           </div>
@@ -143,7 +143,7 @@ const Footer = () => {
           select-none
           pointer-events-none"
           >
-            SOLE
+            SOL-e
           </h1>
           {/* Texto de copyright y enlaces legales alineados al final */}
           <div
@@ -156,7 +156,7 @@ const Footer = () => {
           tracking-widest 
           pb-4"
           >
-            <span>© 2024 Sole</span>
+            <span>© 2024 SOL-e</span>
             <span>Privacidad</span>
             <span>Legal</span>
           </div>

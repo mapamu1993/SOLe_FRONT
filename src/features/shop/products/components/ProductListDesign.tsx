@@ -168,7 +168,7 @@ export const ProductsListDesign = ({
                         </h3>
                       </Link>
                       <span className="text-xl font-bold text-[#582F0E] shrink-0">
-                        ${product.price.toFixed(0)}
+                        {product.price.toFixed(0)} €
                       </span>
                     </div>
 
