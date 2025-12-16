@@ -1,14 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createProductService } from "../services/productServices";
+import {
+  createProductService,
+  updateProductService,
+  deleteProductService,
+  type CreateProductParams, // Importamos los tipos exportados
+  type UpdateProductParams
+} from "../services/productServices";
+import { type Product } from "../types/productTypes"; // Asegúrate de importar Product
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { AxiosError } from "axios";
-import { 
-  updateProductService,
-  deleteProductService
-} from "../services/productServices";
 
-interface ErrorResponse {
+export interface ErrorResponse {
   message: string;
 }
 
@@ -17,14 +20,15 @@ export const useCreateProductMutation = () => {
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
 
-  return useMutation({
+  // Tipado explícito: <RespuestaExito, Error, VariablesEntrada>
+  return useMutation<Product, AxiosError<ErrorResponse>, CreateProductParams>({
     mutationFn: createProductService,
     onSuccess: () => {
       enqueueSnackbar("Producto creado exitosamente.", { variant: "success" });
       queryClient.invalidateQueries({ queryKey: ["allProducts"] });
-      navigate("/");
+      navigate("/tienda");
     },
-    onError: (err: AxiosError<ErrorResponse>) => {
+    onError: (err) => {
       const errorMessage =
         err.response?.data?.message || "Error al crear el producto.";
       enqueueSnackbar(errorMessage, { variant: "error" });
@@ -32,22 +36,24 @@ export const useCreateProductMutation = () => {
   });
 };
 
-export const useUpdateProductMutation = () => {
+export const useEditProductMutation = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: ({ id, data, file }: { id: string; data: any; file: File | null }) =>
-      updateProductService(id, data, file),
+  // Tipado explícito aquí para arreglar tus errores en EditPage
+  return useMutation<Product, AxiosError<ErrorResponse>, UpdateProductParams>({
+    mutationFn: updateProductService,
     onSuccess: () => {
-      enqueueSnackbar("Producto actualizado correctamente.", { variant: "success" });
-      queryClient.invalidateQueries({ queryKey: ["allProducts"] }); // Refresca la lista
-      queryClient.invalidateQueries({ queryKey: ["product"] });     // Refresca el detalle si estás en él
+      enqueueSnackbar("Producto actualizado correctamente.", {
+        variant: "success",
+      });
+      queryClient.invalidateQueries({ queryKey: ["allProducts"] });
       navigate("/tienda");
     },
-    onError: (err: AxiosError<ErrorResponse>) => {
-      const errorMessage = err.response?.data?.message || "Error al actualizar.";
+    onError: (err) => {
+      const errorMessage =
+        err.response?.data?.message || "Error al actualizar el producto.";
       enqueueSnackbar(errorMessage, { variant: "error" });
     },
   });
@@ -57,14 +63,15 @@ export const useDeleteProductMutation = () => {
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<void, AxiosError<ErrorResponse>, string>({
     mutationFn: deleteProductService,
     onSuccess: () => {
       enqueueSnackbar("Producto eliminado.", { variant: "success" });
       queryClient.invalidateQueries({ queryKey: ["allProducts"] });
     },
-    onError: (err: AxiosError<ErrorResponse>) => {
-      const errorMessage = err.response?.data?.message || "Error al eliminar.";
+    onError: (err) => {
+      const errorMessage =
+        err.response?.data?.message || "Error al eliminar el producto.";
       enqueueSnackbar(errorMessage, { variant: "error" });
     },
   });

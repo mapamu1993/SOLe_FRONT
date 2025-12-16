@@ -1,5 +1,4 @@
 import React from "react";
-// CORRECCIÓN: Usamos Tabler Icons
 import { IconX, IconSend, IconCalendar, IconMail, IconUser, IconMessageCircle } from "@tabler/icons-react";
 
 interface ContactFormProps {
