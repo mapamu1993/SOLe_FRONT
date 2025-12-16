@@ -1,13 +1,35 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { 
   IconMountain, 
   IconLeaf, 
   IconCampfire, 
   IconArrowRight, 
-  IconMapPin 
+  IconMapPin,
+  IconPlus,
+  IconMinus
 } from "@tabler/icons-react";
+
+// --- DATOS DEL FAQ ---
+const FAQS = [
+  {
+    question: "¿Dónde se fabrican vuestros productos?",
+    answer: "Diseñamos todo en nuestro taller de Galicia y trabajamos con artesanos locales y de Portugal para la confección, asegurando condiciones laborales justas y una huella de carbono mínima."
+  },
+  {
+    question: "¿Los materiales son realmente impermeables?",
+    answer: "Utilizamos algodón encerado de alta densidad y lonas técnicas recicladas. Soportan la lluvia del norte, aunque recomendamos usar funda para tormentas torrenciales prolongadas."
+  },
+  {
+    question: "¿Tenéis garantía de reparación?",
+    answer: "Sí. Creemos en arreglar antes que tirar. Todos nuestros productos tienen 3 años de garantía y ofrecemos un servicio de reparación de por vida a coste de taller."
+  },
+  {
+    question: "¿Hacéis envíos a Canarias o internacionales?",
+    answer: "Llegamos a cualquier rincón donde haya un camino. Enviamos a toda Europa y, por supuesto, a nuestras queridas Islas Canarias (sin sorpresas de aduanas, nos encargamos nosotros)."
+  }
+];
 
 export const AboutDesign = () => {
   const containerRef = useRef(null);
@@ -16,7 +38,6 @@ export const AboutDesign = () => {
     offset: ["start start", "end end"]
   });
 
-  // Efecto Parallax suave para elementos decorativos
   const yBackground = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const yText = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
 
@@ -25,7 +46,6 @@ export const AboutDesign = () => {
       
       {/* --- HERO SECTION --- */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden pt-20">
-        {/* Fondo Decorativo */}
         <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
               <path d="M0 100 C 20 0 50 0 100 100 Z" fill="#333D29" />
@@ -33,8 +53,6 @@ export const AboutDesign = () => {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
-          {/* Texto Hero */}
           <motion.div 
             style={{ y: yText }}
             initial={{ opacity: 0, y: 50 }}
@@ -54,7 +72,6 @@ export const AboutDesign = () => {
             </p>
           </motion.div>
 
-          {/* Imagen Hero con Máscara */}
           <motion.div 
             initial={{ scale: 0.8, opacity: 0, rotate: -5 }}
             animate={{ scale: 1, opacity: 1, rotate: 0 }}
@@ -63,12 +80,11 @@ export const AboutDesign = () => {
           >
             <div className="relative z-10 overflow-hidden rounded-[3rem] shadow-2xl border-4 border-white/50">
               <img 
-                src="https://images.unsplash.com/photo-1504280506541-13171881ef1b?q=80&w=1000&auto=format&fit=crop" 
+                src="https://cdn.world-discovery.com/20092/hiking-boots-on-the-waymark-stone-scaled.png" 
                 alt="Hiking"
                 className="w-full h-[500px] object-cover"
               />
             </div>
-            {/* Elemento flotante decorativo */}
             <motion.div 
               animate={{ y: [0, -20, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -85,31 +101,33 @@ export const AboutDesign = () => {
       <section className="py-24 px-6 bg-white rounded-t-[3rem] relative z-20 -mt-20 shadow-[-20px_0_40px_rgba(0,0,0,0.05)]">
         <div className="max-w-7xl mx-auto">
           <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
             className="text-center mb-20"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-[#333D29] mb-4">Nuestra Filosofía</h2>
-            <div className="h-1 w-20 bg-[#582F0E] mx-auto rounded-full" />
+            <h2 className="text-4xl md:text-5xl font-bold text-[#333D29] tracking-tight">
+              Nuestra Filosofía <span className="italic font-serif text-[#582F0E]">de Vida</span>
+            </h2>
+            <p className="mt-2 text-[#656D4A] uppercase tracking-widest text-xs font-bold">
+              Nuestro Manifiesto
+            </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Valor 1 */}
             <ValueCard 
               icon={<IconLeaf size={32} />}
               title="Sostenibilidad Radical"
               desc="Usamos materiales reciclados y procesos de bajo impacto. El bosque es nuestra oficina."
               delay={0.1}
             />
-            {/* Valor 2 */}
             <ValueCard 
               icon={<IconMountain size={32} />}
               title="Durabilidad Técnica"
               desc="Diseñado para resistir tormentas, barro y años de aventuras. Compra menos, compra mejor."
               delay={0.2}
             />
-            {/* Valor 3 */}
             <ValueCard 
               icon={<IconCampfire size={32} />}
               title="Comunidad Real"
@@ -120,14 +138,12 @@ export const AboutDesign = () => {
         </div>
       </section>
 
-      {/* --- HISTORIA (Imagen + Texto) --- */}
+      {/* --- HISTORIA --- */}
       <section className="py-24 px-6 bg-[#333D29] text-[#EBECE2] rounded-[3rem] mx-4 md:mx-8 mb-24 relative overflow-hidden">
-        {/* Fondo Parallax */}
         <motion.div 
           style={{ y: yBackground }}
           className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" 
         />
-
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -136,7 +152,7 @@ export const AboutDesign = () => {
             transition={{ duration: 0.6 }}
           >
             <img 
-              src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000&auto=format&fit=crop" 
+              src="https://curiosidadessobre.es/wp-content/uploads/2024/06/curiosidades-sobre-el-camino-de-santiago.jpg" 
               alt="Our Journey" 
               className="rounded-[2rem] border border-white/10 shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500"
             />
@@ -159,7 +175,6 @@ export const AboutDesign = () => {
               Decidimos volver a lo básico: materiales naturales reforzados con tecnología moderna. Sin plásticos innecesarios, sin obsolescencia programada.
             </p>
             
-            {/* Estadísticas */}
             <div className="grid grid-cols-3 gap-4 border-t border-white/10 pt-8">
               <div>
                 <span className="block text-3xl font-bold text-[#B6AD90]">5k+</span>
@@ -175,6 +190,29 @@ export const AboutDesign = () => {
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* --- NUEVA SECCIÓN FAQ --- */}
+      <section className="py-20 px-6 max-w-4xl mx-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-[#333D29] tracking-tight">
+            Preguntas <span className="italic font-serif text-[#582F0E]">Frecuentes</span>
+          </h2>
+          <p className="mt-2 text-[#656D4A] uppercase tracking-widest text-xs font-bold">
+            Resolvemos tus dudas
+          </p>
+        </motion.div>
+
+        <div className="space-y-4">
+          {FAQS.map((faq, idx) => (
+            <FAQItem key={idx} question={faq.question} answer={faq.answer} />
+          ))}
         </div>
       </section>
 
@@ -208,7 +246,8 @@ export const AboutDesign = () => {
   );
 };
 
-// Componente auxiliar para las tarjetas de valores
+// --- COMPONENTES AUXILIARES ---
+
 const ValueCard = ({ icon, title, desc, delay }: { icon: React.ReactNode, title: string, desc: string, delay: number }) => {
   return (
     <motion.div 
@@ -229,3 +268,43 @@ const ValueCard = ({ icon, title, desc, delay }: { icon: React.ReactNode, title:
     </motion.div>
   );
 }
+
+const FAQItem = ({ question, answer }: { question: string, answer: string }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className={`rounded-[1.5rem] border transition-all duration-300 overflow-hidden ${isOpen ? "bg-white border-[#582F0E] shadow-lg" : "bg-white border-transparent hover:border-[#B6AD90]/50 shadow-sm"}`}
+    >
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between p-6 text-left"
+      >
+        <span className={`text-lg font-bold font-serif transition-colors ${isOpen ? "text-[#582F0E]" : "text-[#333D29]"}`}>
+          {question}
+        </span>
+        <span className={`flex items-center justify-center w-8 h-8 rounded-full transition-colors ${isOpen ? "bg-[#582F0E] text-white" : "bg-[#F5F5F0] text-[#333D29]"}`}>
+          {isOpen ? <IconMinus size={18} /> : <IconPlus size={18} />}
+        </span>
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <div className="px-6 pb-6 pt-0 text-[#656D4A] leading-relaxed">
+              {answer}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
