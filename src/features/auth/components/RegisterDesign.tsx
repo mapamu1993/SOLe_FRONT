@@ -90,7 +90,7 @@ export const RegisterDesign = ({
           <LabelInputContainer className="mb-4">
             <Label htmlFor="password" className="text-[#333D29]">Contraseña</Label>
             <Input 
-                id="password" placeholder="••••••••" type="password" {...register("password")} 
+                id="password" placeholder="Introduce una contraseña" type="password" {...register("password")} 
                 className="bg-white border-[#A4AC86] text-[#333D29] focus-visible:ring-[#582F0E]" 
             />
             {errors.password && <span className="text-xs font-medium text-red-600">{errors.password.message}</span>}

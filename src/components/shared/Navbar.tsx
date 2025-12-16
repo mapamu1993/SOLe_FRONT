@@ -60,14 +60,14 @@ const Navbar = () => {
     { name: "Tienda", path: "/tienda" },
     { name: "Kits", path: "/kits" },
     { name: "Blog", path: "/blog" },
-    { name: "Contactanos", path: "/contacto" },
+    { name: "Contáctanos", path: "/contacto" },
   ];
 
   return (
     <>
       <nav className={navClasses}>
         <Link to="/" className="flex items-center gap-2 group">
-          <span className="text-xl font-bold text-white tracking-wide group-hover:text-[#B6AD90] transition-colors">Sole</span>
+          <span className="text-xl font-bold text-white tracking-wide group-hover:text-[#B6AD90] transition-colors">SOL-e</span>
         </Link>
         
         <div className="hidden md:flex items-center gap-1 bg-black/10 rounded-full p-1 border border-white/5">

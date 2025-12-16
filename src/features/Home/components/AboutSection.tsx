@@ -2,8 +2,11 @@
 import React from "react";
 import { ReviewsCarousel } from "../../../components/ui/ReviewsCarousel";
 import { IconMountain, IconCompass, IconLeaf } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
 
 export function AboutSection() {
+  const navigate = useNavigate();
+
   return (
     <section
       className="
@@ -154,6 +157,7 @@ export function AboutSection() {
           {/* BOTÓN */}
           <div>
             <button
+              onClick={() => navigate("/about")}
               className="
               group
               relative
