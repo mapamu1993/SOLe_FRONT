@@ -1,89 +1,88 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useSnackbar } from "notistack";
-import { useKitsQuery } from "../hooks/useKitsQuery";
-import { useAddToCartMutation } from "../../cart/hooks/useCartMutations";
-import { type Kit } from "../types/kitTypes";
 
-//IMPORTAMOS EL DISEÑO 
+// 1. Imports necesarios
+import { useKitsQuery } from "../hooks/useKitsQuery";
+import { useAddToCartMutation } from "../../cart/hooks/useCartMutations"; // <--- IMPORTANTE
+import { type Kit } from "../types/kitTypes";
 import { KitsPageDesign } from "../components/KitsPageDesign";
 
 const KitsPage = () => {
-  // --- DATA FETCHING ---
   const { data: products, isLoading, isError } = useKitsQuery();
-  const { mutate: addToCart } = useAddToCartMutation();
   const { enqueueSnackbar } = useSnackbar();
 
-  // --- ESTADOS DE UI (Modales) ---
+  // 2. Traemos la mutación del carrito
+  const { mutate: addToCart, isPending: isAdding } = useAddToCartMutation(); // <--- EL GANCHO MÁGICO
+
+  // Estados de UI
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [selectedKit, setSelectedKit] = useState<Kit | null>(null);
 
-  // --- TRANSFORMACIÓN DE DATOS (Product -> Kit) ---
-  // Convertimos los productos "raw" en "Kits" con características visuales
-  const kits: any[] | undefined = useMemo(() => {
+  // Transformación de datos (Product -> Kit visual)
+  const kits: Kit[] | undefined = useMemo(() => {
     return products?.map((product) => {
-      // Si vale más de 1000 o dice "Premium", lo tratamos como VIP
       const isVip =
         product.price >= 1000 || product.name.toLowerCase().includes("premium");
 
-      // Características ficticias para que la tarjeta se vea llena
-      // (Idealmente esto vendría de la base de datos)
       const defaultFeatures = [
         "Envío Gratuito a toda España",
         "Credencial del Peregrino Oficial",
-        isVip ? "Asistencia 24h Premium" : "Guía Básica en PDF",
+        isVip
+          ? "Asistencia 24h Premium y Seguros"
+          : "Guía Básica del Camino en PDF",
+        "Devolución gratuita (30 días)",
       ];
 
       return {
         ...product,
         features: defaultFeatures,
-        isRecommended: isVip, // Esto hará que la tarjeta destaque
+        isRecommended: isVip,
       };
     });
   }, [products]);
 
-  // --- HANDLERS (Qué pasa al hacer click) ---
+  // --- HANDLERS (AQUÍ ESTÁ LA LÓGICA DE COMPRA) ---
 
-  // 1. Añadir directo al carrito
-  const handleAddToCart = (productId: string) => {
+  const handleKitAction = (kit: any) => {
+    const currentKit = kit as Kit;
+    setSelectedKit(currentKit);
+
+    // 1. CASO VIP -> Contacto
+    if (currentKit.isRecommended) {
+      setIsContactOpen(true);
+      return;
+    }
+
+    // 2. CASO MEDIO -> Personalizador
+    if (currentKit.price >= 300) {
+      setIsCustomizerOpen(true);
+      return;
+    }
+
+    // 3. CASO BÁSICO -> AÑADIR AL CARRITO DIRECTAMENTE
+    // <--- AQUÍ HACEMOS LA LLAMADA REAL
     addToCart(
-      { productId, quantity: 1 },
+      { productId: currentKit._id, quantity: 1 },
       {
         onSuccess: () => {
-           // El hook ya muestra una notificación global
+          // El hook ya muestra un snackbar, pero si quieres uno personalizado:
+          // enqueueSnackbar(`¡${currentKit.name} añadido a la mochila!`, { variant: "success" });
         },
       }
     );
   };
 
-  // 2. Decidir qué acción tomar según el tipo de kit
-  const handleKitAction = (kit: any) => {
-    const currentKit = kit as Kit;
-    setSelectedKit(currentKit);
-
-    if (currentKit.isRecommended) {
-      // Si es VIP -> Abrimos formulario de contacto
-      setIsContactOpen(true);
-    } else if (currentKit.price >= 300) {
-      // Si es caro pero no VIP -> Abrimos personalizador
-      setIsCustomizerOpen(true);
-    } else {
-      // Si es normal -> Al carrito directo
-      handleAddToCart(currentKit._id);
-    }
-  };
-
-  // 3. Comprar desde el personalizador (con extras)
+  // Handler para cuando compras DESDE el Personalizador
   const handleCustomBuy = (total: number, items: string[]) => {
     if (!selectedKit) return;
-    
-    // Aquí solo añadimos el producto base.
-    // (En el futuro podrías enviar los "items" extra al backend)
+
+    // Añadimos el kit base al carrito
     addToCart(
       { productId: selectedKit._id, quantity: 1 },
       {
         onSuccess: () => {
-          enqueueSnackbar(`Pack personalizado añadido (${total}€)`, {
+          enqueueSnackbar(`Kit personalizado añadido (Total: ${total}€)`, {
             variant: "success",
           });
           setIsCustomizerOpen(false);
@@ -92,33 +91,24 @@ const KitsPage = () => {
     );
   };
 
-  // 4. Cerrar todo
   const handleCloseModals = () => {
     setIsCustomizerOpen(false);
     setIsContactOpen(false);
     setSelectedKit(null);
   };
 
-  // --- RENDERIZADO ---
-  // En lugar de HTML feo, usamos el componente de diseño
   return (
     <KitsPageDesign
       kits={kits}
-      isLoading={isLoading}
+      isLoading={isLoading || isAdding}
       isError={isError}
-      
-      // Props para el Personalizador
       isCustomizerOpen={isCustomizerOpen}
       onCloseCustomizer={handleCloseModals}
       selectedKitBasePrice={selectedKit?.price || 0}
       onCustomBuy={handleCustomBuy}
-
-      // Props para Contacto
       isContactOpen={isContactOpen}
       onCloseContact={handleCloseModals}
       selectedKitName={selectedKit?.name || ""}
-
-      // Acción principal
       onKitAction={handleKitAction}
     />
   );

@@ -2,7 +2,6 @@ import React from "react";
 import { motion, type Variants } from "framer-motion";
 import { IconPackage } from "@tabler/icons-react";
 
-// Importamos los componentes hijos
 import { KitCard } from "./KitCard";
 import { KitDetail } from "./KitDetail";
 import { CustomizerForm } from "./CustomizerForm";
@@ -40,12 +39,11 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
   selectedKitName,
   onKitAction,
 }) => {
-  // --- ANIMACIONES (Igual que Blog y Tienda) ---
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: { staggerChildren: 0.15 }, // Un poco más lento para apreciar los kits
+      transition: { staggerChildren: 0.15 },
     },
   };
 
@@ -59,10 +57,8 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
   };
 
   return (
-    // 1. FONDO BASE (El mismo gris/beige de tu marca)
     <div className="min-h-screen w-full bg-[#EBECE2] p-4 md:p-8 font-sans pt-24 md:pt-32">
       <div className="mx-auto w-full max-w-7xl">
-        {/* 2. CABECERA ANIMADA */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -81,7 +77,6 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
           </p>
         </motion.div>
 
-        {/* 3. ESTADOS DE CARGA / ERROR */}
         {isLoading && (
           <div className="flex h-96 flex-col items-center justify-center text-[#582F0E]">
             <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#333D29] border-t-transparent mb-4" />
@@ -102,7 +97,6 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
           </div>
         )}
 
-        {/* 4. GRID DE KITS (Animado) */}
         {!isLoading && !isError && kits && (
           <motion.div
             variants={containerVariants}
@@ -137,7 +131,6 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
                     variants={itemVariants}
                     className="flex flex-col gap-4 group"
                   >
-                    {/* Tarjeta Principal */}
                     <KitCard
                       title={kit.name}
                       price={kit.price}
@@ -167,7 +160,6 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
                       onAction={() => onKitAction(kit)}
                     />
 
-                    {/* Detalles Desplegables (Estilo Ticket) */}
                     <KitDetail
                       description={
                         kit.description || "Todo lo necesario para tu viaje."
@@ -191,7 +183,6 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
         )}
       </div>
 
-      {/* 5. MODALES (Mantienen su funcionalidad) */}
       <CustomizerForm
         open={isCustomizerOpen}
         onClose={onCloseCustomizer}
