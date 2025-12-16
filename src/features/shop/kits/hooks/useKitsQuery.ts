@@ -6,7 +6,9 @@ export const useKitsQuery = () => {
   return useQuery<Kit[], Error>({
     queryKey: ["kits"],
     queryFn: getAllKitsService,
-    staleTime: 1000 * 60 * 5, // 5 minutos de caché
+    staleTime: 0, 
+    refetchOnMount: true, 
+    refetchOnWindowFocus: true,
   });
 };
 
@@ -14,6 +16,7 @@ export const useKitByIdQuery = (id: string) => {
   return useQuery<Kit, Error>({
     queryKey: ["kit", id],
     queryFn: () => getKitByIdService(id),
-    enabled: !!id, // Solo se ejecuta si hay ID
+    enabled: !!id,
+    staleTime: 0,
   });
 };

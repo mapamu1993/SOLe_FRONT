@@ -1,5 +1,6 @@
-import { type UseFormRegister, type FieldErrors } from "react-hook-form";
-import { IconDeviceFloppy, IconUpload, IconX } from "@tabler/icons-react";
+import { useState, useEffect } from "react";
+import type { UseFormRegister, FieldErrors } from "react-hook-form";
+import { IconDeviceFloppy, IconUpload, IconX, IconPhoto } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 
 interface KitFormDesignProps {
@@ -27,11 +28,25 @@ export const KitFormDesign = ({
   currentFile,
   currentImageUrl
 }: KitFormDesignProps) => {
+
+  const [preview, setPreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (currentFile) {
+      const objectUrl = URL.createObjectURL(currentFile);
+      setPreview(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
+    } else if (currentImageUrl) {
+      setPreview(currentImageUrl);
+    } else {
+      setPreview(null);
+    }
+  }, [currentFile, currentImageUrl]);
+
   return (
     <div className="min-h-screen w-full bg-[#EBECE2] py-32 px-4">
       <div className="mx-auto w-full max-w-2xl bg-[#fdfcf5] rounded-[2.5rem] p-8 md:p-12 shadow-xl border border-[#A4AC86]">
         
-        {/* CABECERA */}
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-[#333D29] font-serif">{pageTitle}</h1>
           <Link to="/kits">
@@ -49,7 +64,6 @@ export const KitFormDesign = ({
 
         <form onSubmit={onSubmit} className="space-y-6">
           
-          {/* NOMBRE */}
           <div>
             <label className="block text-sm font-bold text-[#333D29] mb-2">Nombre del Kit</label>
             <input
@@ -60,7 +74,6 @@ export const KitFormDesign = ({
             {errors.name && <p className="mt-1 text-xs text-red-500 font-bold">{String(errors.name.message)}</p>}
           </div>
 
-          {/* DESCRIPCIÓN */}
           <div>
             <label className="block text-sm font-bold text-[#333D29] mb-2">Descripción</label>
             <textarea
@@ -72,9 +85,8 @@ export const KitFormDesign = ({
             {errors.description && <p className="mt-1 text-xs text-red-500 font-bold">{String(errors.description.message)}</p>}
           </div>
 
-          {/* PRECIO Y NIVEL */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
+          {/* Solo Precio, sin nivel */}
+          <div>
               <label className="block text-sm font-bold text-[#333D29] mb-2">Precio (€)</label>
               <input
                 type="number"
@@ -83,19 +95,8 @@ export const KitFormDesign = ({
                 className="w-full px-4 py-3 rounded-xl border border-[#A4AC86] bg-white focus:ring-2 focus:ring-[#582F0E] outline-none"
               />
               {errors.price && <p className="mt-1 text-xs text-red-500 font-bold">{String(errors.price.message)}</p>}
-            </div>
-            <div>
-              <label className="block text-sm font-bold text-[#333D29] mb-2">Nivel (Dificultad)</label>
-              <input
-                type="number"
-                {...register("level", { valueAsNumber: true })}
-                className="w-full px-4 py-3 rounded-xl border border-[#A4AC86] bg-white focus:ring-2 focus:ring-[#582F0E] outline-none"
-                placeholder="1-5"
-              />
-            </div>
           </div>
 
-          {/* FEATURES (Opcional - Input simple separado por comas) */}
           <div>
              <label className="block text-sm font-bold text-[#333D29] mb-2">Características (separadas por comas)</label>
              <input
@@ -103,10 +104,8 @@ export const KitFormDesign = ({
                className="w-full px-4 py-3 rounded-xl border border-[#A4AC86] bg-white focus:ring-2 focus:ring-[#582F0E] outline-none"
                placeholder="Mochila, Bastones, Guía..."
              />
-             <p className="text-xs text-[#656D4A] mt-1">Escribe las características separadas por comas.</p>
           </div>
 
-          {/* CHECKBOXES */}
           <div className="flex items-center gap-2">
             <input 
                 type="checkbox" 
@@ -117,9 +116,18 @@ export const KitFormDesign = ({
             <label htmlFor="isRecommended" className="text-sm font-bold text-[#333D29]">¿Destacar como Recomendado / VIP?</label>
           </div>
 
-          {/* IMAGEN */}
           <div>
             <label className="block text-sm font-bold text-[#333D29] mb-2">Imagen del Kit</label>
+            
+            {preview && (
+                <div className="mb-4 relative h-48 w-full rounded-xl overflow-hidden border border-[#A4AC86] shadow-sm">
+                    <img src={preview} alt="Vista previa" className="h-full w-full object-cover" />
+                    <div className="absolute top-2 right-2 bg-white/80 backdrop-blur px-2 py-1 rounded text-xs font-bold text-[#333D29]">
+                        Vista Previa
+                    </div>
+                </div>
+            )}
+
             <div className="relative border-2 border-dashed border-[#A4AC86] rounded-xl p-6 text-center hover:bg-[#EBECE2]/50 transition-colors">
               <input
                 type="file"
@@ -128,18 +136,14 @@ export const KitFormDesign = ({
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               />
               <div className="flex flex-col items-center gap-2 text-[#656D4A]">
-                <IconUpload size={32} />
+                {preview ? <IconPhoto size={32} /> : <IconUpload size={32} />}
                 <span className="font-medium text-sm">
-                  {currentFile ? currentFile.name : "Haz click o arrastra una imagen"}
+                  {currentFile ? "Cambiar imagen seleccionada" : "Haz click o arrastra una imagen"}
                 </span>
               </div>
             </div>
-            {currentImageUrl && !currentFile && (
-                <p className="text-xs text-[#656D4A] mt-2">Imagen actual cargada.</p>
-            )}
           </div>
 
-          {/* SUBMIT */}
           <button
             type="submit"
             disabled={isSubmitting}

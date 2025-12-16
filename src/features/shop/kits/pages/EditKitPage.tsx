@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useSnackbar } from "notistack";
 import { useKitByIdQuery } from "../hooks/useKitsQuery";
 import { useUpdateKitsMutation } from "../hooks/useKitsMutation";
 import { KitFormDesign } from "../components/KitFormDesign";
@@ -11,15 +10,12 @@ interface EditKitFields {
   name: string;
   description: string;
   price: number;
-  level: number;
   isRecommended: boolean;
   featuresString: string;
 }
 
 const EditKitPage = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
   
   const [file, setFile] = useState<File | null>(null);
   
@@ -33,13 +29,11 @@ const EditKitPage = () => {
     formState: { errors },
   } = useForm<EditKitFields>();
 
-  // Cargar datos iniciales
   useEffect(() => {
     if (kit) {
       setValue("name", kit.name);
       setValue("description", kit.description);
       setValue("price", kit.price);
-      setValue("level", kit.level);
       setValue("isRecommended", kit.isRecommended);
       setValue("featuresString", kit.features ? kit.features.join(", ") : "");
     }
@@ -52,7 +46,6 @@ const EditKitPage = () => {
     formData.append("name", data.name);
     formData.append("description", data.description);
     formData.append("price", data.price.toString());
-    formData.append("level", data.level.toString());
     formData.append("isRecommended", String(data.isRecommended));
     
     if (file) {
@@ -62,15 +55,8 @@ const EditKitPage = () => {
     const featuresArray = data.featuresString.split(",").map(f => f.trim()).filter(f => f !== "");
     featuresArray.forEach(feature => formData.append("features[]", feature));
 
-    mutate({ id, formData }, {
-        onSuccess: () => {
-            enqueueSnackbar("Kit actualizado correctamente", { variant: "success" });
-            navigate("/kits");
-        },
-        onError: () => {
-            enqueueSnackbar("Error al actualizar el kit", { variant: "error" });
-        }
-    });
+    // SIMPLIFICADO: El hook se encarga de la redirección
+    mutate({ id, formData });
   };
 
   if (isLoadingKit) {
