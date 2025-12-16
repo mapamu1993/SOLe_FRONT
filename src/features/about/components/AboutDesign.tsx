@@ -10,8 +10,9 @@ import {
   IconPlus,
   IconMinus
 } from "@tabler/icons-react";
+import { BRAND_THEME } from "@/config/designSystem";
 
-// --- DATOS DEL FAQ ---
+// DATOS DEL FAQ
 const FAQS = [
   {
     question: "¿Dónde se fabrican vuestros productos?",
@@ -42,7 +43,7 @@ export const AboutDesign = () => {
   const yText = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
 
   return (
-    <div ref={containerRef} className="min-h-screen w-full bg-[#EBECE2] font-sans overflow-hidden">
+    <div ref={containerRef} className={`min-h-screen w-full bg-[${BRAND_THEME.colors.background}] font-sans overflow-hidden`}>
       
       {/* --- HERO SECTION --- */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden pt-20">
@@ -59,9 +60,7 @@ export const AboutDesign = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <span className="text-[#582F0E] font-bold tracking-[0.3em] uppercase text-xs mb-4 block">
-              Desde 2024
-            </span>
+            <span className={BRAND_THEME.typography.eyebrow}>Desde 2024</span>
             <h1 className="text-5xl md:text-7xl font-bold text-[#333D29] leading-[0.9] mb-6">
               No hacemos <br/>
               mochilas, <br/>
@@ -80,7 +79,7 @@ export const AboutDesign = () => {
           >
             <div className="relative z-10 overflow-hidden rounded-[3rem] shadow-2xl border-4 border-white/50">
               <img 
-                src="https://cdn.world-discovery.com/20092/hiking-boots-on-the-waymark-stone-scaled.png" 
+                src="https://images.unsplash.com/photo-1504280506541-13171881ef1b?q=80&w=1000&auto=format&fit=crop" 
                 alt="Hiking"
                 className="w-full h-[500px] object-cover"
               />
@@ -107,10 +106,10 @@ export const AboutDesign = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-20"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-[#333D29] tracking-tight">
-              Nuestra Filosofía <span className="italic font-serif text-[#582F0E]">de Vida</span>
+            <h2 className={BRAND_THEME.typography.headingLg}>
+              Nuestra Filosofía <span className={BRAND_THEME.typography.highlight}>de Vida</span>
             </h2>
-            <p className="mt-2 text-[#656D4A] uppercase tracking-widest text-xs font-bold">
+            <p className={BRAND_THEME.typography.eyebrow + " mt-2"}>
               Nuestro Manifiesto
             </p>
           </motion.div>
@@ -152,7 +151,7 @@ export const AboutDesign = () => {
             transition={{ duration: 0.6 }}
           >
             <img 
-              src="https://curiosidadessobre.es/wp-content/uploads/2024/06/curiosidades-sobre-el-camino-de-santiago.jpg" 
+              src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000&auto=format&fit=crop" 
               alt="Our Journey" 
               className="rounded-[2rem] border border-white/10 shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500"
             />
@@ -193,18 +192,18 @@ export const AboutDesign = () => {
         </div>
       </section>
 
-      {/* --- NUEVA SECCIÓN FAQ --- */}
-      <section className="py-20 px-6 max-w-4xl mx-auto">
+      {/* --- SECCIÓN FAQ (CON ID) --- */}
+      <section id="faq" className="py-20 px-6 max-w-4xl mx-auto scroll-mt-32">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-[#333D29] tracking-tight">
-            Preguntas <span className="italic font-serif text-[#582F0E]">Frecuentes</span>
+          <h2 className={BRAND_THEME.typography.headingLg}>
+            Preguntas <span className={BRAND_THEME.typography.highlight}>Frecuentes</span>
           </h2>
-          <p className="mt-2 text-[#656D4A] uppercase tracking-widest text-xs font-bold">
+          <p className={BRAND_THEME.typography.eyebrow + " mt-2"}>
             Resolvemos tus dudas
           </p>
         </motion.div>
@@ -224,14 +223,14 @@ export const AboutDesign = () => {
           viewport={{ once: true }}
           className="max-w-3xl mx-auto"
         >
-          <h2 className="text-4xl font-bold text-[#333D29] mb-6">¿Listo para empezar tu camino?</h2>
+          <h2 className={BRAND_THEME.typography.headingLg + " mb-6"}>¿Listo para empezar tu camino?</h2>
           <p className="text-[#656D4A] mb-10 text-lg">
             Equípate con lo esencial y deja atrás lo que pesa. La aventura te espera.
           </p>
           
           <div className="flex justify-center">
             <Link to="/tienda">
-              <button className="group relative w-64 h-14 bg-[#582F0E] text-white font-bold text-sm uppercase tracking-widest rounded-full overflow-hidden shadow-xl hover:shadow-[#B6AD90]/40 transition-all active:scale-95">
+              <button className={`group relative w-64 h-14 bg-[#582F0E] text-white font-bold text-sm uppercase tracking-widest overflow-hidden shadow-xl hover:shadow-[#B6AD90]/40 transition-all active:scale-95 ${BRAND_THEME.layout.borderRadius.button}`}>
                 <span className="absolute inset-0 w-full h-full bg-[#7F4F24] transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100 ease-out" />
                 <span className="relative z-10 flex items-center justify-center gap-2">
                   Ver Colección <IconArrowRight size={20} />
@@ -246,7 +245,7 @@ export const AboutDesign = () => {
   );
 };
 
-// --- COMPONENTES AUXILIARES ---
+// COMPONENTES AUXILIARES
 
 const ValueCard = ({ icon, title, desc, delay }: { icon: React.ReactNode, title: string, desc: string, delay: number }) => {
   return (
@@ -256,7 +255,7 @@ const ValueCard = ({ icon, title, desc, delay }: { icon: React.ReactNode, title:
       viewport={{ once: true }}
       transition={{ delay: delay, duration: 0.5 }}
       whileHover={{ y: -10 }}
-      className="bg-[#F5F5F0] p-8 rounded-[2.5rem] border border-transparent hover:border-[#B6AD90]/30 hover:shadow-lg transition-all"
+      className={`bg-[#F5F5F0] p-8 border border-transparent hover:border-[#B6AD90]/30 hover:shadow-lg transition-all ${BRAND_THEME.layout.borderRadius.card}`}
     >
       <div className="w-14 h-14 rounded-full bg-[#333D29] text-[#B6AD90] flex items-center justify-center mb-6 shadow-md">
         {icon}
@@ -277,7 +276,7 @@ const FAQItem = ({ question, answer }: { question: string, answer: string }) => 
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className={`rounded-[1.5rem] border transition-all duration-300 overflow-hidden ${isOpen ? "bg-white border-[#582F0E] shadow-lg" : "bg-white border-transparent hover:border-[#B6AD90]/50 shadow-sm"}`}
+      className={`border transition-all duration-300 overflow-hidden rounded-[1.5rem] ${isOpen ? "bg-white border-[#582F0E] shadow-lg" : "bg-white border-transparent hover:border-[#B6AD90]/50 shadow-sm"}`}
     >
       <button 
         onClick={() => setIsOpen(!isOpen)}

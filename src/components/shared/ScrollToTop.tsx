@@ -2,15 +2,24 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 const ScrollToTop = () => {
-  // Obtenemos la ruta actual (ej: "/tienda", "/about")
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    // Cada vez que 'pathname' cambie, subimos el scroll a 0,0 inmediatamente
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    // Si la URL tiene un hash (ej: #faq), buscamos el elemento y hacemos scroll
+    if (hash) {
+      const element = document.getElementById(hash.replace("#", ""));
+      if (element) {
+        // Pequeño timeout para asegurar que la página ha cargado
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 100);
+      }
+    } else {
+      // Si no hay hash, subimos arriba del todo (comportamiento normal)
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]); // Ejecutar cuando cambie la ruta o el hash
 
-  // No renderiza nada visualmente
   return null;
 };
 
