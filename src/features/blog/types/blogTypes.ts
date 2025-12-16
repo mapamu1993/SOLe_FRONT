@@ -1,4 +1,4 @@
-import {type User} from '../../auth/types/userTypes';
+import { type User } from '../../auth/types/userTypes';
 
 export interface Blog {
     _id: string;
@@ -7,4 +7,5 @@ export interface Blog {
     image: string;
     author: User;
     createdAt: string;
+    id: string;
 }

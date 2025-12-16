@@ -21,16 +21,16 @@ export const useCreateBlogMutation = () => {
   return useMutation({
     mutationFn: ({ data, file }: { data: any; file: File }) =>
       createBlogService(data, file),
-    
+
     // Agregamos 'async' aquí
     onSuccess: async () => {
       // Agregamos 'await' para esperar a que la caché se limpie antes de seguir
-      await queryClient.invalidateQueries({
+      await queryClient.resetQueries({
         queryKey: ["blogs"],
       });
-      
+
       enqueueSnackbar("Blog creado exitosamente", { variant: "success" });
-      
+
       // Ahora navegamos, asegurando que la próxima vista cargará datos nuevos
       navigate("/blog");
     },
@@ -41,7 +41,6 @@ export const useCreateBlogMutation = () => {
   });
 };
 
-
 // Hook para borrar un blog
 export const useDeleteBlogMutation = () => {
   const queryClient = useQueryClient();
@@ -49,14 +48,14 @@ export const useDeleteBlogMutation = () => {
 
   return useMutation({
     mutationFn: deleteBlogService,
-    
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+
+    onSuccess: async () => {
+      await queryClient.resetQueries({
         queryKey: ["blogs"],
       });
       enqueueSnackbar("Blog eliminado exitosamente", { variant: "success" });
     },
-    
+
     onError: (error: AxiosError<ErrorResponse>) => {
       const msg = error.response?.data?.message || "Error al eliminar el blog";
       enqueueSnackbar(msg, { variant: "error" });
@@ -82,19 +81,19 @@ export const useEditBlogMutation = () => {
       file: File | null;
     }) => editBlogService(id, data, file),
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.resetQueries({
         queryKey: ["blogs"],
       });
       // También invalidamos el detalle del blog específico por si el usuario entra de nuevo
-      queryClient.invalidateQueries({
-        queryKey: ["blog"], 
+      await queryClient.resetQueries({
+        queryKey: ["blog"],
       });
-      
+
       enqueueSnackbar("Blog editado exitosamente", { variant: "success" });
       navigate("/blog");
     },
-    
+
     onError: (error: AxiosError<ErrorResponse>) => {
       const msg = error.response?.data?.message || "Error al editar el blog";
       enqueueSnackbar(msg, { variant: "error" });
