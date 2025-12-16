@@ -73,7 +73,7 @@ export const LoginDesign = ({
             </Label>
             <Input
               id="password"
-              placeholder="••••••••"
+              placeholder="Tu contraseña"
               type="password"
               {...register("password")}
             />

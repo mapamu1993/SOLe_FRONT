@@ -89,7 +89,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               <span>Editar Perfil</span>
             </button>
 
-            {/* BOTÓN SECUNDARIO (Volver al Inicio) - Estilo Borde (Outline) */}
+            {/* BOTÓN SECUNDARIO (Volver al Inicio) */}
             <button
               onClick={onGoHome}
               className="w-full bg-white text-brand-primary border-2 border-brand-primary hover:bg-blue-50 active:scale-95 font-bold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
@@ -97,7 +97,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               <span>Volver al Inicio</span>
             </button>
           </div>
-          {/* --- FIN ZONA DE BOTONES --- */}
         </div>
       </div>
     </div>

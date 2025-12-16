@@ -63,8 +63,8 @@ const AppRouter = () => {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
 
-      {/* ENVOLVEMOS TODO EN EL LAYOUT 
-          Así el Navbar y Footer aparecen en todas estas páginas 
+      {/* HAY QUE ENVOLVER TODO EN EL LAYOUT 
+          el navbar y el footer aparecen en todas estas páginas 
       */}
 
       <Route element={<Layout />}>
@@ -152,7 +152,7 @@ const AppRouter = () => {
           }
         />
 
-        {/* 404 dentro del layout también */}
+        {/* 404 por si no hay na de na */}
         <Route
           path="*"
           element={

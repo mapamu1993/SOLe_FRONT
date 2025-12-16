@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axiosClient from "../../../api/axios.client";
 import type { User } from "../types/userTypes";
+import { logoutUserService } from "../services/authService";
 
 interface AuthContextType {
   user: User | null;
@@ -42,15 +43,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(userData);
     localStorage.setItem("user_data", JSON.stringify(userData));
   };
+
   const logout = async () => {
     try {
-      await axiosClient.post("/user/logout");
+      await logoutUserService();
     } catch (error) {
-      console.error(error);
+      console.error("Error al cerrar sesión en el servidor:", error);
     }
     setUser(null);
     localStorage.removeItem("user_data");
   };
+
   const updateUser = (newUserData: Partial<User>) => {
     if (!user) return;
     const mergedUser = { ...user, ...newUserData };

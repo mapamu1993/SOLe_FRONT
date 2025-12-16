@@ -99,7 +99,7 @@ export const ProductDetailsDesign = ({
 
               {/* Precio */}
               <div className="text-3xl font-bold text-[#582F0E] mb-8">
-                ${product.price.toFixed(2)}
+                {product.price.toFixed(2)} €
               </div>
 
               {/* Descripción */}

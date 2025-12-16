@@ -89,7 +89,7 @@ const EditPasswordPage = () => {
                 <Input
                   id="currentPassword"
                   type="password"
-                  placeholder="••••••••"
+                  placeholder="Tu contraseña actual"
                   {...register("currentPassword")}
                   className="pl-10 border-[#A4AC86]"
                   // 4. AUTOCOMPLETE CORRECTO: current-password
@@ -111,7 +111,7 @@ const EditPasswordPage = () => {
                 <Input
                   id="newPassword"
                   type="password"
-                  placeholder="••••••••"
+                  placeholder="Nueva contraseña"
                   {...register("newPassword")}
                   className="pl-10 border-[#A4AC86]"
                   // 5. AUTOCOMPLETE CORRECTO: new-password
@@ -133,7 +133,7 @@ const EditPasswordPage = () => {
                 <Input
                   id="confirmNewPassword"
                   type="password"
-                  placeholder="••••••••"
+                  placeholder="Confirma tu nueva contraseña"
                   {...register("confirmNewPassword")}
                   className="pl-10 border-[#A4AC86]"
                   // 6. AUTOCOMPLETE: new-password (también aquí)
