@@ -111,7 +111,7 @@ export const OrdersListDesign = ({
         {/* ESTADO: ERROR */}
         {isError && (
           <div className="rounded-[2rem] border border-red-200 bg-red-50 p-10 text-center">
-            <p className="font-bold text-xl text-red-800 mb-2">⚠️ Error de conexión</p>
+            <p className="font-bold text-xl text-red-800 mb-2"> Error de conexión</p>
             <p className="text-red-600">No pudimos cargar tu historial de pedidos.</p>
           </div>
         )}
@@ -164,7 +164,7 @@ export const OrdersListDesign = ({
                         <div>
                           <span className="block text-[10px] font-bold uppercase tracking-widest text-[#B6AD90] mb-1">Total</span>
                           <span className="text-lg font-bold text-[#582F0E]">
-                            ${order.totalAmount.toFixed(2)}
+                            €{order.totalAmount.toFixed(2)}
                           </span>
                         </div>
                       </div>
@@ -180,7 +180,7 @@ export const OrdersListDesign = ({
                         </span>
                       </div>
                     </div>
-
+                    
                     {/* Lista de Items */}
                     <div className="p-6">
                       <ul className="divide-y divide-[#F5F5F0]">

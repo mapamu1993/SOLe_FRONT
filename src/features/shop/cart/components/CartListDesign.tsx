@@ -189,9 +189,9 @@ export const CartListDesign = ({
                             <div>
                               <div className="flex justify-between items-start">
                                 <h3 className="text-xl font-bold text-[#333D29] mb-1 leading-tight">{item.product.name}</h3>
-                                <p className="font-bold text-xl text-[#582F0E]">${(item.product.price * item.quantity).toFixed(2)}</p>
+                                <p className="font-bold text-xl text-[#582F0E]">€{(item.product.price * item.quantity).toFixed(2)}</p>
                               </div>
-                              <p className="text-sm text-[#656D4A] font-medium">Unidad: ${item.product.price}</p>
+                              <p className="text-sm text-[#656D4A] font-medium">Unidad: €{item.product.price}</p>
                             </div>
                             <div className="mt-4 flex items-center justify-between">
                               <div className="flex items-center gap-1 bg-[#F5F5F0] rounded-full p-1 border border-[#EBECE2]">
@@ -221,10 +221,10 @@ export const CartListDesign = ({
                     <div className="absolute top-0 right-0 w-40 h-40 bg-[#B6AD90] opacity-10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
                     <h2 className="text-2xl font-bold mb-6 relative z-10">Resumen</h2>
                     <div className="space-y-4 mb-8 text-[#EBECE2]/80 text-sm relative z-10">
-                      <div className="flex justify-between"><span>Subtotal</span><span className="text-white font-medium">${subtotal.toFixed(2)}</span></div>
+                      <div className="flex justify-between"><span>Subtotal</span><span className="text-white font-medium">€{subtotal.toFixed(2)}</span></div>
                       <div className="flex justify-between"><span>Envío estimado</span><span className="text-[#B6AD90] font-medium">Gratis</span></div>
                       <div className="h-px w-full bg-white/10 my-4"></div>
-                      <div className="flex justify-between items-end text-white"><span className="font-bold text-lg">Total</span><span className="font-bold text-4xl">${subtotal.toFixed(2)}</span></div>
+                      <div className="flex justify-between items-end text-white"><span className="font-bold text-lg">Total</span><span className="font-bold text-4xl">€{subtotal.toFixed(2)}</span></div>
                       <p className="text-xs text-[#EBECE2]/50 text-right">Impuestos incluidos</p>
                     </div>
                     
