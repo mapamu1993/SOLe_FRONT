@@ -3,7 +3,7 @@ import { type Product } from "../types/productTypes";
 import { getImageUrl } from "../../../../utils/imageUtil";
 // 1. IMPORTAMOS 'Variants' PARA CORREGIR EL ERROR DE TIPADO
 import { motion, type Variants } from "framer-motion";
-import { IconPlus, IconShoppingBag } from "@tabler/icons-react";
+import { IconPlus, IconShoppingBag, IconEdit, IconTrash } from "@tabler/icons-react";
 
 interface ProductsListDesignProps {
   products: Product[] | undefined;
@@ -175,6 +175,26 @@ export const ProductsListDesign = ({
                     <p className="text-sm text-[#656D4A] line-clamp-2 mb-6 font-medium opacity-80">
                       {product.description}
                     </p>
+
+                    {isAdmin && (
+                      <div className="mb-4 flex gap-2">
+                        <Link
+                          to={`/products/edit/${product._id}`}
+                          className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#582F0E] text-white text-xs font-bold"
+                        >
+                          <IconEdit size={14} /> Editar
+                        </Link>
+
+                        <button
+                          onClick={() => {
+                            if (confirm("¿Borrar este producto?")) onDeleteProduct(product._id);
+                          }}
+                          className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600 text-white text-xs font-bold"
+                        >
+                          <IconTrash size={14} /> Borrar
+                        </button>
+                      </div>
+                    )}
 
                     {/* BOTÓN (Swipe) */}
                     <button

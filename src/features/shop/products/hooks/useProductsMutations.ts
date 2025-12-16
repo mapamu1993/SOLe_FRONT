@@ -25,8 +25,8 @@ export const useCreateProductMutation = () => {
     mutationFn: createProductService,
     onSuccess: async () => {
       enqueueSnackbar("Producto creado exitosamente.", { variant: "success" });
-      await queryClient.resetQueries({ queryKey: ["allProducts"] });
-      navigate("/");
+      await queryClient.invalidateQueries({ queryKey: ["allProducts"] });
+      navigate("/tienda");
     },
     onError: (err) => {
       const errorMessage =
@@ -41,20 +41,38 @@ export const useEditProductMutation = () => {
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
 
-  // Tipado explícito aquí para arreglar tus errores en EditPage
+  // Añadimos actualizaciones optimistas para que se vea el cambio instantáneo
   return useMutation<Product, AxiosError<ErrorResponse>, UpdateProductParams>({
     mutationFn: updateProductService,
+    onMutate: async (variables) => {
+      await queryClient.cancelQueries({ queryKey: ["allProducts"] });
+      const previous = queryClient.getQueryData<Product[]>(["allProducts"]);
+
+      if (previous) {
+        queryClient.setQueryData<Product[] | undefined>(["allProducts"],
+          previous.map((p) =>
+            p._id === variables.id ? { ...p, ...(variables.data as any) } : p
+          )
+        );
+      }
+
+      return { previous };
+    },
+    onError: (err, _variables, context: any) => {
+      const errorMessage =
+        err.response?.data?.message || "Error al actualizar el producto.";
+      enqueueSnackbar(errorMessage, { variant: "error" });
+
+      if (context?.previous) {
+        queryClient.setQueryData(["allProducts"], context.previous);
+      }
+    },
     onSuccess: () => {
       enqueueSnackbar("Producto actualizado correctamente.", {
         variant: "success",
       });
       queryClient.invalidateQueries({ queryKey: ["allProducts"] });
       navigate("/tienda");
-    },
-    onError: (err) => {
-      const errorMessage =
-        err.response?.data?.message || "Error al actualizar el producto.";
-      enqueueSnackbar(errorMessage, { variant: "error" });
     },
   });
 };
@@ -65,14 +83,30 @@ export const useDeleteProductMutation = () => {
 
   return useMutation<void, AxiosError<ErrorResponse>, string>({
     mutationFn: deleteProductService,
-    onSuccess: () => {
-      enqueueSnackbar("Producto eliminado.", { variant: "success" });
-      queryClient.invalidateQueries({ queryKey: ["allProducts"] });
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey: ["allProducts"] });
+      const previous = queryClient.getQueryData<Product[]>(["allProducts"]);
+
+      if (previous) {
+        queryClient.setQueryData<Product[] | undefined>(["allProducts"],
+          previous.filter((p) => p._id !== id)
+        );
+      }
+
+      return { previous };
     },
-    onError: (err) => {
+    onError: (err, _id, context: any) => {
       const errorMessage =
         err.response?.data?.message || "Error al eliminar el producto.";
       enqueueSnackbar(errorMessage, { variant: "error" });
+
+      if (context?.previous) {
+        queryClient.setQueryData(["allProducts"], context.previous);
+      }
+    },
+    onSuccess: () => {
+      enqueueSnackbar("Producto eliminado.", { variant: "success" });
+      queryClient.invalidateQueries({ queryKey: ["allProducts"] });
     },
   });
 };

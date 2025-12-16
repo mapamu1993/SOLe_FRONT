@@ -44,15 +44,33 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem("user_data", JSON.stringify(userData));
   };
 
+  // Logout que intenta avisar al servidor pero garantiza limpiar local y redirigir
+  const localLogout = () => {
+    setUser(null);
+    localStorage.removeItem("user_data");
+    // Redirigimos a login usando location para no depender del Router (AuthProvider está fuera del Router)
+    window.location.href = "/login";
+  };
+
   const logout = async () => {
     try {
       await logoutUserService();
     } catch (error) {
       console.error("Error al cerrar sesión en el servidor:", error);
+    } finally {
+      localLogout();
     }
-    setUser(null);
-    localStorage.removeItem("user_data");
   };
+
+  // Manejamos el evento global disparado por el interceptor de axios
+  useEffect(() => {
+    const handleForceLogout = () => {
+      localLogout();
+    };
+
+    window.addEventListener("force-logout", handleForceLogout);
+    return () => window.removeEventListener("force-logout", handleForceLogout);
+  }, []);
 
   const updateUser = (newUserData: Partial<User>) => {
     if (!user) return;

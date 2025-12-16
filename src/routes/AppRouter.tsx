@@ -10,7 +10,7 @@ import ScrollToTop from "../components/shared/ScrollToTop";
 import Layout from "../components/layout/Layout";
 
 // Homepage
-import Home from "@/features/Home/Home";
+import Home from "@/features/home/Home";
 import AboutPage from "@/features/about/pages/AboutPage";
 
 // Auth Pages
@@ -34,6 +34,7 @@ import BlogDetailsPage from "../features/blog/pages/BlogDetailsPage";
 // Shop Pages
 import ProductsPage from "../features/shop/products/pages/ProductsPage";
 import CreateProductPage from "../features/shop/products/pages/CreateProductPage";
+import EditProductPage from "../features/shop/products/pages/EditProductPage";
 import CartPage from "../features/shop/cart/pages/CartPage";
 import OrdersPage from "../features/shop/orders/pages/OrdersPage";
 import KitsPage from "../features/shop/kits/pages/KitsPage";
@@ -161,18 +162,17 @@ const AppRouter = () => {
               </ProtectedRoute>
             }
           />
-
+        <Route
+          path="/products/edit/:id"
+          element={
+            <ProtectedRoute
+              requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
+            >
+              <EditProductPage />
+            </ProtectedRoute>
+          }
+        />
           {/* ADMIN KITS */}
-          <Route
-            path="/kits/new"
-            element={
-              <ProtectedRoute
-                requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
-              >
-                <CreateKitPage />
-              </ProtectedRoute>
-            }
-          />
           <Route
             path="/kits/edit/:id"
             element={
@@ -180,6 +180,16 @@ const AppRouter = () => {
                 requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
               >
                 <EditKitPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/kits/new"
+            element={
+              <ProtectedRoute
+                requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
+              >
+                <CreateKitPage />
               </ProtectedRoute>
             }
           />
