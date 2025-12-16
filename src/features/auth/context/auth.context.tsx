@@ -1,79 +1,66 @@
-//aquí es donde vamos a crear la lógica para que la sesión no se cierre al recargar la página
-
-import React, { createContext, useContext, useState, useEffect } from "react";
-import type { User } from "../types/userTypes";
-import { logoutUserService } from "../services/authService";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
+import { type User } from "../types/userTypes";
+import { useSnackbar } from "notistack"; // 1. Importamos el hook
 
 interface AuthContextType {
   user: User | null;
-  isAuthenticated: boolean;
-  login: (userData: User) => void;
+  login: (user: User) => void;
   logout: () => void;
-  //para autenticar con datos parciales: solo user, el email no es necesario
-  updateUser: (userData: Partial<User>) => void;
-  loading: boolean;
+  isLoading: boolean;
 }
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};
+
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 2. Inicializamos el hook para las notificaciones
+  const { enqueueSnackbar } = useSnackbar();
+
   useEffect(() => {
-    const checkAuth = async () => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
       try {
-        const storedUser = localStorage.getItem("user_data");
-        if (storedUser) {
-          const parsedUser = JSON.parse(storedUser);
-          if (parsedUser && parsedUser._id) {
-            setUser(parsedUser);
-          }
-        }
+        setUser(JSON.parse(storedUser));
       } catch (error) {
-        console.error("Error al verificar la autenticación", error);
-        localStorage.removeItem("user_data");
-      } finally {
-        setLoading(false);
+        console.error("Error parsing stored user:", error);
+        localStorage.removeItem("user");
       }
-    };
-    checkAuth();
+    }
+    setIsLoading(false);
   }, []);
+
   const login = (userData: User) => {
     setUser(userData);
-    localStorage.setItem("user_data", JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify(userData));
   };
 
-  const logout = async () => {
-    try {
-      await logoutUserService();
-    } catch (error) {
-      console.error("Error al cerrar sesión en el servidor:", error);
-    }
+  const logout = () => {
     setUser(null);
-    localStorage.removeItem("user_data");
+    localStorage.removeItem("user");
+
+    // 3. Añadimos el Toast informativo al cerrar sesión
     enqueueSnackbar("Has cerrado sesión. ¡Buen Camino!", { variant: "info" });
   };
 
-  const updateUser = (newUserData: Partial<User>) => {
-    if (!user) return;
-    const mergedUser = { ...user, ...newUserData };
-    setUser(mergedUser);
-    localStorage.setItem("user_data", JSON.stringify(mergedUser));
-  };
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isAuthenticated: !!user,
-        login,
-        logout,
-        updateUser,
-        loading,
-      }}
-    >
+    <AuthContext.Provider value={{ user, login, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext) as AuthContextType;

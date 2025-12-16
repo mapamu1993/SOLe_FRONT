@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
 import { loginSchema, type LoginFormFields } from "../validators/authSchema";
 import { loginUserService } from "../services/authService";
-import { LoginDesign } from "../components/LoginDesign"; // Importamos el diseño
+import { LoginDesign } from "../components/LoginDesign";
+import { useSnackbar } from "notistack";
 
 const LoginPage = () => {
-  // LÓGICA
   const [error, setError] = useState("");
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+
   const {
     register,
     handleSubmit,
@@ -20,6 +22,12 @@ const LoginPage = () => {
     resolver: zodResolver(loginSchema),
   });
 
+  useEffect(() => {
+    if (user) {
+      navigate("/profile");
+    }
+  }, [user, navigate]);
+
   const onSubmit = async (data: LoginFormFields) => {
     setError("");
     try {
@@ -27,18 +35,18 @@ const LoginPage = () => {
       const userData = response.user;
 
       login(userData);
-      navigate("/profile");
+
+      enqueueSnackbar(`¡Bienvenido de nuevo, ${userData.name || "viajero"}!`, {
+        variant: "success",
+      });
     } catch (err: any) {
       const errorMessage =
         err.response?.data?.message || "Error al iniciar sesión";
-
       setError(errorMessage);
-
       enqueueSnackbar(errorMessage, { variant: "error" });
     }
   };
 
-  // CONEXIÓN CON EL DISEÑO
   return (
     <LoginDesign
       register={register}
