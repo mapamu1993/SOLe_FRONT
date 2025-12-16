@@ -9,8 +9,9 @@ export const useDeleteKitMutation = () => {
 
     return useMutation({
         mutationFn: deleteKitService,
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ['kits'] });
+        onSuccess: () => {
+            // No usamos await para que la UI responda rápido
+            queryClient.invalidateQueries({ queryKey: ['kits'] });
             enqueueSnackbar("Kit eliminado correctamente", { variant: "success" });
         },
         onError: () => {
@@ -25,10 +26,15 @@ export const useUpdateKitsMutation = () => {
     const { enqueueSnackbar } = useSnackbar();
 
     return useMutation({
-        mutationFn: updateKitService,
-        onSuccess: async () => {      
-            await queryClient.invalidateQueries({ queryKey: ['kits'] });
-            await queryClient.invalidateQueries({ queryKey: ['kit'] });
+        // CORRECCIÓN IMPORTANTE: Desestructuramos el objeto para pasarlo correctamente al servicio
+        mutationFn: ({ id, formData }: { id: string; formData: FormData }) => 
+            updateKitService(id, formData),
+            
+        onSuccess: () => {      
+            // Quitamos el await. Marcamos los datos como "viejos" y navegamos inmediatamente.
+            // React Query recargará los datos en segundo plano al llegar a la página de lista.
+            queryClient.invalidateQueries({ queryKey: ['kits'] });
+            queryClient.invalidateQueries({ queryKey: ['kit'] });
             
             enqueueSnackbar("Kit actualizado correctamente", { variant: "success" });
             navigate("/kits"); 
@@ -46,8 +52,9 @@ export const useCreateKitMutation = () => {
 
     return useMutation({
         mutationFn: createKitService,
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ['kits'] });
+        onSuccess: () => {
+            // Quitamos el await
+            queryClient.invalidateQueries({ queryKey: ['kits'] });
             
             enqueueSnackbar("Kit creado correctamente", { variant: "success" });
             navigate("/kits");
