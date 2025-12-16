@@ -3,13 +3,25 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      // AQUÍ DEFINIMOS LOS COLORES QUE PIDE TU ARCHIVO UpdateProfileDesign
       colors: {
         brand: {
-          bg: "#C2C5AA", // El color de fondo beige/verdoso (usado en Login)
-          card: "#ffffff", // Fondo de la tarjeta (blanco)
-          primary: "#582F0E", // Color principal marrón oscuro (botones, iconos)
-          secondary: "#7F4F24", // Color secundario para degradados y hovers
+          bg: "#C2C5AA",
+          card: "#ffffff",
+          primary: "#582F0E",
+          secondary: "#7F4F24",
+        },
+      },
+      // AÑADE ESTO DE NUEVO PARA QUE EL CARRUSEL DE FOTOS SE MUEVA
+      animation: {
+        scroll:
+          "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+      },
+      keyframes: {
+        scroll: {
+          to: {
+            // El gap en InfiniteMovingCards es gap-4 (1rem), así que el offset es 0.5rem
+            transform: "translate(calc(-50% - 0.5rem))",
+          },
         },
       },
     },
