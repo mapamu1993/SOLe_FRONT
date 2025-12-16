@@ -15,9 +15,9 @@ export const useCreateProductMutation = () => {
 
   return useMutation({
     mutationFn: createProductService,
-    onSuccess: () => {
+    onSuccess: async () => {
       enqueueSnackbar("Producto creado exitosamente.", { variant: "success" });
-      queryClient.invalidateQueries({ queryKey: ["allProducts"] });
+      await queryClient.resetQueries({ queryKey: ["allProducts"] });
       navigate("/");
     },
     onError: (err: AxiosError<ErrorResponse>) => {

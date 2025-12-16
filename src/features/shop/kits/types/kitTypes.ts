@@ -7,5 +7,6 @@ export interface Kit {
   image: string;
   _id: string;
   level: number;
+  id: string;
 
 }
