@@ -1,83 +1,84 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
 // 1. Imports necesarios
 import { useKitsQuery } from "../hooks/useKitsQuery";
-import { useAddToCartMutation } from "../../cart/hooks/useCartMutations"; // <--- IMPORTANTE
+import { useAddToCartMutation } from "../../cart/hooks/useCartMutations";
+import { useDeleteKitMutation } from "../hooks/useKitsMutation";
 import { type Kit } from "../types/kitTypes";
+import { useAuth } from "../../../auth/context/auth.context";
+import { USER_ROLES } from "../../../../config/constants";
 import { KitsPageDesign } from "../components/KitsPageDesign";
 
 const KitsPage = () => {
-  const { data: products, isLoading, isError } = useKitsQuery();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const canEdit =
+    user?.role === USER_ROLES.ADMIN || user?.role === USER_ROLES.MODERATOR;
+
+  // --- DATA FETCHING ---
+  const { data: kits, isLoading, isError } = useKitsQuery();
+  const { mutate: deleteKit } = useDeleteKitMutation();
+  const { mutate: addToCart } = useAddToCartMutation();
   const { enqueueSnackbar } = useSnackbar();
 
-  // 2. Traemos la mutación del carrito
-  const { mutate: addToCart, isPending: isAdding } = useAddToCartMutation(); // <--- EL GANCHO MÁGICO
-
-  // Estados de UI
+  // --- ESTADOS DE UI ---
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [selectedKit, setSelectedKit] = useState<Kit | null>(null);
 
-  // Transformación de datos (Product -> Kit visual)
-  const kits: Kit[] | undefined = useMemo(() => {
-    return products?.map((product) => {
-      const isVip =
-        product.price >= 1000 || product.name.toLowerCase().includes("premium");
-
-      const defaultFeatures = [
-        "Envío Gratuito a toda España",
-        "Credencial del Peregrino Oficial",
-        isVip
-          ? "Asistencia 24h Premium y Seguros"
-          : "Guía Básica del Camino en PDF",
-        "Devolución gratuita (30 días)",
-      ];
-
-      return {
-        ...product,
-        features: defaultFeatures,
-        isRecommended: isVip,
-      };
-    });
-  }, [products]);
-
-  // --- HANDLERS (AQUÍ ESTÁ LA LÓGICA DE COMPRA) ---
-
-  const handleKitAction = (kit: any) => {
-    const currentKit = kit as Kit;
-    setSelectedKit(currentKit);
-
-    // 1. CASO VIP -> Contacto
-    if (currentKit.isRecommended) {
-      setIsContactOpen(true);
-      return;
-    }
-
-    // 2. CASO MEDIO -> Personalizador
-    if (currentKit.price >= 300) {
-      setIsCustomizerOpen(true);
-      return;
-    }
-
-    // 3. CASO BÁSICO -> AÑADIR AL CARRITO DIRECTAMENTE
-    // <--- AQUÍ HACEMOS LA LLAMADA REAL
-    addToCart(
-      { productId: currentKit._id, quantity: 1 },
-      {
-        onSuccess: () => {
-          // El hook ya muestra un snackbar, pero si quieres uno personalizado:
-          // enqueueSnackbar(`¡${currentKit.name} añadido a la mochila!`, { variant: "success" });
-        },
-      }
-    );
+  // --- HANDLERS ---
+  const handleEditKit = (kitId: string) => {
+    navigate(`/kits/edit/${kitId}`);
   };
 
-  // Handler para cuando compras DESDE el Personalizador
+  const handleDeleteKit = (kitId: string, kitName: string) => {
+    if (
+      window.confirm(
+        `¿Estás seguro de que quieres eliminar el kit "${kitName}"? Esta acción no se puede deshacer.`
+      )
+    ) {
+      deleteKit(kitId, {
+        onSuccess: () => {
+          enqueueSnackbar(`Kit "${kitName}" eliminado`, { variant: "success" });
+        },
+        onError: () => {
+          enqueueSnackbar(`Error al eliminar el kit`, {
+            variant: "error",
+          });
+        },
+      });
+    }
+  };
+
+  const handleAddToCart = (productId: string) => {
+    addToCart({ productId, quantity: 1 });
+    enqueueSnackbar("Kit añadido al carrito", { variant: "success" });
+  };
+
+  const handleKitAction = (kit: Kit) => {
+    setSelectedKit(kit);
+
+    const isVip =
+      kit.price >= 1000 || kit.name.toLowerCase().includes("premium");
+    const isCustom =
+      !isVip &&
+      (kit.price >= 300 || kit.name.toLowerCase().includes("personalizable"));
+
+    if (isVip) {
+      setIsContactOpen(true);
+    } else if (isCustom) {
+      setIsCustomizerOpen(true);
+    } else {
+      handleAddToCart(kit._id);
+    }
+  };
+
   const handleCustomBuy = (total: number, items: string[]) => {
     if (!selectedKit) return;
-
-    // Añadimos el kit base al carrito
+    // Aquí podrías procesar los items extra, por ahora solo añadimos el base
     addToCart(
       { productId: selectedKit._id, quantity: 1 },
       {
@@ -102,6 +103,7 @@ const KitsPage = () => {
       kits={kits}
       isLoading={isLoading || isAdding}
       isError={isError}
+      // Props UI Modales
       isCustomizerOpen={isCustomizerOpen}
       onCloseCustomizer={handleCloseModals}
       selectedKitBasePrice={selectedKit?.price || 0}
@@ -110,6 +112,10 @@ const KitsPage = () => {
       onCloseContact={handleCloseModals}
       selectedKitName={selectedKit?.name || ""}
       onKitAction={handleKitAction}
+      // Props Admin
+      canEdit={canEdit}
+      onEditKit={handleEditKit}
+      onDeleteKit={handleDeleteKit}
     />
   );
 };

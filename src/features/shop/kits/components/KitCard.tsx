@@ -3,6 +3,8 @@ import {
   IconCircleCheck,
   IconMountain,
   IconArrowRight,
+  IconTrash,
+  IconPencil,
 } from "@tabler/icons-react";
 
 interface KitCardProps {
@@ -14,6 +16,10 @@ interface KitCardProps {
   buttonText?: string;
   tagLabel?: string;
   onAction: () => void;
+  // Nuevas props para admin
+  canEdit?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 export const KitCard: React.FC<KitCardProps> = ({
@@ -25,6 +31,9 @@ export const KitCard: React.FC<KitCardProps> = ({
   buttonText,
   tagLabel,
   onAction,
+  canEdit = false,
+  onEdit,
+  onDelete,
 }) => {
   return (
     <div
@@ -32,8 +41,8 @@ export const KitCard: React.FC<KitCardProps> = ({
         group relative flex flex-col h-full bg-white rounded-[2.5rem] p-4 transition-all duration-500 hover:-translate-y-2
         ${
           isRecommended
-            ? "shadow-2xl border-2 border-[#582F0E] z-10" // Destacado VIP
-            : "shadow-sm hover:shadow-xl border border-transparent hover:border-[#B6AD90]/30" // Normal
+            ? "shadow-2xl border-2 border-[#582F0E] z-10"
+            : "shadow-sm hover:shadow-xl border border-transparent hover:border-[#B6AD90]/30"
         }
       `}
     >
@@ -48,6 +57,32 @@ export const KitCard: React.FC<KitCardProps> = ({
         {isRecommended && (
           <div className="absolute top-4 left-4 bg-[#582F0E] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-md z-10">
             {tagLabel || "RECOMENDADO"}
+          </div>
+        )}
+
+        {/* BOTONES ADMIN FLOTANTES */}
+        {canEdit && (
+          <div className="absolute top-4 right-4 flex gap-2 z-20">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit?.();
+              }}
+              className="p-2 bg-white/90 backdrop-blur text-[#333D29] rounded-full hover:bg-[#333D29] hover:text-white transition-colors shadow-sm"
+              title="Editar Kit"
+            >
+              <IconPencil size={16} />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete?.();
+              }}
+              className="p-2 bg-white/90 backdrop-blur text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-colors shadow-sm"
+              title="Eliminar Kit"
+            >
+              <IconTrash size={16} />
+            </button>
           </div>
         )}
       </div>
@@ -93,7 +128,7 @@ export const KitCard: React.FC<KitCardProps> = ({
           </ul>
         )}
 
-        {/* 3. BOTÓN SWIPE (Limpio, sin loading) */}
+        {/* 3. BOTÓN */}
         <button
           onClick={onAction}
           className={`
@@ -106,7 +141,6 @@ export const KitCard: React.FC<KitCardProps> = ({
           `}
         >
           <span className="absolute inset-0 w-full h-full bg-[#B6AD90] transform scale-x-0 origin-left transition-transform duration-500 group-hover/btn:scale-x-100 ease-out" />
-
           <span className="relative z-10 flex items-center justify-center gap-2 group-hover/btn:text-[#333D29] transition-colors">
             {buttonText || "Reservar Kit"} <IconArrowRight size={16} />
           </span>

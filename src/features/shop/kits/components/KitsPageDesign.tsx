@@ -1,15 +1,17 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { motion, type Variants } from "framer-motion";
-import { IconPackage } from "@tabler/icons-react";
+import { IconPackage, IconPlus } from "@tabler/icons-react";
 
 import { KitCard } from "./KitCard";
 import { KitDetail } from "./KitDetail";
 import { CustomizerForm } from "./CustomizerForm";
 import { ContactForm } from "./ContactForm";
 import { getImageUrl } from "../../../../utils/imageUtil";
+import { type Kit } from "../types/kitTypes";
 
 interface KitsPageDesignProps {
-  kits: any[] | undefined;
+  kits: Kit[] | undefined;
   isLoading: boolean;
   isError: boolean;
 
@@ -23,7 +25,12 @@ interface KitsPageDesignProps {
   onCloseContact: () => void;
   selectedKitName: string;
 
-  onKitAction: (kit: any) => void;
+  onKitAction: (kit: Kit) => void;
+
+  // Props Admin
+  canEdit: boolean;
+  onEditKit: (id: string) => void;
+  onDeleteKit: (id: string, name: string) => void;
 }
 
 export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
@@ -38,6 +45,9 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
   onCloseContact,
   selectedKitName,
   onKitAction,
+  canEdit,
+  onEditKit,
+  onDeleteKit,
 }) => {
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -59,24 +69,41 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
   return (
     <div className="min-h-screen w-full bg-[#EBECE2] p-4 md:p-8 font-sans pt-24 md:pt-32">
       <div className="mx-auto w-full max-w-7xl">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="mb-12 text-center md:text-left"
-        >
-          <span className="text-[#582F0E] font-bold tracking-widest text-xs uppercase mb-2 block">
-            Equipamiento Oficial
-          </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#333D29] tracking-tight leading-tight">
-            Elige tu{" "}
-            <span className="italic font-serif text-[#582F0E]">Camino</span>
-          </h1>
-          <p className="mt-4 text-[#656D4A] text-lg max-w-2xl font-medium leading-relaxed md:mx-0 mx-auto">
-            Tres niveles de experiencia diseñados para que solo te preocupes de
-            caminar. Desde lo esencial hasta el lujo técnico.
-          </p>
-        </motion.div>
+        {/* CABECERA */}
+        <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            <span className="text-[#582F0E] font-bold tracking-widest text-xs uppercase mb-2 block">
+              Equipamiento Oficial
+            </span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#333D29] tracking-tight leading-tight">
+              Elige tu{" "}
+              <span className="italic font-serif text-[#582F0E]">Camino</span>
+            </h1>
+            <p className="mt-4 text-[#656D4A] text-lg max-w-2xl font-medium leading-relaxed">
+              Tres niveles de experiencia diseñados para que solo te preocupes
+              de caminar.
+            </p>
+          </motion.div>
 
+          {/* Botón Crear Kit (Solo Admin) */}
+          {canEdit && (
+            <Link to="/kits/new">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2 rounded-full bg-[#582F0E] px-8 py-3 text-sm font-bold text-white shadow-lg transition-colors hover:bg-[#7F4F24]"
+              >
+                <IconPlus size={18} />
+                Nuevo Kit
+              </motion.button>
+            </Link>
+          )}
+        </div>
+
+        {/* LOADING / ERROR */}
         {isLoading && (
           <div className="flex h-96 flex-col items-center justify-center text-[#582F0E]">
             <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#333D29] border-t-transparent mb-4" />
@@ -89,7 +116,7 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
         {isError && (
           <div className="rounded-[2.5rem] border border-red-200 bg-red-50 p-10 text-center">
             <p className="font-bold text-xl text-red-800 mb-2">
-              ⚠️ Error de conexión
+              Error de conexión
             </p>
             <p className="text-red-600">
               No pudimos cargar los kits disponibles.
@@ -97,6 +124,7 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
           </div>
         )}
 
+        {/* GRID DE KITS */}
         {!isLoading && !isError && kits && (
           <motion.div
             variants={containerVariants}
@@ -118,11 +146,11 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
             ) : (
               kits.map((kit) => {
                 const isVip =
-                  kit.price > 1000 ||
+                  kit.price >= 1000 ||
                   kit.name.toLowerCase().includes("premium");
                 const isCustom =
                   !isVip &&
-                  (kit.price > 300 ||
+                  (kit.price >= 300 ||
                     kit.name.toLowerCase().includes("personalizable"));
 
                 return (
@@ -135,7 +163,7 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
                       title={kit.name}
                       price={kit.price}
                       image={getImageUrl(kit.image)}
-                      isRecommended={isVip}
+                      isRecommended={isVip || kit.isRecommended}
                       tagLabel={
                         isVip
                           ? "EXPERIENCIA VIP"
@@ -150,30 +178,30 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
                           ? "Personalizar Pack"
                           : "Añadir al Carrito"
                       }
-                      features={[
-                        "Envío Gratuito",
-                        "Credencial Oficial",
-                        isVip
-                          ? "Asistencia Personal 24h"
-                          : "Asistencia Telefónica",
-                      ]}
+                      // Usamos las features reales si existen, sino unas por defecto
+                      features={
+                        kit.features && kit.features.length > 0
+                          ? kit.features
+                          : [
+                              "Envío Gratuito",
+                              "Credencial Oficial",
+                              isVip
+                                ? "Asistencia Personal 24h"
+                                : "Asistencia Telefónica",
+                            ]
+                      }
                       onAction={() => onKitAction(kit)}
+                      // Props Admin
+                      canEdit={canEdit}
+                      onEdit={() => onEditKit(kit._id)}
+                      onDelete={() => onDeleteKit(kit._id, kit.name)}
                     />
 
                     <KitDetail
                       description={
                         kit.description || "Todo lo necesario para tu viaje."
                       }
-                      sections={[
-                        {
-                          title: "El Pack Incluye",
-                          items: [
-                            "Mochila Técnica",
-                            "Saco Sábana",
-                            "Guía Digital",
-                          ],
-                        },
-                      ]}
+                      sections={[]}
                     />
                   </motion.div>
                 );
