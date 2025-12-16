@@ -1,7 +1,7 @@
 import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom"; // 1. Añadimos useLocation
 import { useEffect } from "react"; // 2. Importamos useEffect
 import { useAuth } from "../context/auth.context";
-import { toast } from "sonner"; // 3. Importamos toast
+
 import {
   getUserProfileUrl,
   formatUserRole,
@@ -19,13 +19,15 @@ const UserProfilePage = () => {
   useEffect(() => {
     // Si venimos del login (flag 'fromLogin' es true) y hay un usuario cargado
     if (location.state?.fromLogin && user) {
-      
       // Lanzamos el mensaje bonito
-      toast.success(`¡Bienvenido de nuevo, ${user.name || user.username || "Peregrino"}!`, {
-        description: "Tu espacio personal está listo para ti.",
-        duration: 4000,
-        icon: "", // Icono de saludo
-      });
+      toast.success(
+        `¡Bienvenido de nuevo, ${user.name || user.username || "Peregrino"}!`,
+        {
+          description: "Tu espacio personal está listo para ti.",
+          duration: 4000,
+          icon: "", // Icono de saludo
+        }
+      );
 
       // Limpiamos el estado para que si refresca la página no salga el mensaje otra vez
       window.history.replaceState({}, document.title);

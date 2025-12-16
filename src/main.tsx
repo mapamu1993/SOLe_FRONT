@@ -18,17 +18,17 @@ const queryClient = new QueryClient();
 
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-      <BrowserRouter>
-        <QueryClientProvider client={queryClient}>
-          <SnackbarProvider
-            maxSnack={3}
-            anchorOrigin={{ vertical: "top", horizontal: "right" }}
-          >
+    <SnackbarProvider
+      maxSnack={3}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+    >
+      <AuthProvider>
+        <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
             <App />
-          </SnackbarProvider>
-        </QueryClientProvider>
-      </BrowserRouter>
-    </AuthProvider>
+          </QueryClientProvider>
+        </BrowserRouter>
+      </AuthProvider>
+    </SnackbarProvider>
   </React.StrictMode>
 );

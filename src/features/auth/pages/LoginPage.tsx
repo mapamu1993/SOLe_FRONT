@@ -6,12 +6,14 @@ import { useAuth } from "../context/auth.context";
 import { loginSchema, type LoginFormFields } from "../validators/authSchema";
 import { loginUserService } from "../services/authService";
 import { LoginDesign } from "../components/LoginDesign";
+import { useSnackbar } from "notistack";
 
 const LoginPage = () => {
   // LÓGICA
   const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar(); // 2. USAR EL HOOK
 
   const {
     register,
@@ -29,7 +31,11 @@ const LoginPage = () => {
 
       login(userData);
 
-      navigate("/profile", { state: { fromLogin: true } });
+      enqueueSnackbar(`¡Bienvenido de nuevo, ${userData.name || "viajero"}!`, {
+        variant: "success",
+      });
+
+      navigate("/profile");
     } catch (err: any) {
       const errorMessage =
         err.response?.data?.message || "Error al iniciar sesión";

@@ -1,7 +1,6 @@
 //aquí es donde vamos a crear la lógica para que la sesión no se cierre al recargar la página
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import axiosClient from "../../../api/axios.client";
 import type { User } from "../types/userTypes";
 import { logoutUserService } from "../services/authService";
 
@@ -52,6 +51,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
     setUser(null);
     localStorage.removeItem("user_data");
+    enqueueSnackbar("Has cerrado sesión. ¡Buen Camino!", { variant: "info" });
   };
 
   const updateUser = (newUserData: Partial<User>) => {
