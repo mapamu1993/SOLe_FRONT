@@ -83,7 +83,7 @@ const UpdateProfilePage = () => {
 
   // 3. Ir a cambiar contraseña
   const handleChangePassword = () => {
-    navigate("/resetpassword", { state: { email: user?.email } });
+    navigate("/editpassword", { state: { email: user?.email } });
   };
 
   // Obtener inicial para el avatar por defecto
