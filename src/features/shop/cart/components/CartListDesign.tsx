@@ -211,17 +211,15 @@ export const CartListDesign = ({
                                 <h3 className="text-xl font-bold text-[#333D29] mb-1 leading-tight">
                                   {item.product.name}
                                 </h3>
-                                {/* CAMBIO DE MONEDA AQUÍ */}
                                 <p className="font-bold text-xl text-[#582F0E]">
+                                  €
                                   {(item.product.price * item.quantity).toFixed(
                                     2
                                   )}
-                                  €
                                 </p>
                               </div>
-                              {/* CAMBIO DE MONEDA AQUÍ */}
                               <p className="text-sm text-[#656D4A] font-medium">
-                                Unidad: {item.product.price}€
+                                Unidad: €{item.product.price}
                               </p>
                             </div>
                             <div className="mt-4 flex items-center justify-between">
@@ -277,11 +275,10 @@ export const CartListDesign = ({
                       Resumen
                     </h2>
                     <div className="space-y-4 mb-8 text-[#EBECE2]/80 text-sm relative z-10">
-                      {/* CAMBIO DE MONEDA AQUÍ */}
                       <div className="flex justify-between">
                         <span>Subtotal</span>
                         <span className="text-white font-medium">
-                          {subtotal.toFixed(2)}€
+                          €{subtotal.toFixed(2)}
                         </span>
                       </div>
                       <div className="flex justify-between">
@@ -291,11 +288,10 @@ export const CartListDesign = ({
                         </span>
                       </div>
                       <div className="h-px w-full bg-white/10 my-4"></div>
-                      {/* CAMBIO DE MONEDA AQUÍ */}
                       <div className="flex justify-between items-end text-white">
                         <span className="font-bold text-lg">Total</span>
                         <span className="font-bold text-4xl">
-                          {subtotal.toFixed(2)}€
+                          €{subtotal.toFixed(2)}
                         </span>
                       </div>
                       <p className="text-xs text-[#EBECE2]/50 text-right">

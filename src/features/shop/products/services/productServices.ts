@@ -2,7 +2,8 @@ import axiosClient from "../../../../api/axios.client";
 import { API_ROUTES } from "../../../../config/constants";
 import { type Product } from "../types/productTypes";
 
-interface CreateProductParams {
+// ⚠️ AÑADE 'export' AQUÍ
+export interface CreateProductParams {
   name: string;
   description: string;
   price: number;
@@ -38,30 +39,39 @@ export const getProductByIdService = async (id: string): Promise<Product> => {
   return data.data.product; 
 };
 
-export const updateProductService = async (
-  id: string,
-  params: Omit<CreateProductParams, "image">,
-  file: File | null
-): Promise<Product> => {
-  const formData = new FormData();
-  formData.append("name", params.name);
-  formData.append("description", params.description);
-  formData.append("price", String(params.price));
-  formData.append("stock", String(params.stock));
-  formData.append("category", params.category);
+// AÑADE 'export' AQUÍ TAMBIÉN
+export interface UpdateProductParams {
+  id: string;
+  data: Partial<CreateProductParams>;
+  file?: File | null;
+}
 
+export const updateProductService = async ({
+  id,
+  data,
+  file,
+}: UpdateProductParams): Promise<Product> => {
+  const formData = new FormData();
+  if (data.name) formData.append("name", data.name);
+  if (data.description) formData.append("description", data.description);
+  if (data.price) formData.append("price", String(data.price));
+  if (data.stock) formData.append("stock", String(data.stock));
+  if (data.category) formData.append("category", data.category);
+  
   if (file) {
     formData.append("productImage", file);
   }
 
-  const { data } = await axiosClient.patch(`${API_ROUTES.PRODUCTS}/${id}`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-  return data;
+  const { data: response } = await axiosClient.patch(
+    `${API_ROUTES.PRODUCTS}/${id}`,
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
+  return response.data;
 };
 
-// Servicio para eliminar
-export const deleteProductService = async (id: string) => {
-  const { data } = await axiosClient.delete(`${API_ROUTES.PRODUCTS}/${id}`);
-  return data;
+export const deleteProductService = async (id: string): Promise<void> => {
+  await axiosClient.delete(`${API_ROUTES.PRODUCTS}/${id}`);
 };

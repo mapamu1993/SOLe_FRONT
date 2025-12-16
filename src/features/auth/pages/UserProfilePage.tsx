@@ -33,7 +33,7 @@ const UserProfilePage = () => {
   // 3. Función para manejar el Cierre de Sesión
   const handleLogout = () => {
     logout(); // Limpia el estado y localStorage
-    navigate("/"); // Redirige a home
+    navigate("/login"); // Redirige a login
   };
 
   return (

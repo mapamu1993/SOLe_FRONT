@@ -47,15 +47,42 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = (userData: User) => {
     setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("user_data", JSON.stringify(userData));
   };
 
-  const logout = () => {
+  // Logout que intenta avisar al servidor pero garantiza limpiar local y redirigir
+  const localLogout = () => {
     setUser(null);
-    localStorage.removeItem("user");
+    localStorage.removeItem("user_data");
+    // Redirigimos a login usando location para no depender del Router (AuthProvider está fuera del Router)
+    window.location.href = "/login";
+  };
 
-    // 3. Añadimos el Toast informativo al cerrar sesión
-    enqueueSnackbar("Has cerrado sesión. ¡Buen Camino!", { variant: "info" });
+  const logout = async () => {
+    try {
+      await logoutUserService();
+    } catch (error) {
+      console.error("Error al cerrar sesión en el servidor:", error);
+    } finally {
+      localLogout();
+    }
+  };
+
+  // Manejamos el evento global disparado por el interceptor de axios
+  useEffect(() => {
+    const handleForceLogout = () => {
+      localLogout();
+    };
+
+    window.addEventListener("force-logout", handleForceLogout);
+    return () => window.removeEventListener("force-logout", handleForceLogout);
+  }, []);
+
+  const updateUser = (newUserData: Partial<User>) => {
+    if (!user) return;
+    const mergedUser = { ...user, ...newUserData };
+    setUser(mergedUser);
+    localStorage.setItem("user_data", JSON.stringify(mergedUser));
   };
 
   return (
