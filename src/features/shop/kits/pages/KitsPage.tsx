@@ -21,7 +21,7 @@ const KitsPage = () => {
   // --- DATA FETCHING ---
   const { data: kits, isLoading, isError } = useKitsQuery();
   const { mutate: deleteKit } = useDeleteKitMutation();
-  const { mutate: addToCart } = useAddToCartMutation();
+  const { mutate: addToCart, isPending: isAdding } = useAddToCartMutation();
   const { enqueueSnackbar } = useSnackbar();
 
   // --- ESTADOS DE UI ---
