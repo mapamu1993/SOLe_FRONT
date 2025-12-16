@@ -5,6 +5,7 @@ import Navbar from "../shared/Navbar";
 // Importa el componente de pie de página compartido
 import Footer from "../shared/Footer";
 
+
 // Define el componente funcional Layout que servirá de estructura base para todas las páginas
 const Layout = () => {
   // Obtiene el objeto location que contiene información sobre la URL actual

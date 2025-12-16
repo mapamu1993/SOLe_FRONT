@@ -3,6 +3,9 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import { useAuth } from "@/features/auth/context/auth.context";
 import { USER_ROLES } from "../config/constants";
 
+// 1. IMPORTANTE: Importamos el componente ScrollToTop
+import ScrollToTop from "../components/shared/ScrollToTop";
+
 // IMPORTAMOS EL LAYOUT
 import Layout from "../components/layout/Layout";
 
@@ -60,132 +63,137 @@ const ProtectedRoute = ({
 
 const AppRouter = () => {
   return (
-    <Routes>
-      {/* Páginas sin Layout (sin navbar ni footer) */}
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/login" element={<LoginPage />} />
+    <>
+      {/* 2. IMPORTANTE: Renderizamos ScrollToTop AQUÍ, antes de las rutas */}
+      <ScrollToTop />
 
-      {/* HAY QUE ENVOLVER TODO EN EL LAYOUT 
-          el navbar y el footer aparecen en todas estas páginas 
-      */}
+      <Routes>
+        {/* Páginas sin Layout (sin navbar ni footer) */}
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
 
-      <Route element={<Layout />}>
-        {/* PÚBLICAS */}
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
-        <Route path="/resetpassword" element={<ResetPasswordPage />} />
-        <Route path="/editpassword" element={<EditPasswordPage />} />
+        {/* ENVOLVEMOS TODO EN EL LAYOUT 
+            Así el Navbar y Footer aparecen en todas estas páginas 
+        */}
+        <Route element={<Layout />}>
+          {/* PÚBLICAS */}
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
+          <Route path="/resetpassword" element={<ResetPasswordPage />} />
+          <Route path="/editpassword" element={<EditPasswordPage />} />
 
-        <Route path="/contacto" element={<ContactPage />} />
+          <Route path="/contacto" element={<ContactPage />} />
 
-        {/* BLOG */}
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/blog/:id" element={<BlogDetailsPage />} />
+          {/* BLOG */}
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:id" element={<BlogDetailsPage />} />
 
-        {/* TIENDA */}
-        <Route path="/tienda" element={<ProductsPage />} />
-        <Route path="/kits" element={<KitsPage />} />
-        <Route path="/products/:id" element={<ProductsDetailsPage />} />
+          {/* TIENDA */}
+          <Route path="/tienda" element={<ProductsPage />} />
+          <Route path="/kits" element={<KitsPage />} />
+          <Route path="/products/:id" element={<ProductsDetailsPage />} />
 
-        {/* PRIVADAS */}
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <UserProfilePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/update"
-          element={
-            <ProtectedRoute>
-              <UpdateProfilePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/cart"
-          element={
-            <ProtectedRoute>
-              <CartPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/orders"
-          element={
-            <ProtectedRoute>
-              <OrdersPage />
-            </ProtectedRoute>
-          }
-        />
+          {/* PRIVADAS */}
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <UserProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/update"
+            element={
+              <ProtectedRoute>
+                <UpdateProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <ProtectedRoute>
+                <CartPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute>
+                <OrdersPage />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* ADMIN */}
-        <Route
-          path="/blog/new"
-          element={
-            <ProtectedRoute
-              requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
-            >
-              <CreateBlogPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/blog/edit/:id"
-          element={
-            <ProtectedRoute
-              requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
-            >
-              <EditBlogPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/products/new"
-          element={
-            <ProtectedRoute
-              requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
-            >
-              <CreateProductPage />
-            </ProtectedRoute>
-          }
-        />
+          {/* ADMIN BLOG */}
+          <Route
+            path="/blog/new"
+            element={
+              <ProtectedRoute
+                requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
+              >
+                <CreateBlogPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/blog/edit/:id"
+            element={
+              <ProtectedRoute
+                requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
+              >
+                <EditBlogPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/kits/new"
-          element={
-            <ProtectedRoute
-              requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
-            >
-              <CreateKitPage />
-            </ProtectedRoute>
-          }
-        />
+          {/* ADMIN PRODUCTOS */}
+          <Route
+            path="/products/new"
+            element={
+              <ProtectedRoute
+                requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
+              >
+                <CreateProductPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/kits/edit/:id"
-          element={
-            <ProtectedRoute
-              requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
-            >
-              <EditKitPage />
-            </ProtectedRoute>
-          }
-        />
-        
+          {/* ADMIN KITS */}
+          <Route
+            path="/kits/new"
+            element={
+              <ProtectedRoute
+                requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
+              >
+                <CreateKitPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/kits/edit/:id"
+            element={
+              <ProtectedRoute
+                requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
+              >
+                <EditKitPage />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* 404 por si no hay na de na */}
-        <Route
-          path="*"
-          element={
-            <div className="text-center py-20">404 - Página no encontrada</div>
-          }
-        />
-      </Route>
-    </Routes>
+          {/* 404 por si no hay nada */}
+          <Route
+            path="*"
+            element={
+              <div className="text-center py-20">404 - Página no encontrada</div>
+            }
+          />
+        </Route>
+      </Routes>
+    </>
   );
 };
 

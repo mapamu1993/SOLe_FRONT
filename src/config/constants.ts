@@ -7,6 +7,7 @@ export const API_ROUTES = {
   ORDERS: "api/orders",
   CART: "api/cart",
   KITS: "api/kits",
+  KIT_REQUESTS: "api/kitrequests",
 };
 
 export const IMAGE_URL =

@@ -1,161 +1,283 @@
-// Importa el componente Link para la navegación interna sin recargar la página
+import React from "react";
 import { Link } from "react-router-dom";
-// Importa los iconos de redes sociales y correo desde la librería tabler-icons
-import {
-  IconBrandInstagram,
-  IconBrandX,
+import { 
+  IconBrandInstagram, 
+  IconBrandFacebook, 
+  IconBrandX, 
+  IconMountain 
 } from "@tabler/icons-react";
+import { BRAND_THEME } from "../../config/designSystem";
 
-// Define el componente funcional Footer
 const Footer = () => {
-  // Retorna la estructura JSX del pie de página
+  const currentYear = new Date().getFullYear();
+
   return (
-    // Etiqueta footer con estilos de ancho completo, fondo oscuro, texto claro y padding vertical
-    <footer
-      className="
-    w-full
-    bg-[#333D29]
-    text-[#EBECE2]
-    px-4
-    md:px-6
-    py-20 
-    pb-10"
+    <footer 
+      className={`
+        bg-[#333D29] 
+        text-[#EBECE2] 
+        pt-20 
+        pb-10 
+        font-sans 
+        mt-auto
+      `}
     >
-      {/* Contenedor principal centrado con ancho máximo y altura mínima definida */}
-      <div
-        className="
-      max-w-7xl
-      mx-auto
-      flex 
-      flex-col
-      justify-between
-      min-h-[400px]"
-      >
-        {/* Sección de enlaces organizada en una cuadrícula (grid) */}
-        <div
+      <div className={BRAND_THEME.layout.maxWidth + " px-6"}>
+        
+        <div 
           className="
-        grid
-        grid-cols-2
-        md:grid-cols-4
-        gap-12
-        mb-20"
+            grid 
+            grid-cols-2 
+            md:grid-cols-4 
+            gap-8 
+            md:gap-12 
+            border-b 
+            border-[#EBECE2]/10 
+            pb-12 
+            mb-12
+          "
         >
-          {/* Primera columna: Enlaces de exploración */}
-          <div className="space-y-4">
-            {/* Título de la sección Explorar */}
-            <h4 className="text-white font-bold mb-6">Explorar</h4>
-            {/* Enlace a la página de inicio */}
-            <Link to="/" className="block text-[#B6AD90] hover:text-white">
-              Home
-            </Link>
-            {/* Enlace a la sección de tienda/kits */}
-            <Link to="/kits" className="block text-[#B6AD90] hover:text-white">
-              Tienda
-            </Link>
-            {/* Enlace a la página de filosofía/nosotros */}
-            <Link to="/about" className="block text-[#B6AD90] hover:text-white">
-              Filosofía
-            </Link>
-          </div>
-          {/* Segunda columna: Enlaces de ayuda */}
-          <div className="space-y-4">
-            {/* Título de la sección Ayuda */}
-            <h4 className="text-white font-bold mb-6">Ayuda</h4>
-            {/* Enlace a la página de contacto */}
-            <Link
-              to="/contacto"
-              className="block text-[#B6AD90] hover:text-white"
+          
+          {/* COLUMNA 1: MARCA */}
+          <div className="col-span-2 md:col-span-1">
+            <Link 
+              to="/" 
+              className="
+                flex 
+                items-center 
+                gap-2 
+                mb-6 
+                group
+              "
             >
-              Contacto
+              <IconMountain 
+                size={32} 
+                className="
+                  text-[#B6AD90] 
+                  group-hover:text-white 
+                  transition-colors
+                " 
+                stroke={1.5} 
+              />
+              <span className="text-2xl font-bold tracking-tight">Sol-e</span>
             </Link>
-            {/* Enlace a preguntas frecuentes (FAQ) */}
-            <Link to="/faq" className="block text-[#B6AD90] hover:text-white">
-              FAQ
-            </Link>
-          </div>
-          {/* Tercera columna (Redes sociales), ocupa 2 columnas en pantallas medianas */}
-          <div
-            className="
-          md:col-span-2
-          flex
-          flex-col
-          items-start
-          md:items-end"
-          >
-            {/* Título de la sección Social */}
-            <h4 className="text-white font-bold mb-6">Social</h4>
-            {/* Contenedor flexible para los iconos */}
+            <p 
+              className="
+                text-[#EBECE2]/60 
+                text-sm 
+                leading-relaxed 
+                mb-6 
+                max-w-xs
+              "
+            >
+              Equipamiento técnico diseñado para el Camino de Santiago. 
+              Nacidos en Galicia, inspirados por cada paso.
+            </p>
             <div className="flex gap-4">
-              {/* Botón circular para Instagram con borde y efecto hover */}
-              <div
+              <a 
+                href="#" 
                 className="
-              p-3
-              rounded-full
-              border
-              border-white/10
-              hover:bg-white
-              hover:text-[#333D29] 
-              transition-all 
-              cursor-pointer"
+                  w-10 
+                  h-10 
+                  rounded-full 
+                  bg-[#EBECE2]/5 
+                  flex 
+                  items-center 
+                  justify-center 
+                  hover:bg-[#582F0E] 
+                  transition-colors 
+                  text-[#B6AD90] 
+                  hover:text-white
+                "
               >
-                <IconBrandInstagram size={20} />
-              </div>
-              {/* Botón circular para Twitter con borde y efecto hover */}
-              <div
+                <IconBrandInstagram size={18} />
+              </a>
+              <a 
+                href="#" 
                 className="
-              p-3
-              rounded-full
-              border
-              border-white/10
-              hover:bg-white
-              hover:text-[#333D29]
-              transition-all
-              cursor-pointer"
+                  w-10 
+                  h-10 
+                  rounded-full 
+                  bg-[#EBECE2]/5 
+                  flex 
+                  items-center 
+                  justify-center 
+                  hover:bg-[#582F0E] 
+                  transition-colors 
+                  text-[#B6AD90] 
+                  hover:text-white
+                "
               >
-                <IconBrandX size={20} />
-              </div>
+                <IconBrandFacebook size={18} />
+              </a>
+              <a 
+                href="#" 
+                className="
+                  w-10 
+                  h-10 
+                  rounded-full 
+                  bg-[#EBECE2]/5 
+                  flex 
+                  items-center 
+                  justify-center 
+                  hover:bg-[#582F0E] 
+                  transition-colors 
+                  text-[#B6AD90] 
+                  hover:text-white
+                "
+              >
+                <IconBrandX size={18} />
+              </a>
             </div>
+          </div>
+
+          {/* COLUMNA 2: EXPLORAR */}
+          <div>
+            <h4 
+              className="
+                font-serif 
+                text-lg 
+                font-bold 
+                mb-6 
+                text-[#B6AD90]
+              "
+            >
+              Explorar
+            </h4>
+            <ul className="space-y-4 text-sm text-[#EBECE2]/70">
+              <li>
+                <Link to="/tienda" className="hover:text-white transition-colors">
+                  Tienda Oficial
+                </Link>
+              </li>
+              <li>
+                <Link to="/kits" className="hover:text-white transition-colors">
+                  Kits del Peregrino
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog" className="hover:text-white transition-colors">
+                  Diario (Blog)
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="hover:text-white transition-colors">
+                  Nuestra Historia
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* COLUMNA 3: SOPORTE */}
+          <div>
+            <h4 
+              className="
+                font-serif 
+                text-lg 
+                font-bold 
+                mb-6 
+                text-[#B6AD90]
+              "
+            >
+              Soporte
+            </h4>
+            <ul className="space-y-4 text-sm text-[#EBECE2]/70">
+              <li>
+                <Link to="/about#faq" className="hover:text-white transition-colors">
+                  Preguntas Frecuentes (FAQ)
+                </Link>
+              </li>
+              <li>
+                <Link to="/contacto" className="hover:text-white transition-colors">
+                  Contacto
+                </Link>
+              </li>
+              <li>
+                <Link to="/profile" className="hover:text-white transition-colors">
+                  Mi Cuenta
+                </Link>
+              </li>
+              <li>
+                <Link to="/orders" className="hover:text-white transition-colors">
+                  Seguimiento de Pedido
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* COLUMNA 4: NEWSLETTER */}
+          <div className="col-span-2 md:col-span-1">
+            <h4 
+              className="
+                font-serif 
+                text-lg 
+                font-bold 
+                mb-6 
+                text-[#B6AD90]
+              "
+            >
+              Únete al Camino
+            </h4>
+            <p className="text-xs text-[#EBECE2]/50 mb-4">
+              Recibe consejos y ofertas exclusivas antes de empezar tu ruta.
+            </p>
+            <form className="flex flex-col gap-2">
+              <input 
+                type="email" 
+                placeholder="tu@email.com" 
+                className="
+                  bg-[#EBECE2]/5 
+                  border 
+                  border-[#EBECE2]/10 
+                  rounded-lg 
+                  px-4 
+                  py-3 
+                  text-sm 
+                  text-white 
+                  focus:outline-none 
+                  focus:border-[#B6AD90] 
+                  transition-colors 
+                  placeholder:text-[#EBECE2]/20
+                "
+              />
+              <button 
+                className="
+                  bg-[#582F0E] 
+                  hover:bg-[#7F4F24] 
+                  text-white 
+                  font-bold 
+                  uppercase 
+                  text-xs 
+                  tracking-widest 
+                  py-3 
+                  rounded-lg 
+                  transition-colors 
+                  shadow-lg
+                "
+              >
+                Suscribirme
+              </button>
+            </form>
           </div>
         </div>
 
-        {/* Sección inferior con el logo gigante decorativo y enlaces legales */}
-        <div
+        {/* BOTTOM BAR */}
+        <div 
           className="
-        border-t
-        border-white/10
-        pt-10
-        flex 
-        flex-col
-        md:flex-row
-        justify-between 
-        items-end"
+            flex 
+            flex-col 
+            md:flex-row 
+            justify-between 
+            items-center 
+            text-xs 
+            text-[#EBECE2]/30
+          "
         >
-          {/* Texto 'SOLE' gigante de fondo con muy baja opacidad y no seleccionable */}
-          <h1
-            className="
-          text-[15vw]
-          leading-none
-          font-bold
-          text-[#F0FDF4]/5 
-          select-none
-          pointer-events-none"
-          >
-            SOL-e
-          </h1>
-          {/* Texto de copyright y enlaces legales alineados al final */}
-          <div
-            className="
-          flex 
-          gap-8
-          text-xs
-          text-[#B6AD90]
-          uppercase 
-          tracking-widest 
-          pb-4"
-          >
-            <span>© 2024 SOL-e</span>
-            <span>Privacidad</span>
-            <span>Legal</span>
+          <p>© {currentYear} Sol-e. Todos los derechos reservados.</p>
+          <div className="flex gap-6 mt-4 md:mt-0">
+            <a href="#" className="hover:text-[#EBECE2] transition-colors">Privacidad</a>
+            <a href="#" className="hover:text-[#EBECE2] transition-colors">Términos</a>
+            <a href="#" className="hover:text-[#EBECE2] transition-colors">Cookies</a>
           </div>
         </div>
       </div>
@@ -163,5 +285,4 @@ const Footer = () => {
   );
 };
 
-// Exporta el componente Footer para su uso en otras partes de la aplicación
 export default Footer;
