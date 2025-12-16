@@ -37,3 +37,20 @@ export const updateKitService = async (
   );
   return data.data.kit;
 };
+
+export interface KitRequestData {
+  kitName: string;
+  name: string;
+  email: string;
+  message?: string;
+}
+
+export const sendKitRequestService = async (
+  data: KitRequestData
+): Promise<any> => {
+  const response = await axiosClient.post(
+    `${API_ROUTES.KIT_REQUESTS}/request-info`,
+    data
+  );
+  return response.data;
+};

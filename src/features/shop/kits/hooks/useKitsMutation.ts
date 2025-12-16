@@ -3,6 +3,7 @@ import {
   deleteKitService,
   updateKitService,
   createKitService,
+  sendKitRequestService,
 } from "../services/kitService";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
@@ -61,6 +62,24 @@ export const useCreateKitMutation = () => {
     },
     onError: () => {
       enqueueSnackbar("Error al crear el kit", { variant: "error" });
+    },
+  });
+};
+
+export const useSendKitRequestMutation = () => {
+  const { enqueueSnackbar } = useSnackbar();
+
+  return useMutation({
+    mutationFn: sendKitRequestService,
+    onSuccess: () => {
+      enqueueSnackbar("Solicitud enviada con éxito. Te contactaremos pronto.", {
+        variant: "success",
+      });
+    },
+    onError: (error: any) => {
+      const msg =
+        error.response?.data?.message || "Error al enviar la solicitud";
+      enqueueSnackbar(msg, { variant: "error" });
     },
   });
 };
