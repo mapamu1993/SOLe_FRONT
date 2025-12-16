@@ -28,7 +28,7 @@ export const useUpdateKitsMutation = () => {
     return useMutation({
         // CORRECCIÓN IMPORTANTE: Desestructuramos el objeto para pasarlo correctamente al servicio
         mutationFn: ({ id, formData }: { id: string; formData: FormData }) => 
-            updateKitService(id, formData),
+            updateKitService({id, formData}),
             
         onSuccess: () => {      
             // Quitamos el await. Marcamos los datos como "viejos" y navegamos inmediatamente.
