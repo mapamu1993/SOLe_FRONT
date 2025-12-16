@@ -91,3 +91,15 @@ export const resetPasswordService = async (data: ResetPasswordFields) => {
   });
   return response.data;
 };
+
+//servicio para actualizar la contraseña
+export const changePasswordService = async (
+  currentPassword: string,
+  newPassword: string
+) => { 
+  const response = await axiosClient.patch(`${API_ROUTES.USERS}/updatepassword`, {
+    currentPassword,
+    newPassword,
+  });
+  return response.data;
+};

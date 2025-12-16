@@ -49,8 +49,26 @@ export const resetPasswordSchema = z
     path: ["confirmPassword"],
   });
 
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z
+      .string()
+      .min(6, "La contraseña actual debe tener al menos 6 caracteres"),
+    newPassword: z
+      .string()
+      .min(6, "La nueva contraseña debe tener al menos 6 caracteres"),
+    confirmNewPassword: z
+      .string()
+      .min(6, "La confirmación debe tener al menos 6 caracteres"),
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    message: "Las contraseñas nuevas no coinciden",
+    path: ["confirmNewPassword"],
+  });
+
 export type RegisterFields = z.infer<typeof registerSchema>;
 export type LoginFormFields = z.infer<typeof loginSchema>;
 export type ProfileFields = z.infer<typeof profileSchema>;
 export type ForgotPasswordFields = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordFields = z.infer<typeof resetPasswordSchema>;
+export type ChangePasswordFields = z.infer<typeof changePasswordSchema>;

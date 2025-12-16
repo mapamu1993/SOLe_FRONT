@@ -17,6 +17,7 @@ import UserProfilePage from "../features/auth/pages/UserProfilePage";
 import UpdateProfilePage from "../features/auth/pages/UpdateProfilePage";
 import ForgotPasswordPage from "../features/auth/pages/ForgotPasswordPage";
 import ResetPasswordPage from "../features/auth/pages/ResetPasswordPage";
+import EditPasswordPage from "../features/auth/pages/EditPasswordPage";
 
 // Contact Page
 import ContactPage from "../features/contact/pages/ContactPage";
@@ -72,6 +73,7 @@ const AppRouter = () => {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
         <Route path="/resetpassword" element={<ResetPasswordPage />} />
+        <Route path="/editpassword" element={<EditPasswordPage />} />
 
         <Route path="/contacto" element={<ContactPage />} />
 
