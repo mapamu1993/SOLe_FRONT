@@ -35,6 +35,8 @@ import CartPage from "../features/shop/cart/pages/CartPage";
 import OrdersPage from "../features/shop/orders/pages/OrdersPage";
 import KitsPage from "../features/shop/kits/pages/KitsPage";
 import ProductsDetailsPage from "../features/shop/products/pages/ProductsDetailsPage";
+import CreateKitPage from "../features/shop/kits/pages/CreateKitPage";
+import EditKitPage from "../features/shop/kits/pages/EditKitPage";
 
 const ProtectedRoute = ({
   children,
@@ -151,6 +153,29 @@ const AppRouter = () => {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/kits/new"
+          element={
+            <ProtectedRoute
+              requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
+            >
+              <CreateKitPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/kits/edit/:id"
+          element={
+            <ProtectedRoute
+              requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
+            >
+              <EditKitPage />
+            </ProtectedRoute>
+          }
+        />
+        
 
         {/* 404 por si no hay na de na */}
         <Route
