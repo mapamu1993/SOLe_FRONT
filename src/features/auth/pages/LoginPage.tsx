@@ -5,13 +5,16 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
 import { loginSchema, type LoginFormFields } from "../validators/authSchema";
 import { loginUserService } from "../services/authService";
-import { LoginDesign } from "../components/LoginDesign"; // Importamos el diseño
+import { LoginDesign } from "../components/LoginDesign";
+import { useSnackbar } from "notistack";
 
 const LoginPage = () => {
-  // LÓGICA 
+  // LÓGICA
   const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+
   const {
     register,
     handleSubmit,
@@ -25,12 +28,22 @@ const LoginPage = () => {
     try {
       const response = await loginUserService(data);
       const userData = response.user;
+
       login(userData);
+
+      // 3. TOAST DE ÉXITO (Justo antes de navegar)
+      enqueueSnackbar(`¡Bienvenido de nuevo, ${userData.name || "viajero"}!`, {
+        variant: "success",
+      });
+
       navigate("/profile");
     } catch (err: any) {
       const errorMessage =
         err.response?.data?.message || "Error al iniciar sesión";
+
       setError(errorMessage);
+
+      enqueueSnackbar(errorMessage, { variant: "error" });
     }
   };
 
