@@ -4,8 +4,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../shared/Navbar";
 // Importa el componente de pie de página compartido
 import Footer from "../shared/Footer";
-// Importa el componente para las notificaciones (Toasts)
-import { Toaster } from "sonner";
+
 
 // Define el componente funcional Layout que servirá de estructura base para todas las páginas
 const Layout = () => {
@@ -16,32 +15,19 @@ const Layout = () => {
 
   // Retorna la estructura JSX que compone la interfaz
   return (
-    // Contenedor principal flex que asegura ocupar al menos toda la altura de la pantalla
-    // AÑADIDO: bg-[#EBECE2] para mantener el color de fondo base en toda la app
-    <div className="flex flex-col min-h-screen bg-[#EBECE2]">
+    // Contenedor principal flex que asegura ocupar al menos toda la altura de la pantalla (min-h-screen)
+    <div className="flex flex-col min-h-screen">
       
-      {/* CONFIGURACIÓN DE LOS TOASTS (Añadido aquí para que funcione) */}
-      <Toaster 
-        position="top-center" 
-        richColors 
-        toastOptions={{
-          style: {
-            background: '#F5F5F0',
-            border: '1px solid #B6AD90',
-            color: '#333D29',
-            fontFamily: 'serif' // Para que pegue con tu marca
-          },
-        }}
-      />
-
       {/* Renderiza la barra de navegación en la parte superior */}
       <Navbar />
+
       
       {/* Contenedor principal del contenido; añade padding superior (pt-28) si no es la home para compensar el navbar fijo */}
       <main className={`flex-grow ${!isHome ? "pt-28" : ""}`}>
         {/* Renderiza el componente hijo correspondiente a la ruta activa en ese momento */}
         <Outlet />
       </main>
+
       
       {/* Renderiza el pie de página al final del contenedor */}
       <Footer />

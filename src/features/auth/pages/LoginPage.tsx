@@ -5,16 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
 import { loginSchema, type LoginFormFields } from "../validators/authSchema";
 import { loginUserService } from "../services/authService";
-import { LoginDesign } from "../components/LoginDesign";
-import { useSnackbar } from "notistack";
+import { LoginDesign } from "../components/LoginDesign"; // Importamos el diseño
 
 const LoginPage = () => {
   // LÓGICA
   const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar(); // 2. USAR EL HOOK
-
   const {
     register,
     handleSubmit,
@@ -30,11 +27,6 @@ const LoginPage = () => {
       const userData = response.user;
 
       login(userData);
-
-      enqueueSnackbar(`¡Bienvenido de nuevo, ${userData.name || "viajero"}!`, {
-        variant: "success",
-      });
-
       navigate("/profile");
     } catch (err: any) {
       const errorMessage =
