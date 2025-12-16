@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { 
   IconBrandInstagram, 
@@ -6,10 +6,32 @@ import {
   IconBrandX, 
   IconMountain 
 } from "@tabler/icons-react";
+import { toast } from "sonner"; // IMPORTAR TOAST
 import { BRAND_THEME } from "../../config/designSystem";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState("");
+
+  // FUNCIÓN PARA MANEJAR LA SUSCRIPCIÓN
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault(); // Evita recargar la página
+
+    if (!email) {
+      toast.error("Por favor, introduce un email válido.");
+      return;
+    }
+
+    // Aquí iría la lógica real de suscripción (API call)
+    // Por ahora simulamos éxito:
+    toast.success("¡Gracias por unirte al camino!", {
+      description: "Te hemos enviado una guía de bienvenida a tu correo.",
+      duration: 4000,
+      icon: "",
+    });
+
+    setEmail(""); // Limpiamos el campo
+  };
 
   return (
     <footer 
@@ -59,7 +81,7 @@ const Footer = () => {
                 " 
                 stroke={1.5} 
               />
-              <span className="text-2xl font-bold tracking-tight">Sole</span>
+              <span className="text-2xl font-bold tracking-tight">Sol-e</span>
             </Link>
             <p 
               className="
@@ -221,10 +243,14 @@ const Footer = () => {
             <p className="text-xs text-[#EBECE2]/50 mb-4">
               Recibe consejos y ofertas exclusivas antes de empezar tu ruta.
             </p>
-            <form className="flex flex-col gap-2">
+            
+            {/* FORMULARIO CONECTADO */}
+            <form onSubmit={handleSubscribe} className="flex flex-col gap-2">
               <input 
                 type="email" 
                 placeholder="tu@email.com" 
+                value={email} // Conectado al estado
+                onChange={(e) => setEmail(e.target.value)} // Actualiza el estado
                 className="
                   bg-[#EBECE2]/5 
                   border 
@@ -241,6 +267,7 @@ const Footer = () => {
                 "
               />
               <button 
+                type="submit" // Importante para que dispare el onSubmit
                 className="
                   bg-[#582F0E] 
                   hover:bg-[#7F4F24] 
@@ -273,7 +300,7 @@ const Footer = () => {
             text-[#EBECE2]/30
           "
         >
-          <p>© {currentYear} Sole. Todos los derechos reservados.</p>
+          <p>© {currentYear} Sol-e. Todos los derechos reservados.</p>
           <div className="flex gap-6 mt-4 md:mt-0">
             <a href="#" className="hover:text-[#EBECE2] transition-colors">Privacidad</a>
             <a href="#" className="hover:text-[#EBECE2] transition-colors">Términos</a>

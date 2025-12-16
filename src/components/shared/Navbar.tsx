@@ -102,7 +102,7 @@ const Navbar = () => {
           transition-colors
           "
           >
-            Sole
+            Sol-e
           </span>
         </Link>
 

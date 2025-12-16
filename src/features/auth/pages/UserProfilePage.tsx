@@ -1,5 +1,7 @@
-import { Link as RouterLink, useNavigate } from "react-router-dom"; // 1. Añadimos useNavigate
+import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom"; // 1. Añadimos useLocation
+import { useEffect } from "react"; // 2. Importamos useEffect
 import { useAuth } from "../context/auth.context";
+import { toast } from "sonner"; // 3. Importamos toast
 import {
   getUserProfileUrl,
   formatUserRole,
@@ -8,9 +10,28 @@ import {
 } from "../../../utils/imageUtil";
 
 const UserProfilePage = () => {
-  // 2. Extraemos 'logout' del contexto
+  // Extraemos datos y funciones del contexto
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation(); // Hook para leer el estado de la navegación
+
+  // --- EFECTO DE BIENVENIDA (NUEVO) ---
+  useEffect(() => {
+    // Si venimos del login (flag 'fromLogin' es true) y hay un usuario cargado
+    if (location.state?.fromLogin && user) {
+      
+      // Lanzamos el mensaje bonito
+      toast.success(`¡Bienvenido de nuevo, ${user.name || user.username || "Peregrino"}!`, {
+        description: "Tu espacio personal está listo para ti.",
+        duration: 4000,
+        icon: "", // Icono de saludo
+      });
+
+      // Limpiamos el estado para que si refresca la página no salga el mensaje otra vez
+      window.history.replaceState({}, document.title);
+    }
+  }, [location, user]);
+  // ------------------------------------
 
   if (!user) return null;
 
@@ -30,7 +51,7 @@ const UserProfilePage = () => {
     { label: "Dirección", value: user.address || "No proporcionado" },
   ];
 
-  // 3. Función para manejar el Cierre de Sesión
+  // Función para manejar el Cierre de Sesión
   const handleLogout = () => {
     logout(); // Limpia el estado y localStorage
     navigate("/"); // Redirige a home
@@ -94,7 +115,7 @@ const UserProfilePage = () => {
               Ver Mis Pedidos
             </RouterLink>
 
-            {/* 4. AQUI ESTÁ EL NUEVO BOTÓN DE LOGOUT */}
+            {/* BOTÓN DE LOGOUT */}
             <button
               onClick={handleLogout}
               className="block w-full rounded-lg border border-red-600 py-2 text-center text-sm font-bold text-red-600 transition-colors hover:bg-red-600 hover:text-white"
