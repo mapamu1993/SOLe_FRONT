@@ -2,10 +2,6 @@
 import { useEffect, useState, useRef } from "react";
 import { IconQuote } from "@tabler/icons-react";
 
-<<<<<<< HEAD
-=======
-// COPY SEO: Testimonios optimizados con keywords de dolor (ampollas, peso, lluvia) y solución.
->>>>>>> a0fe020362015867a4e447136417fc72944f289f
 const testimonials = [
   {
     quote:
@@ -143,7 +139,6 @@ export function TestimonialsSection() {
       <div className="max-w-7xl mx-auto px-4 md:px-6 mb-16">
         <div className="flex flex-col md:flex-row justify-between items-end gap-6">
           <h2 className="text-4xl md:text-5xl font-bold text-[#333D29] tracking-tight leading-tight">
-            {/* COPY SEO CAMBIADO: Generando sentido de pertenencia */}
             Comunidad de <br className="md:hidden" />
             <span className="italic font-serif text-[#582F0E]">Peregrinos</span>
           </h2>
