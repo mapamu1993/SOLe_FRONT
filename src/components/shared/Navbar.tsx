@@ -421,6 +421,7 @@ const Navbar = () => {
                             updateCart({
                               productId: item.product._id,
                               quantity: -1,
+                              productModel: item.productModel,
                             })
                           }
                           className="
@@ -445,6 +446,7 @@ const Navbar = () => {
                             updateCart({
                               productId: item.product._id,
                               quantity: 1,
+                              productModel: item.productModel,
                             })
                           }
                           className="
