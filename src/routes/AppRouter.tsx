@@ -10,7 +10,7 @@ import ScrollToTop from "../components/shared/ScrollToTop";
 import Layout from "../components/layout/Layout";
 
 // Homepage
-import Home from "@/features/home/Home";
+import Home from "@/features/Home/Home";
 import AboutPage from "@/features/about/pages/AboutPage";
 
 // Auth Pages
@@ -53,7 +53,7 @@ const ProtectedRoute = ({
 
   if (loading) return null;
 
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  //if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   if (requiredRoles && !requiredRoles.includes(user?.role || "")) {
     return <Navigate to="/" replace />;
