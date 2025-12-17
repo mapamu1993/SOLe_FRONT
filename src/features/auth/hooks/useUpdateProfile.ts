@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateProfileService } from "../services/authService";
 import { useAuth } from "../context/auth.context";
 import type { ProfileFields } from "../validators/authSchema";
+import { useSnackbar } from "notistack"; 
 
 type UpdateProfileParams = {
   data: ProfileFields;
@@ -11,17 +12,26 @@ type UpdateProfileParams = {
 const useUpdateProfile = () => {
   const queryClient = useQueryClient();
   const { login } = useAuth();
+  const { enqueueSnackbar } = useSnackbar(); // Usar hook
+
   return useMutation<any, Error, UpdateProfileParams>({
     mutationFn: ({ data, file }) => updateProfileService(data, file),
+    
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: ["userProfile"],
       });
       login(data.user);
+      
+      enqueueSnackbar("Perfil actualizado correctamente", { variant: "success" });
     },
+
     onError: (error: any) => {
-      error.response?.data?.message || "Hubo un error al actualizar el perfil";
+      const msg = error.response?.data?.message || "Hubo un error al actualizar el perfil";
       console.error("Error updating profile:", error);
+      
+      // TOAST DE ERROR
+      enqueueSnackbar(msg, { variant: "error" });
     },
   });
 };

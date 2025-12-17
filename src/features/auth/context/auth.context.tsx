@@ -1,7 +1,12 @@
-//aquí es donde vamos a crear la lógica para que la sesión no se cierre al recargar la página
-
-import React, { createContext, useContext, useState, useEffect } from "react";
-import axiosClient from "../../../api/axios.client";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
+import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 import type { User } from "../types/userTypes";
 import { logoutUserService } from "../services/authService";
 
@@ -10,16 +15,20 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (userData: User) => void;
   logout: () => void;
-  //para autenticar con datos parciales: solo user, el email no es necesario
   updateUser: (userData: Partial<User>) => void;
   loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Hooks nuevos
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -39,17 +48,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
     checkAuth();
   }, []);
+
   const login = (userData: User) => {
     setUser(userData);
     localStorage.setItem("user_data", JSON.stringify(userData));
   };
 
-  // Logout que intenta avisar al servidor pero garantiza limpiar local y redirigir
+  // Logout local: Limpia estado, storage, muestra toast y redirige
   const localLogout = () => {
     setUser(null);
     localStorage.removeItem("user_data");
-    // Redirigimos a login usando location para no depender del Router (AuthProvider está fuera del Router)
-    window.location.href = "/login";
+
+    // 1. TOAST DE DESPEDIDA
+    enqueueSnackbar("Sesión cerrada. ¡Buen Camino!", { variant: "info" });
+
+    // 2. Usamos navigate en lugar de window.location para mantener el toast visible
+    navigate("/login");
   };
 
   const logout = async () => {
@@ -58,11 +72,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error) {
       console.error("Error al cerrar sesión en el servidor:", error);
     } finally {
+      // Siempre hacemos logout local, falle o no el servidor
       localLogout();
     }
   };
 
-  // Manejamos el evento global disparado por el interceptor de axios
+  // Manejamos el evento global (por si el token expira y axios nos echa)
   useEffect(() => {
     const handleForceLogout = () => {
       localLogout();
@@ -70,7 +85,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     window.addEventListener("force-logout", handleForceLogout);
     return () => window.removeEventListener("force-logout", handleForceLogout);
-  }, []);
+  }, [navigate, enqueueSnackbar]); // Añadimos dependencias
 
   const updateUser = (newUserData: Partial<User>) => {
     if (!user) return;
@@ -78,6 +93,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(mergedUser);
     localStorage.setItem("user_data", JSON.stringify(mergedUser));
   };
+
   return (
     <AuthContext.Provider
       value={{
@@ -94,4 +110,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext) as AuthContextType;
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};
