@@ -10,8 +10,8 @@ import ScrollToTop from "../components/shared/ScrollToTop";
 import Layout from "../components/layout/Layout";
 
 // Homepage
-import Home from "@/features/home/Home";
-import AboutPage from "@/features/about/pages/AboutPage";
+import Home from "@/features/Home/Home";
+import AboutPage from "../features/about/pages/AboutPage";
 
 // Auth Pages
 import RegisterPage from "../features/auth/pages/RegisterPage";
@@ -162,16 +162,16 @@ const AppRouter = () => {
               </ProtectedRoute>
             }
           />
-        <Route
-          path="/products/edit/:id"
-          element={
-            <ProtectedRoute
-              requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
-            >
-              <EditProductPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/products/edit/:id"
+            element={
+              <ProtectedRoute
+                requiredRoles={[USER_ROLES.ADMIN, USER_ROLES.MODERATOR]}
+              >
+                <EditProductPage />
+              </ProtectedRoute>
+            }
+          />
           {/* ADMIN KITS */}
           <Route
             path="/kits/edit/:id"
@@ -198,7 +198,9 @@ const AppRouter = () => {
           <Route
             path="*"
             element={
-              <div className="text-center py-20">404 - Página no encontrada</div>
+              <div className="text-center py-20">
+                404 - Página no encontrada
+              </div>
             }
           />
         </Route>
