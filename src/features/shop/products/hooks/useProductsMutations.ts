@@ -3,10 +3,10 @@ import {
   createProductService,
   updateProductService,
   deleteProductService,
-  type CreateProductParams, // Importamos los tipos exportados
+  type CreateProductParams,
   type UpdateProductParams
 } from "../services/productServices";
-import { type Product } from "../types/productTypes"; // Asegúrate de importar Product
+import { type Product } from "../types/productTypes";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { AxiosError } from "axios";
@@ -14,18 +14,17 @@ import { AxiosError } from "axios";
 export interface ErrorResponse {
   message: string;
 }
-
+// Hook para crear un producto
 export const useCreateProductMutation = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
 
-  // Tipado explícito: <RespuestaExito, Error, VariablesEntrada>
   return useMutation<Product, AxiosError<ErrorResponse>, CreateProductParams>({
     mutationFn: createProductService,
     onSuccess: async () => {
       enqueueSnackbar("Producto creado exitosamente.", { variant: "success" });
-      await queryClient.invalidateQueries({ queryKey: ["allProducts"] });
+      await queryClient.resetQueries({ queryKey: ["allProducts"] });
       navigate("/tienda");
     },
     onError: (err) => {
@@ -36,12 +35,12 @@ export const useCreateProductMutation = () => {
   });
 };
 
+//Hook para editar un producto
 export const useEditProductMutation = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
 
-  // Añadimos actualizaciones optimistas para que se vea el cambio instantáneo
   return useMutation<Product, AxiosError<ErrorResponse>, UpdateProductParams>({
     mutationFn: updateProductService,
     onMutate: async (variables) => {
@@ -77,6 +76,7 @@ export const useEditProductMutation = () => {
   });
 };
 
+// Hook para eliminar un producto
 export const useDeleteProductMutation = () => {
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
