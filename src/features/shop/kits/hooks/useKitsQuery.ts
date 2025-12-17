@@ -6,9 +6,9 @@ export const useKitsQuery = () => {
   return useQuery<Kit[], Error>({
     queryKey: ["kits"],
     queryFn: getAllKitsService,
-    staleTime: 1000 * 60 * 5, // 5 minutos (Confiamos en la actualización manual)
+    staleTime: 1000 * 60 * 5, 
     refetchOnMount: true,
-    refetchOnWindowFocus: false, // Evitamos recargas innecesarias al cambiar de ventana
+    refetchOnWindowFocus: false,
   });
 };
 

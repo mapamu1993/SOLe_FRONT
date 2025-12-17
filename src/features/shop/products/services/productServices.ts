@@ -26,7 +26,7 @@ export const createProductService = async (
   formData.append("price", String(params.price));
   formData.append("stock", String(params.stock));
   formData.append("category", params.category);
-  formData.append("productImage", params.image); 
+  formData.append("image", params.image); 
 
   const { data } = await axiosClient.post(API_ROUTES.PRODUCTS, formData, {
     headers: { "Content-Type": "multipart/form-data" },
@@ -59,7 +59,7 @@ export const updateProductService = async ({
   if (data.category) formData.append("category", data.category);
   
   if (file) {
-    formData.append("productImage", file);
+    formData.append("image", file);
   }
 
   const { data: response } = await axiosClient.patch(

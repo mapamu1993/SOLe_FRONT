@@ -14,7 +14,7 @@ const UserProfilePage = () => {
 
   if (!user) return null;
 
-  const profileImageUrl =
+  const imageUrl =
     getUserProfileUrl(user.image) ||
     "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
@@ -43,7 +43,7 @@ const UserProfilePage = () => {
         <div className="bg-[#EBECE2] p-8 text-center">
           <div className="relative mx-auto mb-4 h-32 w-32">
             <img
-              src={profileImageUrl}
+              src={imageUrl}
               alt={`Perfil de ${displayName}`}
               className="h-full w-full rounded-full object-cover shadow-lg border-4 border-white"
             />
