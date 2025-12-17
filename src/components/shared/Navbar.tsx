@@ -62,10 +62,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // AJUSTE REALIZADO AQUÍ:
-  // Cambiado 'top-4' por 'top-2' (cuando hay scroll)
-  // Cambiado 'top-6' por 'top-4' (cuando no hay scroll)
-  // Esto reduce el margen superior y equilibra la posición visual.
   const navClasses = `fixed left-1/2 -translate-x-1/2 z-[999] transition-all duration-300 ease-in-out flex items-center justify-between border border-white/10 backdrop-blur-md ${
     scrolled
       ? "top-2 w-[90%] max-w-5xl rounded-full bg-[#333D29]/90 py-3 px-6 shadow-2xl"
@@ -84,41 +80,14 @@ const Navbar = () => {
   return (
     <>
       <nav className={navClasses}>
-        <Link
-          to="/"
-          className="
-        flex
-        items-center 
-        gap-2 
-        group"
-        >
-          <span
-            className="
-          text-xl 
-          font-bold 
-          text-white 
-          tracking-wide 
-          group-hover:text-[#B6AD90] 
-          transition-colors
-          "
-          >
+        <Link to="/" className="flex items-center gap-2 group">
+          <span className="text-xl font-bold text-white tracking-wide group-hover:text-[#B6AD90] transition-colors">
             Sol-e
           </span>
         </Link>
 
-        <div
-          className="
-        hidden 
-        md:flex 
-        items-center 
-        gap-1 
-        bg-black/10 
-        rounded-full 
-        p-1 
-        border 
-        border-white/5
-        "
-        >
+        {/* MENÚ DESKTOP (Oculto en móvil) */}
+        <div className="hidden md:flex items-center gap-1 bg-black/10 rounded-full p-1 border border-white/5">
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -134,136 +103,99 @@ const Navbar = () => {
           ))}
         </div>
 
-        <div
-          className="
-        flex 
-        items-center 
-        gap-3
-        "
-        >
+        <div className="flex items-center gap-3">
           <button
             onClick={() => setIsCartOpen(true)}
-            className="
-          relative 
-          flex 
-          items-center 
-          justify-center 
-          w-10 
-          h-10 
-          rounded-full 
-          bg-white/10 
-          text-white 
-          hover:bg-white 
-          hover:text-[#333D29] 
-          transition-all 
-          border 
-          border-transparent 
-          hover:border-white/20
-          "
+            className="relative flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white hover:text-[#333D29] transition-all border border-transparent hover:border-white/20"
           >
             <IconShoppingBag size={20} stroke={1.5} />
             {totalItems > 0 && (
-              <span
-                className="
-            absolute 
-            top-2 
-            right-2 
-            w-2 
-            h-2 
-            bg-red-500 
-            rounded-full 
-            border 
-            border-[#333D29]
-            "
-              ></span>
+              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-[#333D29]"></span>
             )}
           </button>
 
           {/* LÓGICA DE PERFIL / LOGIN */}
           <Link to={isAuthenticated ? "/profile" : "/login"}>
             {isAuthenticated ? (
-              <button
-                className="
-              flex 
-              items-center 
-              justify-center
-              w-10 
-              h-10 
-              rounded-full 
-              bg-[#582F0E] 
-              text-white 
-              border border-[#7F4F24] 
-              hover:bg-[#7F4F24] 
-              hover:scale-105 
-              transition-all 
-              shadow-lg 
-              overflow-hidden
-              "
-              >
+              <button className="flex items-center justify-center w-10 h-10 rounded-full bg-[#582F0E] text-white border border-[#7F4F24] hover:bg-[#7F4F24] hover:scale-105 transition-all shadow-lg overflow-hidden">
                 {user?.image ? (
                   <img
                     src={getUserProfileUrl(user.image)}
                     alt="Perfil"
-                    className="
-                    w-full 
-                    h-full 
-                    object-cover
-                    "
+                    className="w-full h-full object-cover"
                   />
                 ) : (
                   <IconUser size={20} stroke={1.5} />
                 )}
               </button>
             ) : (
-              <button
-                className="
-              flex 
-              items-center 
-              justify-center 
-              h-10 
-              px-5 
-              rounded-full 
-              bg-[#582F0E] 
-              text-white 
-              border 
-              border-[#7F4F24] 
-              hover:bg-[#7F4F24]
-              hover:scale-105 
-              transition-all 
-              shadow-lg 
-              text-xs 
-              font-bold 
-              uppercase 
-              tracking-wider
-              "
-              >
+              <button className="flex items-center justify-center h-10 px-5 rounded-full bg-[#582F0E] text-white border border-[#7F4F24] hover:bg-[#7F4F24] hover:scale-105 transition-all shadow-lg text-xs font-bold uppercase tracking-wider">
                 Login
               </button>
             )}
           </Link>
 
+          {/* BOTÓN HAMBURGUESA (Solo visible en móvil) */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="
-          md:hidden 
-          flex 
-          items-center 
-          justify-center 
-          w-10 
-          h-10 
-          rounded-full 
-          bg-white/10 
-          text-white 
-          hover:bg-white/20 
-          transition-all
-          "
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all"
           >
             <IconMenu2 size={20} />
           </button>
         </div>
       </nav>
 
-      {/* --- CART DRAWER --- */}
+      {/* ======================================================= */}
+      {/* 🔴 NUEVO: MENÚ MÓVIL (DRAWER) QUE FALTABA 🔴 */}
+      {/* ======================================================= */}
+      
+      {/* 1. Fondo oscuro (Overlay) */}
+      <div
+        className={`fixed inset-0 z-[1000] bg-black/60 backdrop-blur-sm transition-opacity duration-500 md:hidden ${
+          isMobileMenuOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
+
+      {/* 2. Panel lateral del menú */}
+      <div
+        className={`fixed top-0 left-0 z-[1001] h-full w-[280px] bg-[#F2F2EF] shadow-2xl p-6 transform transition-transform duration-500 ease-out md:hidden flex flex-col ${
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="flex justify-between items-center mb-8 pb-4 border-b border-[#333D29]/10">
+          <span className="text-xl font-bold text-[#333D29]">Menú</span>
+          <button
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="p-2 rounded-full hover:bg-black/5 text-[#333D29]"
+          >
+            <IconX size={24} />
+          </button>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.path}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`text-lg font-medium px-4 py-3 rounded-xl transition-all ${
+                location.pathname === link.path
+                  ? "bg-[#333D29] text-white shadow-md"
+                  : "text-[#333D29] hover:bg-black/5"
+              }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+        </div>
+      </div>
+      {/* ======================================================= */}
+
+
+      {/* --- CART DRAWER (ESTE YA LO TENÍAS Y ESTÁ BIEN) --- */}
       <div
         className={`fixed inset-0 z-[1000] bg-black/60 backdrop-blur-sm transition-opacity duration-500 ${
           isCartOpen
@@ -277,65 +209,24 @@ const Navbar = () => {
           isCartOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div
-          className="
-        flex 
-        items-center j
-        ustify-between 
-        p-6 
-        border-b 
-        border-[#333D29]/10
-        "
-        >
-          <h2
-            className="
-          text-xl 
-          font-bold 
-          text-[#333D29]
-          "
-          >
+        <div className="flex items-center justify-between p-6 border-b border-[#333D29]/10">
+          <h2 className="text-xl font-bold text-[#333D29]">
             Tu Cesta ({totalItems})
           </h2>
           <button
             onClick={() => setIsCartOpen(false)}
-            className="
-          p-2 
-          rounded-full 
-          hover:bg-white/50 
-          text-[#333D29] 
-          transition-colors
-          "
+            className="p-2 rounded-full hover:bg-white/50 text-[#333D29] transition-colors"
           >
             <IconX size={24} stroke={1.5} />
           </button>
         </div>
-        <div
-          className="
-        flex-1 
-        overflow-y-auto 
-        p-6 
-        space-y-6
-        "
-        >
+        <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {isLoading ? (
-            <div
-              className="
-            flex 
-            justify-center 
-            p-10 
-            text-[#656D4A]
-            "
-            >
+            <div className="flex justify-center p-10 text-[#656D4A]">
               Cargando...
             </div>
           ) : !cart?.items || cart.items.length === 0 ? (
-            <div
-              className="
-            text-center 
-            py-10 
-            text-[#656D4A]
-            "
-            >
+            <div className="text-center py-10 text-[#656D4A]">
               Tu carrito está vacío.
             </div>
           ) : (
@@ -344,78 +235,24 @@ const Navbar = () => {
               .map((item) => (
                 <div
                   key={item._id}
-                  className="
-                flex 
-                gap-4 
-                items-center 
-                bg-white/60 
-                backdrop-blur-sm 
-                p-4 
-                rounded-2xl 
-                shadow-sm 
-                border 
-                border-white/50
-                "
+                  className="flex gap-4 items-center bg-white/60 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-white/50"
                 >
-                  <div
-                    className="
-                  w-20 
-                  h-20 
-                  rounded-xl 
-                  overflow-hidden 
-                  bg-gray-100 
-                  shrink-0
-                  "
-                  >
+                  <div className="w-20 h-20 rounded-xl overflow-hidden bg-gray-100 shrink-0">
                     <img
                       src={getImageUrl(item.product.image)}
                       alt={item.product.name}
-                      className="
-                    w-full 
-                    h-full 
-                    object-cover
-                    "
+                      className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="flex-1">
-                    <h3
-                      className="
-                    font-bold 
-                    text-[#333D29] 
-                    text-sm 
-                    mb-1
-                    "
-                    >
+                    <h3 className="font-bold text-[#333D29] text-sm mb-1">
                       {item.product.name}
                     </h3>
-                    <div
-                      className="
-                    flex 
-                    justify-between 
-                    items-center 
-                    mt-2
-                    "
-                    >
-                      <span
-                        className="
-                      font-bold 
-                      text-[#582F0E]
-                      "
-                      >
+                    <div className="flex justify-between items-center mt-2">
+                      <span className="font-bold text-[#582F0E]">
                         {item.product.price}€
                       </span>
-                      <div
-                        className="
-                      flex 
-                      items-center 
-                      gap-1 
-                      bg-white 
-                      rounded 
-                      px-1 
-                      border 
-                      border-[#333D29]/10
-                      "
-                      >
+                      <div className="flex items-center gap-1 bg-white rounded px-1 border border-[#333D29]/10">
                         <button
                           onClick={() =>
                             updateCart({
@@ -424,21 +261,11 @@ const Navbar = () => {
                               productModel: item.productModel,
                             })
                           }
-                          className="
-                          p-1 
-                          hover:text-[#582F0E]
-                          "
+                          className="p-1 hover:text-[#582F0E]"
                         >
                           <IconMinus size={14} />
                         </button>
-                        <span
-                          className="
-                          text-xs 
-                          font-bold 
-                          w-4 
-                          text-center
-                          "
-                        >
+                        <span className="text-xs font-bold w-4 text-center">
                           {item.quantity}
                         </span>
                         <button
@@ -449,10 +276,7 @@ const Navbar = () => {
                               productModel: item.productModel,
                             })
                           }
-                          className="
-                          p-1 
-                          hover:text-[#582F0E]
-                          "
+                          className="p-1 hover:text-[#582F0E]"
                         >
                           <IconPlus size={14} />
                         </button>
@@ -461,11 +285,7 @@ const Navbar = () => {
                   </div>
                   <button
                     onClick={() => removeItem(item.product._id)}
-                    className="
-                  text-gray-400 
-                  hover:text-red-500 
-                  p-2
-                  "
+                    className="text-gray-400 hover:text-red-500 p-2"
                   >
                     <IconTrash size={18} />
                   </button>
@@ -473,44 +293,13 @@ const Navbar = () => {
               ))
           )}
         </div>
-        <div
-          className="
-        p-6 
-        bg-white/40 
-        backdrop-blur-md 
-        border-t 
-        border-[#333D29]/10 
-        space-y-4
-        "
-        >
-          <div
-            className="
-          flex 
-          justify-between 
-          items-center 
-          text-[#333D29]
-          "
-          >
+        <div className="p-6 bg-white/40 backdrop-blur-md border-t border-[#333D29]/10 space-y-4">
+          <div className="flex justify-between items-center text-[#333D29]">
             <span className="font-medium">Subtotal</span>
             <span className="font-bold text-xl">{subtotal.toFixed(2)}€</span>
           </div>
           <Link to="/cart" onClick={() => setIsCartOpen(false)}>
-            <button
-              className="
-            w-full 
-            py-4 
-            bg-[#333D29] 
-            text-white 
-            font-bold 
-            rounded-full 
-            hover:bg-[#582F0E] 
-            transition-all 
-            uppercase 
-            tracking-widest 
-            text-xs s
-            hadow-lg
-            "
-            >
+            <button className="w-full py-4 bg-[#333D29] text-white font-bold rounded-full hover:bg-[#582F0E] transition-all uppercase tracking-widest text-xs shadow-lg">
               Ver Carrito Completo
             </button>
           </Link>
