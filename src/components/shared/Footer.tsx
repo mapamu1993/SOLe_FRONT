@@ -1,18 +1,41 @@
-import React from "react";
+import React, { useState } from "react"; // 1. Importamos useState
 import { Link } from "react-router-dom";
-import { 
-  IconBrandInstagram, 
-  IconBrandFacebook, 
-  IconBrandX, 
-  IconMountain 
+import {
+  IconBrandInstagram,
+  IconBrandFacebook,
+  IconBrandX,
+  IconMountain,
 } from "@tabler/icons-react";
 import { BRAND_THEME } from "../../config/designSystem";
+import { useSnackbar } from "notistack"; // 2. Importamos el hook
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
+  // 3. Inicializamos estado y notificaciones
+  const { enqueueSnackbar } = useSnackbar();
+  const [email, setEmail] = useState("");
+
+  // 4. Función para manejar la suscripción
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!email.trim()) {
+      enqueueSnackbar("Por favor, escribe un email válido.", {
+        variant: "warning",
+      });
+      return;
+    }
+
+    // Simulamos éxito
+    enqueueSnackbar("¡Te has unido al Camino! Gracias por suscribirte.", {
+      variant: "success",
+    });
+    setEmail(""); // Limpiamos el campo
+  };
+
   return (
-    <footer 
+    <footer
       className={`
         bg-[#333D29] 
         text-[#EBECE2] 
@@ -23,8 +46,7 @@ const Footer = () => {
       `}
     >
       <div className={BRAND_THEME.layout.maxWidth + " px-6"}>
-        
-        <div 
+        <div
           className="
             grid 
             grid-cols-2 
@@ -37,11 +59,10 @@ const Footer = () => {
             mb-12
           "
         >
-          
           {/* COLUMNA 1: MARCA */}
           <div className="col-span-2 md:col-span-1">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="
                 flex 
                 items-center 
@@ -50,18 +71,18 @@ const Footer = () => {
                 group
               "
             >
-              <IconMountain 
-                size={32} 
+              <IconMountain
+                size={32}
                 className="
                   text-[#B6AD90] 
                   group-hover:text-white 
                   transition-colors
-                " 
-                stroke={1.5} 
+                "
+                stroke={1.5}
               />
               <span className="text-2xl font-bold tracking-tight">Sol-e</span>
             </Link>
-            <p 
+            <p
               className="
                 text-[#EBECE2]/60 
                 text-sm 
@@ -70,12 +91,12 @@ const Footer = () => {
                 max-w-xs
               "
             >
-              Equipamiento técnico diseñado para el Camino de Santiago. 
-              Nacidos en Galicia, inspirados por cada paso.
+              Equipamiento técnico diseñado para el Camino de Santiago. Nacidos
+              en Galicia, inspirados por cada paso.
             </p>
             <div className="flex gap-4">
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className="
                   w-10 
                   h-10 
@@ -92,8 +113,8 @@ const Footer = () => {
               >
                 <IconBrandInstagram size={18} />
               </a>
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className="
                   w-10 
                   h-10 
@@ -110,8 +131,8 @@ const Footer = () => {
               >
                 <IconBrandFacebook size={18} />
               </a>
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className="
                   w-10 
                   h-10 
@@ -133,7 +154,7 @@ const Footer = () => {
 
           {/* COLUMNA 2: EXPLORAR */}
           <div>
-            <h4 
+            <h4
               className="
                 font-serif 
                 text-lg 
@@ -146,7 +167,10 @@ const Footer = () => {
             </h4>
             <ul className="space-y-4 text-sm text-[#EBECE2]/70">
               <li>
-                <Link to="/tienda" className="hover:text-white transition-colors">
+                <Link
+                  to="/tienda"
+                  className="hover:text-white transition-colors"
+                >
                   Tienda Oficial
                 </Link>
               </li>
@@ -161,7 +185,10 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="hover:text-white transition-colors">
+                <Link
+                  to="/about"
+                  className="hover:text-white transition-colors"
+                >
                   Nuestra Historia
                 </Link>
               </li>
@@ -170,7 +197,7 @@ const Footer = () => {
 
           {/* COLUMNA 3: SOPORTE */}
           <div>
-            <h4 
+            <h4
               className="
                 font-serif 
                 text-lg 
@@ -183,22 +210,34 @@ const Footer = () => {
             </h4>
             <ul className="space-y-4 text-sm text-[#EBECE2]/70">
               <li>
-                <Link to="/about#faq" className="hover:text-white transition-colors">
+                <Link
+                  to="/about#faq"
+                  className="hover:text-white transition-colors"
+                >
                   Preguntas Frecuentes (FAQ)
                 </Link>
               </li>
               <li>
-                <Link to="/contacto" className="hover:text-white transition-colors">
+                <Link
+                  to="/contacto"
+                  className="hover:text-white transition-colors"
+                >
                   Contacto
                 </Link>
               </li>
               <li>
-                <Link to="/profile" className="hover:text-white transition-colors">
+                <Link
+                  to="/profile"
+                  className="hover:text-white transition-colors"
+                >
                   Mi Cuenta
                 </Link>
               </li>
               <li>
-                <Link to="/orders" className="hover:text-white transition-colors">
+                <Link
+                  to="/orders"
+                  className="hover:text-white transition-colors"
+                >
                   Seguimiento de Pedido
                 </Link>
               </li>
@@ -207,7 +246,7 @@ const Footer = () => {
 
           {/* COLUMNA 4: NEWSLETTER */}
           <div className="col-span-2 md:col-span-1">
-            <h4 
+            <h4
               className="
                 font-serif 
                 text-lg 
@@ -221,10 +260,13 @@ const Footer = () => {
             <p className="text-xs text-[#EBECE2]/50 mb-4">
               Recibe consejos y ofertas exclusivas antes de empezar tu ruta.
             </p>
-            <form className="flex flex-col gap-2">
-              <input 
-                type="email" 
-                placeholder="tu@email.com" 
+            {/* 5. Conectamos el formulario */}
+            <form onSubmit={handleSubscribe} className="flex flex-col gap-2">
+              <input
+                type="email"
+                placeholder="tu@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="
                   bg-[#EBECE2]/5 
                   border 
@@ -240,7 +282,8 @@ const Footer = () => {
                   placeholder:text-[#EBECE2]/20
                 "
               />
-              <button 
+              <button
+                type="submit"
                 className="
                   bg-[#582F0E] 
                   hover:bg-[#7F4F24] 
@@ -262,7 +305,7 @@ const Footer = () => {
         </div>
 
         {/* BOTTOM BAR */}
-        <div 
+        <div
           className="
             flex 
             flex-col 
@@ -275,9 +318,15 @@ const Footer = () => {
         >
           <p>© {currentYear} Sol-e. Todos los derechos reservados.</p>
           <div className="flex gap-6 mt-4 md:mt-0">
-            <a href="#" className="hover:text-[#EBECE2] transition-colors">Privacidad</a>
-            <a href="#" className="hover:text-[#EBECE2] transition-colors">Términos</a>
-            <a href="#" className="hover:text-[#EBECE2] transition-colors">Cookies</a>
+            <a href="#" className="hover:text-[#EBECE2] transition-colors">
+              Privacidad
+            </a>
+            <a href="#" className="hover:text-[#EBECE2] transition-colors">
+              Términos
+            </a>
+            <a href="#" className="hover:text-[#EBECE2] transition-colors">
+              Cookies
+            </a>
           </div>
         </div>
       </div>

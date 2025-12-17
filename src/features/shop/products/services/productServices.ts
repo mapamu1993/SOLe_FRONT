@@ -2,7 +2,6 @@ import axiosClient from "../../../../api/axios.client";
 import { API_ROUTES } from "../../../../config/constants";
 import { type Product } from "../types/productTypes";
 
-// ⚠️ AÑADE 'export' AQUÍ
 export interface CreateProductParams {
   name: string;
   description: string;
@@ -39,7 +38,6 @@ export const getProductByIdService = async (id: string): Promise<Product> => {
   return data.data.product; 
 };
 
-// AÑADE 'export' AQUÍ TAMBIÉN
 export interface UpdateProductParams {
   id: string;
   data: Partial<CreateProductParams>;
