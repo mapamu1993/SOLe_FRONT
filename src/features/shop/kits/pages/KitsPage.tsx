@@ -13,7 +13,7 @@ import { KitsPageDesign } from "../components/KitsPageDesign";
 
 const KitsPage = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth(); // Importamos isAuthenticated
 
   const canEdit =
     user?.role === USER_ROLES.ADMIN || user?.role === USER_ROLES.MODERATOR;
@@ -32,13 +32,12 @@ const KitsPage = () => {
   const kits = useMemo(() => {
     if (!serverKits) return [];
     return serverKits.map((kit) => {
-      // Definimos si es VIP/Recomendado (Kit 3)
+      // Definimos si es VIP/Recomendado
       const isVip =
         kit.isRecommended ||
         kit.name.toLowerCase().includes("premium") ||
         kit.price >= 1000;
 
-      // Features por defecto si no vienen de BD
       const defaultFeatures = isVip
         ? [
             "Alojamiento Premium",
@@ -82,23 +81,38 @@ const KitsPage = () => {
   };
 
   const handleKitAction = (kit: Kit) => {
-    // Lógica simplificada:
-    // Si es VIP (Kit 3) -> Abrir formulario de contacto
-    // Si NO es VIP (Kit 1 y 2) -> Añadir al carrito directamente
+    // Si es VIP -> Formulario de Contacto
     if (kit.isRecommended) {
       setSelectedKit(kit);
       setIsContactOpen(true);
-    } else {
-      addToCart(
-        { productId: kit._id, quantity: 1 },
-        {
-          onSuccess: () =>
-            enqueueSnackbar("Kit añadido al carrito", { variant: "success" }),
-          onError: () =>
-            enqueueSnackbar("Error al añadir al carrito", { variant: "error" }),
-        }
-      );
+      return;
     }
+
+    // Si es un Kit normal -> Añadir al Carrito
+    // 1. Verificamos si el usuario está logueado
+    if (!isAuthenticated) {
+      enqueueSnackbar("Inicia sesión para añadir productos", { variant: "info" });
+      navigate("/login");
+      return;
+    }
+
+    // 2. Ejecutamos la mutación
+    addToCart(
+      { productId: kit._id, quantity: 1 },
+      {
+        onSuccess: () =>
+          enqueueSnackbar(`"${kit.name}" añadido a tu mochila`, { variant: "success" }),
+        onError: (error: any) => {
+          // Si el error es 401 (no autorizado), forzamos logout/login
+          if (error.response?.status === 401) {
+             enqueueSnackbar("Tu sesión ha expirado", { variant: "warning" });
+             navigate("/login");
+          } else {
+             enqueueSnackbar("Error al añadir al carrito", { variant: "error" });
+          }
+        },
+      }
+    );
   };
 
   const handleCloseContact = () => {
@@ -111,11 +125,11 @@ const KitsPage = () => {
       kits={kits}
       isLoading={isLoading || isAdding}
       isError={isError}
-      // Modal Contacto (Solo para Kit 3/VIP)
+      // Modal Contacto
       isContactOpen={isContactOpen}
       onCloseContact={handleCloseContact}
       selectedKitName={selectedKit?.name || ""}
-      // Acción Principal (Carrito o Contacto)
+      // Acción Principal
       onKitAction={handleKitAction}
       // Admin
       canEdit={canEdit}

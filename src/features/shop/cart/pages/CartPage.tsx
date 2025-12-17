@@ -1,69 +1,83 @@
-import { useMemo, useState } from "react";
+import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
+import { useSnackbar } from "notistack";
+
+// HOOKS
 import { useCartQuery } from "../hooks/useCartQuery";
 import {
   useUpdateCartMutation,
   useRemoveItemMutation,
-  useCheckoutMutation
+  useCheckoutMutation,
 } from "../hooks/useCartMutations";
+
+// COMPONENTES
 import { CartListDesign } from "../components/CartListDesign";
 
 const CartPage = () => {
-  // 1. ESTADOS LOCALES PARA EL FLUJO
-  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  const [successOrder, setSuccessOrder] = useState<any | null>(null); // Guardamos la orden creada
+  const { enqueueSnackbar } = useSnackbar();
 
-  // 2. LÓGICA DE DATOS (Queries & Mutations)
+  // 1. OBTENCIÓN DE DATOS (Query)
   const { data: cart, isLoading, isError } = useCartQuery();
+
+  // 2. MUTACIONES (Acciones)
   const { mutate: updateCart } = useUpdateCartMutation();
   const { mutate: removeItem } = useRemoveItemMutation();
-  const checkoutMutation = useCheckoutMutation();
+  const { mutate: checkout, isPending: isCheckoutLoading, isSuccess: isCheckoutSuccess } = useCheckoutMutation();
 
-  // 3. FILTRADO SEGURO DE ITEMS
-  const validItems = useMemo(() => {
-    if (!cart?.items) return [];
-    return cart.items.filter((item) => item.product != null);
+  // Estados locales para el modal de checkout
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  // Guardamos los datos de la orden exitosa para mostrarlos en la pantalla de "Gracias"
+  const [lastOrder, setLastOrder] = useState<any>(null);
+
+  // --- LÓGICA DE NEGOCIO ---
+
+  // Calcular subtotal
+  const subtotal = useMemo(() => {
+    if (!cart?.items) return 0;
+    return cart.items.reduce((acc, item) => {
+      // Protección: si el producto fue borrado de la DB pero sigue en el carrito
+      if (!item.product) return acc; 
+      return acc + item.product.price * item.quantity;
+    }, 0);
   }, [cart]);
 
-  // 4. CÁLCULO DEL TOTAL
-  const subtotal = useMemo(() => {
-    return validItems.reduce(
-      (acc, item) => acc + item.product.price * item.quantity,
-      0
-    );
-  }, [validItems]);
+  // Filtrar items inválidos (por si acaso un kit/producto fue eliminado de la base de datos)
+  const validItems = useMemo(() => {
+    return cart?.items.filter((item) => item.product !== null) || [];
+  }, [cart]);
 
-  // 5. HANDLERS
+  // Handlers
   const handleUpdateQuantity = (productId: string, change: number) => {
     updateCart({ productId, quantity: change });
   };
 
   const handleRemoveItem = (productId: string) => {
-    removeItem(productId);
-  };
-
-  // Paso 1 del Checkout: Abrir modal de dirección
-  const handleInitiateCheckout = () => {
-    setIsAddressModalOpen(true);
-  };
-
-  // Paso 2 del Checkout: Confirmar compra con dirección
-  const handleConfirmCheckout = async (shippingAddress: string) => {
-    try {
-      // Usamos mutateAsync para esperar la respuesta del backend
-      const response = await checkoutMutation.mutateAsync({ shippingAddress });
-      
-      // El backend devuelve { status: "success", data: { order: ... } }
-      // Guardamos la orden para mostrar el resumen final
-      if (response && response.data && response.data.order) {
-        setSuccessOrder(response.data.order);
-        setIsAddressModalOpen(false); // Cerramos el modal
-      }
-    } catch (error) {
-      console.error("Error en checkout:", error);
-      // El hook useCheckoutMutation ya maneja las notificaciones de error (snackbars)
+    if (window.confirm("¿Seguro que quieres sacar este item de tu mochila?")) {
+      removeItem(productId);
     }
   };
 
+  const handleCheckoutClick = () => {
+    setIsAddressModalOpen(true);
+  };
+
+  const handleConfirmCheckout = (address: string) => {
+    checkout(
+      { shippingAddress: address },
+      {
+        onSuccess: () => {
+          setIsAddressModalOpen(false);
+          // Simulamos datos de orden para la pantalla de éxito, ya que React Query invalidará el carrito y lo dejará vacío
+          setLastOrder({
+            shippingAddress: address,
+            totalAmount: subtotal,
+          });
+        },
+      }
+    );
+  };
+
+  // --- RENDERIZADO ---
   return (
     <CartListDesign
       items={validItems}
@@ -72,12 +86,14 @@ const CartPage = () => {
       subtotal={subtotal}
       onUpdateQuantity={handleUpdateQuantity}
       onRemoveItem={handleRemoveItem}
-      onCheckoutClick={handleInitiateCheckout} // Abre el modal
-      onConfirmCheckout={handleConfirmCheckout} // Ejecuta la compra
-      isCheckoutLoading={checkoutMutation.isPending}
+      
+      // Checkout Props
+      onCheckoutClick={handleCheckoutClick}
+      onConfirmCheckout={handleConfirmCheckout}
+      isCheckoutLoading={isCheckoutLoading}
       isAddressModalOpen={isAddressModalOpen}
       setIsAddressModalOpen={setIsAddressModalOpen}
-      successOrder={successOrder} // Si existe, mostramos pantalla de éxito
+      successOrder={lastOrder}
     />
   );
 };
