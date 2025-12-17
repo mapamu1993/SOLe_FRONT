@@ -6,7 +6,7 @@ import ScrollToTop from "../components/shared/ScrollToTop";
 import Layout from "../components/layout/Layout";
 
 // Homepage
-import Home from "@/features/home/Home";
+import Home from "@/features/Home/Home";
 import AboutPage from "@/features/about/pages/AboutPage";
 
 // Auth Pages
@@ -67,7 +67,7 @@ const AppRouter = () => {
         <Route path="/login" element={<LoginPage />} />
 
         {/* ENVOLVEMOS TODO EN EL LAYOUT PARA QUE SALGAN EL NAVBAR Y EL FOOTER
-        */}
+         */}
         <Route element={<Layout />}>
           {/* PÚBLICAS */}
           <Route path="/" element={<Home />} />
