@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion, type Variants } from "framer-motion";
 import { IconPackage, IconPlus } from "@tabler/icons-react";
-
-// Componentes
 import { KitCard } from "./KitCard";
 import { ContactForm } from "./ContactForm";
 import { getImageUrl } from "../../../../utils/imageUtil";
@@ -14,15 +12,12 @@ interface KitsPageDesignProps {
   isLoading: boolean;
   isError: boolean;
 
-  // Props Contacto (VIP)
   isContactOpen: boolean;
   onCloseContact: () => void;
   selectedKitName: string;
 
-  // Acción principal
   onKitAction: (kit: Kit) => void;
 
-  // Props Admin
   canEdit: boolean;
   onEditKit: (id: string) => void;
   onDeleteKit: (id: string, name: string) => void;
@@ -78,7 +73,7 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
             </p>
           </motion.div>
 
-          {/* Botón Crear Kit (Solo Admin) */}
+          {/* Boton Crear Kit (Solo Admin) */}
           {canEdit && (
             <Link to="/kits/new">
               <motion.button
@@ -145,14 +140,11 @@ export const KitsPageDesign: React.FC<KitsPageDesignProps> = ({
                     price={kit.price}
                     features={kit.features}
                     isRecommended={kit.isRecommended}
-                    // Textos según tipo
                     tagLabel={kit.isRecommended ? "EXPERIENCIA VIP" : "BÁSICO"}
                     buttonText={
                       kit.isRecommended ? "Solicitar Info" : "Añadir al Carrito"
                     }
-                    // Acciones
                     onAction={() => onKitAction(kit)}
-                    // Admin
                     canEdit={canEdit}
                     onEdit={() => onEditKit(kit._id)}
                     onDelete={() => onDeleteKit(kit._id, kit.name)}

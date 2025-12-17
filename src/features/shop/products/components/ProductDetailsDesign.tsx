@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { type Product } from "../types/productTypes";
 import { getImageUrl } from "../../../../utils/imageUtil";
-// 1. CAMBIO: Usamos Tabler Icons (ya instalado) en lugar de Lucide
 import {
   IconShoppingCart,
   IconArrowLeft,
@@ -29,7 +28,6 @@ export const ProductDetailsDesign = ({
 
 
   return (
-    // FONDO GENERAL
     <div className="min-h-screen w-full bg-[#C2C5AA] p-4 font-sans flex items-center justify-center pt-24 md:pt-0">
       {/* TARJETA PRINCIPAL */}
       <div className="w-full max-w-5xl rounded-[2.5rem] bg-white shadow-2xl border border-[#A4AC86] overflow-hidden">
@@ -61,9 +59,7 @@ export const ProductDetailsDesign = ({
         {/* CONTENIDO DEL PRODUCTO */}
         {!isLoading && !isError && product && (
           <div className="flex flex-col md:flex-row">
-            {/* SECCIÓN IMAGEN (Izquierda) */}
             <div className="w-full md:w-1/2 bg-[#EBECE2] flex items-center justify-center p-8 relative min-h-[400px] md:min-h-[600px]">
-              {/* Botón Volver Flotante */}
               <Link
                 to="/tienda"
                 className="absolute top-6 left-6 flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-[#582F0E] font-bold text-sm shadow-sm hover:bg-white transition-all z-10"
@@ -84,32 +80,27 @@ export const ProductDetailsDesign = ({
               )}
             </div>
 
-            {/* SECCIÓN INFORMACIÓN (Derecha) */}
+            {/* SECCION INFORMACION */}
             <div className="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center bg-white">
-              {/* Categoría */}
               <div className="flex items-center gap-2 text-[#656D4A] mb-4 text-xs font-bold uppercase tracking-widest">
                 <IconTag className="w-4 h-4" stroke={2} />
                 <span>{product.category || "General"}</span>
               </div>
 
-              {/* Título */}
               <h1 className="text-4xl md:text-5xl font-bold text-[#333D29] mb-4 leading-tight">
                 {product.name}
               </h1>
 
-              {/* Precio */}
               <div className="text-3xl font-bold text-[#582F0E] mb-8">
                 {product.price.toFixed(2)} €
               </div>
 
-              {/* Descripción */}
               <p className="text-[#656D4A] leading-relaxed mb-10 text-lg font-light">
                 {product.description}
               </p>
 
               <hr className="border-[#A4AC86]/20 mb-10" />
 
-              {/* Stock y Botón */}
               <div className="space-y-8">
                 <div className="flex items-center gap-2 text-[#333D29] font-medium text-sm bg-[#EBECE2]/50 p-3 rounded-lg w-fit">
                   <IconPackage className="w-5 h-5 text-[#656D4A]" stroke={1.5} />

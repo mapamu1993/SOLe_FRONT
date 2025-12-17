@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { type FieldErrors, type UseFormRegister } from "react-hook-form";
 import { type LoginFormFields } from "../validators/authSchema";
-import { Label } from "./ui/label"; // Asegúrate de que estas rutas son correctas en tu proyecto
+import { Label } from "./ui/label"; 
 import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
 
@@ -40,7 +40,7 @@ export const LoginDesign = ({
         {/* Mensaje de Error */}
         {serverError && (
           <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-            ⚠️ {serverError}
+            {serverError}
           </div>
         )}
 
@@ -67,7 +67,6 @@ export const LoginDesign = ({
           {/* Password */}
           <LabelInputContainer className="mb-2">
             {" "}
-            {/* Reduje el margen inferior aquí para acercar el link */}
             <Label htmlFor="password" className="text-[#333D29]">
               Contraseña
             </Label>
@@ -84,7 +83,7 @@ export const LoginDesign = ({
             )}
           </LabelInputContainer>
 
-          {/* --- AQUÍ ESTÁ EL NUEVO BOTÓN "OLVIDASTE TU CONTRASEÑA" --- */}
+          {/* --- BOTON PARA FORGOT PASSWORD --- */}
           <div className="mb-6 flex justify-end">
             <Link
               to="/forgotpassword"
@@ -93,9 +92,9 @@ export const LoginDesign = ({
               ¿Olvidaste tu contraseña?
             </Link>
           </div>
-          {/* --------------------------------------------------------- */}
+          
 
-          {/* BOTÓN (Marrón Cálido) */}
+          {/* BOTON */}
           <button
             className="group/btn relative block h-11 w-full rounded-lg bg-[#582F0E] font-bold text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] transition-transform hover:scale-[1.02] hover:bg-[#7F4F24] disabled:opacity-70"
             type="submit"
@@ -113,7 +112,7 @@ export const LoginDesign = ({
           </button>
         </form>
 
-        {/* Footer */}
+        {/* FOOTER */}
         <div className="mt-8 border-t border-[#C2C5AA] pt-6 text-center">
           <p className="text-sm text-[#656D4A]">¿Aún no tienes cuenta?</p>
           <Link
@@ -128,7 +127,7 @@ export const LoginDesign = ({
   );
 };
 
-// --- Efectos Visuales ---
+
 const BottomGradient = () => {
   return (
     <>

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getMyOrdersService } from "../services/orderServices";
 import type { Order } from "../types/orderTypes";
 
+// Hook para obtener los pedidos del usuario autenticado
 export const useMyOrdersQuery = () => {
   return useQuery<Order[], Error>({
     queryKey: ["myOrders"],

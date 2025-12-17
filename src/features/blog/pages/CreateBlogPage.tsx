@@ -37,12 +37,10 @@ const CreateBlogPage = () => {
       isSubmitting={isPending} 
       onSubmit={handleSubmit(onSubmit)}
       
-      // Textos personalizados
       pageTitle="Nueva Historia"
       buttonText="Publicar Entrada"
       serverError={localError} 
       
-      // Archivos
       onFileChange={(e) => setFile(e.target.files?.[0] || null)}
       currentFile={file}
     />

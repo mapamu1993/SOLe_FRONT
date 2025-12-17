@@ -56,11 +56,9 @@ const EditBlogPage = () => {
     mutate({ id, data, file });
   };
 
-  // Construir la URL de la imagen existente
   const formattedExistingImage = (() => {
     if (!currentImage) return null;
     
-    // Si es una URL completa (Firebase/Externa), úsala
     if (currentImage.startsWith("http")) {
       return currentImage;
     }
@@ -87,7 +85,6 @@ const EditBlogPage = () => {
       isSubmitting={isPending} 
       onSubmit={handleSubmit(onSubmit)}
       
-      // Textos personalizados para Editar
       pageTitle="Editando Historia"
       buttonText="Guardar Cambios"
       serverError={mutationError?.response?.data?.message || ""} 

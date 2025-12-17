@@ -1,7 +1,9 @@
+//importamos axios para crear una instancia
 import axios from "axios";
-
+//declaramos la url base de la api
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
+//creamos la instancia de axios con la url base y configuraciones necesarias
 const axiosClient = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
@@ -12,6 +14,7 @@ const axiosClient = axios.create({
   },
 });
 
+//interceptor para forzar el logout en caso de recibir un error 401 del backend
 axiosClient.interceptors.response.use(
   (response) => response,
   (error) => {

@@ -5,7 +5,7 @@ import L from "leaflet";
 import { IconMapPin, IconWalk, IconChevronDown } from "@tabler/icons-react";
 import { BRAND_THEME } from "../../config/designSystem";
 
-// --- ARREGLO DE ICONOS LEAFLET EN REACT ---
+// --- ICONOS ---
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import shadowUrl from "leaflet/dist/images/marker-shadow.png";
@@ -27,57 +27,57 @@ const CAMINO_ROUTES = {
     id: "frances",
     name: "Camino Francés",
     desc: "La ruta clásica por excelencia",
-    color: "#D90429", // Rojo intenso para destacar en mapa satélite/topo
+    color: "#D90429", 
     coords: [
-      [43.163, -1.236], // Saint-Jean-Pied-de-Port
-      [42.993, -1.309], // Roncesvalles
-      [42.812, -1.645], // Pamplona
-      [42.466, -2.445], // Logroño
-      [42.342, -3.697], // Burgos
-      [42.600, -5.570], // León
-      [42.546, -6.596], // Ponferrada
-      [42.707, -7.047], // O Cebreiro
-      [42.880, -8.544], // Santiago
+      [43.163, -1.236], 
+      [42.993, -1.309], 
+      [42.812, -1.645], 
+      [42.466, -2.445], 
+      [42.342, -3.697], 
+      [42.600, -5.570], 
+      [42.546, -6.596], 
+      [42.707, -7.047], 
+      [42.880, -8.544], 
     ] as [number, number][],
   },
   norte: {
     id: "norte",
     name: "Camino del Norte",
     desc: "Bordeando la costa cantábrica",
-    color: "#0077B6", // Azul Costa
+    color: "#0077B6", 
     coords: [
-      [43.338, -1.789], // Irún
-      [43.321, -1.986], // San Sebastián
-      [43.263, -2.935], // Bilbao
-      [43.462, -3.805], // Santander
-      [43.554, -7.041], // Ribadeo
-      [43.009, -7.556], // Lugo
-      [42.880, -8.544], // Santiago
+      [43.338, -1.789], 
+      [43.321, -1.986], 
+      [43.263, -2.935], 
+      [43.462, -3.805], 
+      [43.554, -7.041], 
+      [43.009, -7.556], 
+      [42.880, -8.544], 
     ] as [number, number][],
   },
   primitivo: {
     id: "primitivo",
     name: "Camino Primitivo",
     desc: "El origen de la peregrinación",
-    color: "#F48C06", // Naranja
+    color: "#F48C06", 
     coords: [
-      [43.361, -5.849], // Oviedo
-      [43.177, -6.549], // Pola de Allande
-      [43.009, -7.556], // Lugo
-      [42.915, -8.012], // Melide
-      [42.880, -8.544], // Santiago
+      [43.361, -5.849], 
+      [43.177, -6.549], 
+      [43.009, -7.556], 
+      [42.915, -8.012], 
+      [42.880, -8.544], 
     ] as [number, number][],
   },
   portugues: {
     id: "portugues",
     name: "Camino Portugués",
     desc: "Desde el sur, cruzando fronteras",
-    color: "#38B000", // Verde Vivo
+    color: "#38B000", 
     coords: [
-      [41.157, -8.629], // Oporto
-      [42.046, -8.643], // Tui
-      [42.431, -8.644], // Pontevedra
-      [42.880, -8.544], // Santiago
+      [41.157, -8.629], 
+      [42.046, -8.643], 
+      [42.431, -8.644], 
+      [42.880, -8.544], 
     ] as [number, number][],
   }
 };
@@ -89,11 +89,10 @@ const MapUpdater = ({ coords }: { coords: [number, number][] }) => {
   const map = useMap();
   if (!coords || coords.length === 0) return null;
   
-  // Calculamos el centro para enfocar bien la ruta seleccionada
   const centerLat = coords.reduce((sum, p) => sum + p[0], 0) / coords.length;
   const centerLng = coords.reduce((sum, p) => sum + p[1], 0) / coords.length;
   
-  map.flyTo([centerLat, centerLng], 7, { duration: 1.5 }); // Animación de vuelo suave
+  map.flyTo([centerLat, centerLng], 7, { duration: 1.5 });
   return null;
 };
 
@@ -109,11 +108,11 @@ export const CaminoMap = () => {
       <MapContainer 
         center={[42.6, -4.5]} 
         zoom={6} 
-        scrollWheelZoom={false} // Evita scroll accidental
+        scrollWheelZoom={false} 
         className="w-full h-full bg-[#EBECE2]"
-        zoomControl={true} // ¡ZOOM ACTIVADO!
+        zoomControl={true} 
       >
-        {/* CAPA REALISTA (Esri World Topo - Relieve y Terreno) */}
+        {/* CAPA REALISTA */}
         <TileLayer
           attribution='Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
           url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
@@ -129,7 +128,7 @@ export const CaminoMap = () => {
             color: currentData.color, 
             weight: 5, 
             opacity: 0.9,
-            dashArray: "1, 0", // Línea sólida
+            dashArray: "1, 0",
             lineCap: "round"
           }} 
         />
@@ -148,13 +147,13 @@ export const CaminoMap = () => {
         {/* MARCADOR FINAL */}
         <Marker position={currentData.coords[currentData.coords.length - 1]}>
           <Popup>
-            <strong className="text-[#333D29] font-sans">¡Santiago de Compostela! 🌟</strong>
+            <strong className="text-[#333D29] font-sans">¡Santiago de Compostela!</strong>
           </Popup>
         </Marker>
 
       </MapContainer>
 
-      {/* --- UI DEL SELECTOR (Dropdown Flotante) --- */}
+      {/* --- UI DEL SELECTOR --- */}
       <div className="absolute top-4 right-4 z-[1000] w-64">
         
         {/* Botón Principal del Dropdown */}
@@ -219,7 +218,6 @@ export const CaminoMap = () => {
         )}
       </div>
 
-      {/* Etiqueta decorativa inferior */}
       <div className="absolute bottom-4 left-4 z-[1000] bg-white/80 backdrop-blur px-3 py-1.5 rounded-lg text-xs font-bold text-[#582F0E] shadow-sm pointer-events-none flex items-center gap-1.5">
         <IconMapPin size={14} /> Explorador de Rutas
       </div>

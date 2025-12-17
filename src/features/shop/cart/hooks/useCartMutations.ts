@@ -15,6 +15,7 @@ interface ErrorResponse {
   message: string;
 }
 
+//mutacion para actualizar el carrito
 export const useUpdateCartMutation = () => {
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
@@ -39,6 +40,7 @@ export const useUpdateCartMutation = () => {
   });
 };
 
+//mutacion para eliminar un item del carrito
 export const useRemoveItemMutation = () => {
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
@@ -59,6 +61,7 @@ export const useRemoveItemMutation = () => {
   });
 };
 
+//mutacion para el checkout
 export const useCheckoutMutation = () => {
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();

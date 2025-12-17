@@ -29,8 +29,7 @@ const useUpdateProfile = () => {
     onError: (error: any) => {
       const msg = error.response?.data?.message || "Hubo un error al actualizar el perfil";
       console.error("Error updating profile:", error);
-      
-      // TOAST DE ERROR
+
       enqueueSnackbar(msg, { variant: "error" });
     },
   });

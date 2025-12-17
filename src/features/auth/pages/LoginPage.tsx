@@ -6,13 +6,13 @@ import { useAuth } from "../context/auth.context";
 import { loginSchema, type LoginFormFields } from "../validators/authSchema";
 import { loginUserService } from "../services/authService";
 import { LoginDesign } from "../components/LoginDesign";
-import { useSnackbar } from "notistack"; // <--- Importar
+import { useSnackbar } from "notistack";
 
 const LoginPage = () => {
   const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar(); // <--- Hook
+  const { enqueueSnackbar } = useSnackbar();
 
   const {
     register,
@@ -30,7 +30,6 @@ const LoginPage = () => {
 
       login(userData);
 
-      // --- TOAST DE ÉXITO ---
       enqueueSnackbar(`¡Bienvenido, ${userData.name || "peregrino"}!`, {
         variant: "success",
       });
@@ -41,7 +40,6 @@ const LoginPage = () => {
         err.response?.data?.message || "Error al iniciar sesión";
       setError(errorMessage);
 
-      // --- TOAST DE ERROR ---
       enqueueSnackbar(errorMessage, { variant: "error" });
     }
   };

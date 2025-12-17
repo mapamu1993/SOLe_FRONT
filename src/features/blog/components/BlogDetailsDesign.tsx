@@ -7,7 +7,6 @@ interface BlogDetailsDesignProps {
   blog: Blog | undefined;
   isLoading: boolean;
   isError: boolean;
-  // Pasamos el contenido ya procesado (HTML) para respetar tu lógica original
   htmlContent: { __html: string };
 }
 
@@ -18,7 +17,6 @@ export const BlogDetailsDesign = ({
   htmlContent,
 }: BlogDetailsDesignProps) => {
   return (
-    // FONDO GENERAL (Beige verdoso)
     <div className="min-h-screen w-full bg-[#C2C5AA] p-4 font-sans">
       {/* CONTENEDOR PRINCIPAL */}
       <div className="mx-auto w-full max-w-4xl rounded-2xl bg-white shadow-2xl border border-[#A4AC86] overflow-hidden">
@@ -71,7 +69,6 @@ export const BlogDetailsDesign = ({
             <div className="relative h-64 w-full bg-[#EBECE2] md:h-96">
               {blog.image ? (
                 <img
-                        //CORRECCIÓN: Usamos getImageUrl construyendo la ruta
                         src={getImageUrl(blog.image)}
                         alt={blog.title}
                         className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"

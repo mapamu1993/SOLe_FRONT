@@ -55,7 +55,6 @@ const EditKitPage = () => {
     const featuresArray = data.featuresString.split(",").map(f => f.trim()).filter(f => f !== "");
     featuresArray.forEach(feature => formData.append("features[]", feature));
 
-    // SIMPLIFICADO: El hook se encarga de la redirección
     mutate({ id, formData });
   };
 

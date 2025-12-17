@@ -1,8 +1,6 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
-
-// 1. Imports necesarios
 import { useKitsQuery } from "../hooks/useKitsQuery";
 import { useAddToCartMutation } from "../../cart/hooks/useCartMutations";
 import { useDeleteKitMutation } from "../hooks/useKitsMutation";
@@ -18,21 +16,17 @@ const KitsPage = () => {
   const canEdit =
     user?.role === USER_ROLES.ADMIN || user?.role === USER_ROLES.MODERATOR;
 
-  // --- DATA FETCHING ---
   const { data: serverKits, isLoading, isError } = useKitsQuery();
   const { mutate: deleteKit } = useDeleteKitMutation();
   const { mutate: addToCart, isPending: isAdding } = useAddToCartMutation();
   const { enqueueSnackbar } = useSnackbar();
 
-  // --- ESTADOS DE UI ---
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [selectedKit, setSelectedKit] = useState<Kit | null>(null);
 
-  // --- TRANSFORMACIÓN DE DATOS ---
   const kits = useMemo(() => {
     if (!serverKits) return [];
     return serverKits.map((kit) => {
-      // Definimos si es VIP/Recomendado
       const isVip =
         kit.isRecommended ||
         kit.name.toLowerCase().includes("premium") ||
@@ -81,15 +75,12 @@ const KitsPage = () => {
   };
 
   const handleKitAction = (kit: Kit) => {
-    // Si es VIP -> Formulario de Contacto
     if (kit.isRecommended) {
       setSelectedKit(kit);
       setIsContactOpen(true);
       return;
     }
 
-    // Si es un Kit normal -> Añadir al Carrito
-    // 1. Verificamos si el usuario está logueado
     if (!isAuthenticated) {
       enqueueSnackbar("Inicia sesión para añadir productos", {
         variant: "info",
@@ -98,7 +89,6 @@ const KitsPage = () => {
       return;
     }
 
-    // 2. Ejecutamos la mutación
     addToCart(
       { productId: kit._id, quantity: 1, productModel: "Kit" },
       {
@@ -107,7 +97,6 @@ const KitsPage = () => {
             variant: "success",
           }),
         onError: (error: any) => {
-          // Si el error es 401 (no autorizado), forzamos logout/login
           if (error.response?.status === 401) {
             enqueueSnackbar("Tu sesión ha expirado", { variant: "warning" });
             navigate("/login");
@@ -129,13 +118,10 @@ const KitsPage = () => {
       kits={kits}
       isLoading={isLoading || isAdding}
       isError={isError}
-      // Modal Contacto
       isContactOpen={isContactOpen}
       onCloseContact={handleCloseContact}
       selectedKitName={selectedKit?.name || ""}
-      // Acción Principal
       onKitAction={handleKitAction}
-      // Admin
       canEdit={canEdit}
       onEditKit={handleEditKit}
       onDeleteKit={handleDeleteKit}

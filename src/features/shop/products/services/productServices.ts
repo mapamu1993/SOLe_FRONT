@@ -11,11 +11,13 @@ export interface CreateProductParams {
   image: File;
 }
 
+// Servicio para obtener todos los productos
 export const getAllProductsService = async (): Promise<Product[]> => {
   const { data } = await axiosClient.get(API_ROUTES.PRODUCTS);
   return data.data.products;
 };
 
+// Servicio para crear un nuevo producto
 export const createProductService = async (
   params: CreateProductParams
 ): Promise<Product> => {
@@ -33,6 +35,7 @@ export const createProductService = async (
   return data;
 };
 
+// Servicio para obtener un producto por su ID
 export const getProductByIdService = async (id: string): Promise<Product> => {
   const { data } = await axiosClient.get(`${API_ROUTES.PRODUCTS}/${id}`);
   return data.data.product; 
@@ -44,6 +47,7 @@ export interface UpdateProductParams {
   file?: File | null;
 }
 
+// Servicio para actualizar un producto
 export const updateProductService = async ({
   id,
   data,
@@ -70,6 +74,7 @@ export const updateProductService = async ({
   return response.data;
 };
 
+// Servicio para eliminar un producto
 export const deleteProductService = async (id: string): Promise<void> => {
   await axiosClient.delete(`${API_ROUTES.PRODUCTS}/${id}`);
 };

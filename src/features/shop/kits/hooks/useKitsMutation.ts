@@ -8,7 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
-// Hook para borrar un kit
+// Hook para eliminar un kit
 export const useDeleteKitMutation = () => {
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
@@ -25,7 +25,7 @@ export const useDeleteKitMutation = () => {
   });
 };
 
-// Hook para actualizar un kit
+// Hook para actualizar un kit existente
 export const useUpdateKitsMutation = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ export const useUpdateKitsMutation = () => {
   });
 };
 
-// Hook para crear un kit
+// Hook para crear un nuevo kit
 export const useCreateKitMutation = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();

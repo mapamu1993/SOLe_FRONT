@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useChangePasswordMutation } from "../hooks/usePasswordChange";
-// 1. IMPORTANTE: Traemos el contexto para saber quién es el usuario actual
 import { useAuth } from "../context/auth.context"; 
 import {
   changePasswordSchema,
@@ -14,7 +13,6 @@ import { Label } from "../components/ui/label";
 
 const EditPasswordPage = () => {
   const navigate = useNavigate();
-  // 2. Obtenemos el usuario del contexto
   const { user } = useAuth(); 
   const { mutate, isPending } = useChangePasswordMutation();
 
@@ -92,7 +90,6 @@ const EditPasswordPage = () => {
                   placeholder="Tu contraseña actual"
                   {...register("currentPassword")}
                   className="pl-10 border-[#A4AC86]"
-                  // 4. AUTOCOMPLETE CORRECTO: current-password
                   autoComplete="current-password"
                 />
                 <div className="absolute left-3 top-2.5">
@@ -114,7 +111,6 @@ const EditPasswordPage = () => {
                   placeholder="Nueva contraseña"
                   {...register("newPassword")}
                   className="pl-10 border-[#A4AC86]"
-                  // 5. AUTOCOMPLETE CORRECTO: new-password
                   autoComplete="new-password"
                 />
                 <div className="absolute left-3 top-2.5">
@@ -136,7 +132,6 @@ const EditPasswordPage = () => {
                   placeholder="Confirma tu nueva contraseña"
                   {...register("confirmNewPassword")}
                   className="pl-10 border-[#A4AC86]"
-                  // 6. AUTOCOMPLETE: new-password (también aquí)
                   autoComplete="new-password"
                 />
                 <div className="absolute left-3 top-2.5">

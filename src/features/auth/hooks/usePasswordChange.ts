@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { changePasswordService } from "../services/authService";
 import { useSnackbar } from "notistack";
 
-// Definimos el tipo de datos que recibe la mutación
 type ChangePasswordVariables = {
   current: string;
   newPass: string;

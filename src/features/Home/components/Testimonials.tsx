@@ -1,110 +1,109 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { IconQuote } from "@tabler/icons-react";
 
-// TUS 15 TESTIMONIOS
 const testimonials = [
   {
     quote:
-      "El kit 'Iniciado' me salvó la vida. Todo lo que necesitaba y nada más. La mochila ni se siente.",
+      "El Kit Peregrino 'Iniciado' fue mi salvación. Llevé solo lo esencial y mi espalda lo agradeció en cada etapa hasta Santiago.",
     author: "Marta R.",
     role: "Camino Francés '23",
     avatar: "https://randomuser.me/api/portraits/women/44.jpg",
   },
   {
     quote:
-      "Increíble calidad. Las botas aguantaron lluvia y barro gallego sin una sola ampolla. 10/10.",
+      "Las botas de trekking soportaron el barro gallego y la lluvia continua sin una sola ampolla. Calidad técnica imprescindible.",
     author: "Carlos D.",
     role: "Camino del Norte",
     avatar: "https://randomuser.me/api/portraits/men/32.jpg",
   },
   {
     quote:
-      "La atención al cliente es de otro planeta. Me ayudaron a elegir la talla perfecta por WhatsApp.",
+      "No sabía qué llevar en la mochila. Su equipo me asesoró por WhatsApp para el Camino de Invierno. Atención de 10.",
     author: "Ana P.",
     role: "Vía de la Plata",
     avatar: "https://randomuser.me/api/portraits/women/68.jpg",
   },
   {
     quote:
-      "Lo mejor es lo ligero que es todo. He hecho el Primitivo y mis rodillas lo han agradecido.",
+      "Hacer el Camino Primitivo con vuestro equipamiento ultraligero fue otra historia. Cero dolor de rodillas en las subidas duras.",
     author: "Javier M.",
     role: "Camino Primitivo",
     avatar: "https://randomuser.me/api/portraits/men/45.jpg",
   },
   {
     quote:
-      "Envío rapidísimo. Pedí el miércoles y el viernes ya estaba estrenando botas en la sierra.",
+      "Me faltaba material a dos días de salir. El envío 24h me salvó la vida. Ya estoy caminando con las botas nuevas.",
     author: "Lucía G.",
-    role: "Senderista",
+    role: "Senderista Exprés",
     avatar: "https://randomuser.me/api/portraits/women/12.jpg",
   },
   {
     quote:
-      "Llovió a mares subiendo O Cebreiro y el poncho del kit aguantó como un campeón. Llegué seco al albergue.",
+      "El poncho de lluvia técnico es obligatorio. Subiendo O Cebreiro diluvió y llegué seco al albergue. Material top.",
     author: "Roberto S.",
     role: "Camino Francés '24",
     avatar: "https://randomuser.me/api/portraits/men/86.jpg",
   },
   {
     quote:
-      "Los calcetines anti-ampollas son pura magia negra. 800km desde Roncesvalles y mis pies llegaron intactos.",
+      "800km desde Roncesvalles y ni una rozadura. Los calcetines anti-ampollas del kit son la mejor inversión que he hecho.",
     author: "Elena M.",
     role: "Peregrina Veterana",
     avatar: "https://randomuser.me/api/portraits/women/65.jpg",
   },
   {
     quote:
-      "Compré el kit completo como regalo para mi padre que se jubilaba. Le hizo muchísima ilusión y le sirvió todo.",
+      "Regalé el Pack Peregrino Completo a mi padre por su jubilación. Le ha facilitado la vida en su primer Camino.",
     author: "Pablo R.",
     role: "Regalo Familiar",
     avatar: "https://randomuser.me/api/portraits/men/11.jpg",
   },
   {
     quote:
-      "Hice el Camino Portugués por la Costa. La ropa técnica se secaba en minutos con la brisa del mar. Un acierto.",
+      "En el Camino Portugués por la Costa la humedad es alta. Vuestra ropa técnica se secaba en minutos. Muy recomendada.",
     author: "Inés V.",
     role: "Camino Portugués",
     avatar: "https://randomuser.me/api/portraits/women/29.jpg",
   },
   {
     quote:
-      "Soy muy tiquismiquis con el peso y la mochila ultraligera me ha sorprendido. Cabe todo y la espalda no sufre.",
+      "Como experto en senderismo ultraligero, vuestro material cumple. Peso mínimo, resistencia máxima. Un acierto total.",
     author: "David L.",
     role: "Ultralight Hiker",
     avatar: "https://randomuser.me/api/portraits/men/54.jpg",
   },
   {
     quote:
-      "Tuve que cambiar la talla de las botas a última hora y la gestión fue impecable. Al día siguiente tenía las nuevas.",
+      "Tuve que cambiar las botas por una talla más (consejo: pedid una más para el Camino) y la gestión fue rapidísima.",
     author: "Sara G.",
     role: "Camino Inglés",
     avatar: "https://randomuser.me/api/portraits/women/90.jpg",
   },
   {
     quote:
-      "El saco sábana es un imprescindible para los albergues de verano. Suave, higiénico y no ocupa nada.",
+      "El saco sábana de seda es fundamental para la higiene en albergues. No pesa nada y se duerme de lujo.",
     author: "Miguel A.",
     role: "Vía de la Plata",
     avatar: "https://randomuser.me/api/portraits/men/33.jpg",
   },
   {
     quote:
-      "Me daba miedo ir sola, pero los consejos del blog y el material adecuado me dieron la confianza que necesitaba.",
+      "Hacer el Camino sola impone, pero ir bien equipada con vuestro kit de seguridad me dio la confianza para lanzarme.",
     author: "Carmen F.",
     role: "Camino de Invierno",
     avatar: "https://randomuser.me/api/portraits/women/42.jpg",
   },
   {
     quote:
-      "La crema para pies que incluís en el kit Confort es gloria bendita después de una etapa de 30km.",
+      "La crema de recuperación del Kit Confort es mano de santo tras etapas de 30km. Mis pies amanecían nuevos.",
     author: "Jorge T.",
     role: "Camino Primitivo",
     avatar: "https://randomuser.me/api/portraits/men/76.jpg",
   },
   {
     quote:
-      "Valoré mucho que el packaging fuera sostenible y sin plásticos innecesarios. El Camino hay que cuidarlo.",
+      "Valoro mucho que seáis una marca eco-friendly. El Camino se disfruta más sabiendo que no dejamos huella plástica.",
     author: "Beatriz O.",
     role: "Eco-Peregrina",
     avatar: "https://randomuser.me/api/portraits/women/33.jpg",
@@ -123,7 +122,6 @@ export function TestimonialsSection() {
   function addAnimation() {
     if (containerRef.current && scrollerRef.current) {
       const scrollerContent = Array.from(scrollerRef.current.children);
-      // Evitamos duplicar infinitamente si React ejecuta el efecto dos veces
       if (scrollerContent.length < testimonials.length * 2) {
         scrollerContent.forEach((item) => {
           const duplicatedItem = item.cloneNode(true);
@@ -141,8 +139,8 @@ export function TestimonialsSection() {
       <div className="max-w-7xl mx-auto px-4 md:px-6 mb-16">
         <div className="flex flex-col md:flex-row justify-between items-end gap-6">
           <h2 className="text-4xl md:text-5xl font-bold text-[#333D29] tracking-tight leading-tight">
-            Voces del <br className="md:hidden" />
-            <span className="italic font-serif text-[#582F0E]">Camino</span>
+            Comunidad de <br className="md:hidden" />
+            <span className="italic font-serif text-[#582F0E]">Peregrinos</span>
           </h2>
           <IconQuote
             size={48}
@@ -225,7 +223,7 @@ export function TestimonialsSection() {
         </div>
       </div>
 
-      {/* ESTILOS INTERNOS: Aquí está la magia para que funcione sin tocar nada más */}
+      {/* ESTILOS INTERNOS */}
       <style>{`
         /* 1. Definimos la animación solo para este componente */
         @keyframes scroll-testimonials {

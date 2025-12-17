@@ -3,13 +3,10 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-// Importamos el esquema y el tipo
 import { registerSchema, type RegisterFields } from "../validators/authSchema";
 
-// Importamos el servicio
 import { registerUserService } from "../../auth/services/authService";
 
-// IMPORTANTE: Importamos el diseño nuevo
 import { RegisterDesign } from "../components/RegisterDesign";
 
 const RegisterPage = () => {
@@ -27,7 +24,6 @@ const RegisterPage = () => {
     resolver: zodResolver(registerSchema),
   });
 
-  // Manejo del input tipo File y su previsualización
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0] || null;
     setFile(selectedFile);
@@ -39,14 +35,11 @@ const RegisterPage = () => {
     }
   };
 
-  // Función de envío del formulario
   const onSubmit = async (data: RegisterFields) => {
     setServerError("");
     try {
-      // Delegamos la lógica de la petición al servicio
       await registerUserService(data, file);
 
-      // Si todo sale bien, redirigimos
       navigate("/login");
     } catch (error) {
       console.error("Error en petición:", error);
@@ -54,7 +47,6 @@ const RegisterPage = () => {
     }
   };
 
-  // AQUÍ CONECTAMOS LA LÓGICA CON EL DISEÑO
   return (
     <RegisterDesign 
       register={register}
