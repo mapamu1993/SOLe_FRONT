@@ -1,69 +1,70 @@
-import { useMemo, useState } from "react";
+import { useState, useMemo } from "react";
+
+// HOOKS
 import { useCartQuery } from "../hooks/useCartQuery";
 import {
   useUpdateCartMutation,
   useRemoveItemMutation,
-  useCheckoutMutation
+  useCheckoutMutation,
 } from "../hooks/useCartMutations";
+
 import { CartListDesign } from "../components/CartListDesign";
 
 const CartPage = () => {
-  // 1. ESTADOS LOCALES PARA EL FLUJO
-  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  const [successOrder, setSuccessOrder] = useState<any | null>(null); // Guardamos la orden creada
-
-  // 2. LÓGICA DE DATOS (Queries & Mutations)
   const { data: cart, isLoading, isError } = useCartQuery();
+
   const { mutate: updateCart } = useUpdateCartMutation();
   const { mutate: removeItem } = useRemoveItemMutation();
-  const checkoutMutation = useCheckoutMutation();
+  const { mutate: checkout, isPending: isCheckoutLoading } =
+    useCheckoutMutation();
 
-  // 3. FILTRADO SEGURO DE ITEMS
-  const validItems = useMemo(() => {
-    if (!cart?.items) return [];
-    return cart.items.filter((item) => item.product != null);
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [lastOrder, setLastOrder] = useState<any>(null);
+
+  // --- LÓGICA DE NEGOCIO ---
+
+  const subtotal = useMemo(() => {
+    if (!cart?.items) return 0;
+    return cart.items.reduce((acc, item) => {
+      if (!item.product) return acc;
+      return acc + (item.product.price || 0) * item.quantity;
+    }, 0);
   }, [cart]);
 
-  // 4. CÁLCULO DEL TOTAL
-  const subtotal = useMemo(() => {
-    return validItems.reduce(
-      (acc, item) => acc + item.product.price * item.quantity,
-      0
-    );
-  }, [validItems]);
+  const validItems = useMemo(() => {
+    return cart?.items.filter((item) => item.product !== null) || [];
+  }, [cart]);
 
-  // 5. HANDLERS
   const handleUpdateQuantity = (productId: string, change: number) => {
     updateCart({ productId, quantity: change });
   };
 
   const handleRemoveItem = (productId: string) => {
-    removeItem(productId);
-  };
-
-  // Paso 1 del Checkout: Abrir modal de dirección
-  const handleInitiateCheckout = () => {
-    setIsAddressModalOpen(true);
-  };
-
-  // Paso 2 del Checkout: Confirmar compra con dirección
-  const handleConfirmCheckout = async (shippingAddress: string) => {
-    try {
-      // Usamos mutateAsync para esperar la respuesta del backend
-      const response = await checkoutMutation.mutateAsync({ shippingAddress });
-      
-      // El backend devuelve { status: "success", data: { order: ... } }
-      // Guardamos la orden para mostrar el resumen final
-      if (response && response.data && response.data.order) {
-        setSuccessOrder(response.data.order);
-        setIsAddressModalOpen(false); // Cerramos el modal
-      }
-    } catch (error) {
-      console.error("Error en checkout:", error);
-      // El hook useCheckoutMutation ya maneja las notificaciones de error (snackbars)
+    if (window.confirm("¿Seguro que quieres sacar este item de tu mochila?")) {
+      removeItem(productId);
     }
   };
 
+  const handleCheckoutClick = () => {
+    setIsAddressModalOpen(true);
+  };
+
+  const handleConfirmCheckout = (address: string) => {
+    checkout(
+      { shippingAddress: address },
+      {
+        onSuccess: () => {
+          setIsAddressModalOpen(false);
+          setLastOrder({
+            shippingAddress: address,
+            totalAmount: subtotal,
+          });
+        },
+      }
+    );
+  };
+
+  // --- RENDERIZADO ---
   return (
     <CartListDesign
       items={validItems}
@@ -72,12 +73,12 @@ const CartPage = () => {
       subtotal={subtotal}
       onUpdateQuantity={handleUpdateQuantity}
       onRemoveItem={handleRemoveItem}
-      onCheckoutClick={handleInitiateCheckout} // Abre el modal
-      onConfirmCheckout={handleConfirmCheckout} // Ejecuta la compra
-      isCheckoutLoading={checkoutMutation.isPending}
+      onCheckoutClick={handleCheckoutClick}
+      onConfirmCheckout={handleConfirmCheckout}
+      isCheckoutLoading={isCheckoutLoading}
       isAddressModalOpen={isAddressModalOpen}
       setIsAddressModalOpen={setIsAddressModalOpen}
-      successOrder={successOrder} // Si existe, mostramos pantalla de éxito
+      successOrder={lastOrder}
     />
   );
 };

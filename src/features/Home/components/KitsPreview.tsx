@@ -1,31 +1,28 @@
-"use client";
 import React from "react";
-
-const kitsData = [
-  {
-    title: "El Iniciado",
-    price: "149€",
-    image:
-      "https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=800&auto=format&fit=crop",
-    tag: "Essential",
-  },
-  {
-    title: "Veterano Pro",
-    price: "289€",
-    image:
-      "https://images.unsplash.com/photo-1526772662000-3f88f107f5d8?q=80&w=800&auto=format&fit=crop",
-    tag: "Best Seller",
-  },
-  {
-    title: "Alta Montaña",
-    price: "345€",
-    image:
-      "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=800&auto=format&fit=crop",
-    tag: "Thermal",
-  },
-];
+import { Link } from "react-router-dom";
+import { useKitsQuery } from "../../shop/kits/hooks/useKitsQuery";
+import { getImageUrl } from "../../../utils/imageUtil";
 
 export function KitsSection() {
+  // 1. OBTENER LOS KITS REALES
+  const { data: kits, isLoading, isError } = useKitsQuery();
+
+  // 2. SELECCIONAR SOLO LOS 3 PRIMEROS
+  const displayedKits = kits ? kits.slice(0, 3) : [];
+
+  // Etiquetas decorativas
+  const tags = ["Essential", "Best Seller", "Thermal"];
+
+  if (isLoading) {
+    return (
+      <section className="w-full px-4 md:px-6 py-32 bg-[#EBECE2] flex justify-center">
+        <div className="text-[#333D29] font-bold animate-pulse">Cargando kits...</div>
+      </section>
+    );
+  }
+
+  if (isError || displayedKits.length === 0) return null;
+
   return (
     <section className="w-full px-4 md:px-6 py-32 md:py-40 bg-[#EBECE2]">
       
@@ -37,16 +34,21 @@ export function KitsSection() {
             Curados
           </span>
         </h2>
-        <button className="hidden md:block text-[#582F0E] font-bold border-b border-[#582F0E] pb-1 hover:opacity-70 transition-opacity">
-          Ver Tienda Completa
-        </button>
+        {/* El botón de arriba también lleva a /kits */}
+        <Link to="/kits" className="hidden md:block">
+          <button className="text-[#582F0E] font-bold border-b border-[#582F0E] pb-1 hover:opacity-70 transition-opacity">
+            Ver Todos los Kits
+          </button>
+        </Link>
       </div>
 
       {/* GRID DE LAS TARJETAS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {kitsData.map((kit, index) => (
-          <div
-            key={index}
+        {displayedKits.map((kit, index) => (
+          // --- CAMBIO CLAVE: TODA LA TARJETA ES UN LINK ---
+          <Link
+            to="/kits" 
+            key={kit._id}
             className="
               group 
               relative 
@@ -65,10 +67,10 @@ export function KitsSection() {
           >
             {/* ZONA DE IMAGEN */}
             <div className="relative h-[320px] w-full overflow-hidden p-3 pb-0">
-              <div className="w-full h-full rounded-[2rem] overflow-hidden relative">
+              <div className="w-full h-full rounded-[2rem] overflow-hidden relative bg-[#EBECE2]/10">
                 <img
-                  src={kit.image}
-                  alt={kit.title}
+                  src={getImageUrl(kit.image)}
+                  alt={kit.name}
                   className="
                     w-full 
                     h-full 
@@ -81,7 +83,7 @@ export function KitsSection() {
                 
                 {/* Tag Flotante */}
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-[#333D29]">
-                  {kit.tag}
+                  {tags[index % tags.length]}
                 </div>
               </div>
             </div>
@@ -90,20 +92,20 @@ export function KitsSection() {
             <div className="p-8 pt-6 flex flex-col justify-between grow relative">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-2xl font-bold text-white mb-1 leading-tight group-hover:text-[#B6AD90] transition-colors">
-                    {kit.title}
+                  <h3 className="text-2xl font-bold text-white mb-1 leading-tight group-hover:text-[#B6AD90] transition-colors line-clamp-1">
+                    {kit.name}
                   </h3>
                   <p className="text-[#B6AD90] font-serif italic text-lg opacity-80">
                     Edición Limitada
                   </p>
                 </div>
                 <span className="text-3xl font-bold text-white tracking-tight">
-                  {kit.price}
+                  {kit.price}€
                 </span>
               </div>
 
               <div className="mt-auto pt-6 border-t border-white/10 flex items-center justify-between text-sm">
-                <span className="text-[#EBECE2] font-bold uppercase tracking-wider text-xs">
+                <span className="text-[#EBECE2] font-bold uppercase tracking-wider text-xs group-hover:text-white transition-colors">
                   Ver Detalles
                 </span>
                 <div className="w-10 h-10 rounded-full bg-[#B6AD90] text-[#333D29] flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:bg-white">
@@ -113,10 +115,20 @@ export function KitsSection() {
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
+      </div>
+      
+      {/* Botón móvil */}
+      <div className="mt-10 text-center md:hidden">
+         <Link to="/kits">
+            <button className="text-[#582F0E] font-bold border-b border-[#582F0E] pb-1 hover:opacity-70 transition-opacity">
+              Ver Tienda Completa
+            </button>
+         </Link>
       </div>
     </section>
   );
 }
+
 export default KitsSection;
