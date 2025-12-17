@@ -8,7 +8,7 @@ import {
   IconShoppingBag,
   IconTruckDelivery,
   IconCheck,
-  IconX
+  IconX,
 } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { getImageUrl } from "../../../../utils/imageUtil";
@@ -21,7 +21,7 @@ interface CartListDesignProps {
   subtotal: number;
   onUpdateQuantity: (productId: string, change: number) => void;
   onRemoveItem: (productId: string) => void;
-  
+
   // Nuevos props para el flujo de checkout
   onCheckoutClick: () => void;
   onConfirmCheckout: (address: string) => void;
@@ -62,14 +62,14 @@ export const CartListDesign = ({
   if (successOrder) {
     return (
       <div className="min-h-screen w-full bg-[#EBECE2] flex items-center justify-center p-4 pt-24">
-        <motion.div 
+        <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           className="bg-white max-w-2xl w-full rounded-[2.5rem] p-8 md:p-12 shadow-2xl text-center relative overflow-hidden"
         >
           {/* Confeti visual decorativo */}
           <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#582F0E] via-[#B6AD90] to-[#333D29]"></div>
-          
+
           <div className="mx-auto w-24 h-24 bg-[#333D29] rounded-full flex items-center justify-center mb-6 shadow-lg">
             <IconCheck size={48} className="text-white" stroke={2} />
           </div>
@@ -77,20 +77,25 @@ export const CartListDesign = ({
           <h1 className="text-3xl md:text-4xl font-bold text-[#333D29] mb-4">
             ¡Gracias por tu compra!
           </h1>
-          
+
           <p className="text-[#656D4A] text-lg mb-8">
-            Tu pedido ha sido procesado correctamente. Hemos enviado un email de confirmación a tu correo con todos los detalles.
+            Tu pedido ha sido procesado correctamente. Hemos enviado un email de
+            confirmación a tu correo con todos los detalles.
           </p>
 
           <div className="bg-[#EBECE2]/50 rounded-2xl p-6 mb-8 text-left border border-[#333D29]/10">
-            <h3 className="font-bold text-[#333D29] mb-2 text-sm uppercase tracking-wider">Detalles del envío</h3>
+            <h3 className="font-bold text-[#333D29] mb-2 text-sm uppercase tracking-wider">
+              Detalles del envío
+            </h3>
             <p className="text-[#582F0E] font-medium flex items-start gap-2">
-              <IconTruckDelivery size={20} className="shrink-0 mt-0.5"/>
+              <IconTruckDelivery size={20} className="shrink-0 mt-0.5" />
               {successOrder.shippingAddress}
             </p>
             <div className="mt-4 pt-4 border-t border-[#333D29]/10 flex justify-between items-center">
-               <span className="text-[#656D4A] font-medium">Total Pagado</span>
-               <span className="text-2xl font-bold text-[#333D29]">${successOrder.totalAmount?.toFixed(2)}</span>
+              <span className="text-[#656D4A] font-medium">Total Pagado</span>
+              <span className="text-2xl font-bold text-[#333D29]">
+                ${successOrder.totalAmount?.toFixed(2)}
+              </span>
             </div>
           </div>
 
@@ -108,7 +113,6 @@ export const CartListDesign = ({
   return (
     <div className="min-h-screen w-full bg-[#EBECE2] p-4 md:p-8 font-sans pt-24 md:pt-32">
       <div className="mx-auto w-full max-w-7xl">
-        
         {/* Header */}
         {!isLoading && !isError && items.length > 0 && (
           <motion.div
@@ -117,10 +121,12 @@ export const CartListDesign = ({
             className="mb-12"
           >
             <h1 className="text-4xl md:text-5xl font-bold text-[#333D29] tracking-tight">
-              Tu <span className="italic font-serif text-[#582F0E]">Mochila</span>
+              Tu{" "}
+              <span className="italic font-serif text-[#582F0E]">Mochila</span>
             </h1>
             <p className="mt-2 text-[#656D4A] uppercase tracking-widest text-xs font-bold">
-              {items.length} {items.length === 1 ? "Artículo" : "Artículos"} listos para la ruta
+              {items.length} {items.length === 1 ? "Artículo" : "Artículos"}{" "}
+              listos para la ruta
             </p>
           </motion.div>
         )}
@@ -148,13 +154,17 @@ export const CartListDesign = ({
                 className="flex flex-col items-center justify-center rounded-[3rem] bg-white p-16 text-center shadow-xl border border-[#333D29]/5 min-h-[50vh]"
               >
                 <div className="bg-[#EBECE2] p-6 rounded-full mb-6">
-                  <IconShoppingBag size={64} className="text-[#333D29] opacity-50" />
+                  <IconShoppingBag
+                    size={64}
+                    className="text-[#333D29] opacity-50"
+                  />
                 </div>
                 <h2 className="text-3xl font-bold text-[#333D29] mb-4">
                   Tu mochila está vacía
                 </h2>
                 <p className="text-[#656D4A] mb-8 max-w-md mx-auto">
-                  Parece que aún no has añadido equipamiento para tu próxima aventura. ¡Explora nuestros kits y productos!
+                  Parece que aún no has añadido equipamiento para tu próxima
+                  aventura. ¡Explora nuestros kits y productos!
                 </p>
                 <Link to="/tienda">
                   <button className="group relative px-8 py-4 bg-[#333D29] text-white font-bold rounded-full overflow-hidden transition-all hover:scale-105 shadow-lg">
@@ -168,14 +178,23 @@ export const CartListDesign = ({
               // --- LISTA DE PRODUCTOS ---
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative items-start">
                 <div className="lg:col-span-2">
-                  <motion.div variants={listVariants} initial="hidden" animate="show" className="space-y-4">
+                  <motion.div
+                    variants={listVariants}
+                    initial="hidden"
+                    animate="show"
+                    className="space-y-4"
+                  >
                     <AnimatePresence mode="popLayout">
                       {items.map((item) => (
                         <motion.div
                           layout
                           key={item._id}
                           variants={itemVariants}
-                          exit={{ opacity: 0, x: -50, transition: { duration: 0.2 } }}
+                          exit={{
+                            opacity: 0,
+                            x: -50,
+                            transition: { duration: 0.2 },
+                          }}
                           className="group relative flex flex-col sm:flex-row gap-6 bg-white p-6 rounded-[2.5rem] shadow-sm hover:shadow-md transition-shadow border border-transparent hover:border-[#B6AD90]/30"
                         >
                           <div className="h-32 w-32 shrink-0 overflow-hidden rounded-2xl bg-[#EBECE2]">
@@ -188,19 +207,51 @@ export const CartListDesign = ({
                           <div className="flex-1 flex flex-col justify-between">
                             <div>
                               <div className="flex justify-between items-start">
-                                <h3 className="text-xl font-bold text-[#333D29] mb-1 leading-tight">{item.product.name}</h3>
-                                <p className="font-bold text-xl text-[#582F0E]">€{(item.product.price * item.quantity).toFixed(2)}</p>
+                                <h3 className="text-xl font-bold text-[#333D29] mb-1 leading-tight">
+                                  {item.product.name}
+                                </h3>
+                                <p className="font-bold text-xl text-[#582F0E]">
+                                  €
+                                  {(
+                                    (item.product.price || 0) * item.quantity
+                                  ).toFixed(2)}
+                                </p>
                               </div>
-                              <p className="text-sm text-[#656D4A] font-medium">Unidad: €{item.product.price}</p>
+                              <p className="text-sm text-[#656D4A] font-medium">
+                                Unidad: €{item.product.price || 0}
+                              </p>
                             </div>
                             <div className="mt-4 flex items-center justify-between">
                               <div className="flex items-center gap-1 bg-[#F5F5F0] rounded-full p-1 border border-[#EBECE2]">
-                                <button onClick={() => onUpdateQuantity(item.product._id, -1)} disabled={item.quantity <= 1} className="w-8 h-8 flex items-center justify-center rounded-full bg-white text-[#333D29] hover:bg-[#333D29] hover:text-white transition-colors disabled:opacity-50 shadow-sm"><IconMinus size={14} /></button>
-                                <span className="w-8 text-center font-bold text-[#333D29] text-sm">{item.quantity}</span>
-                                <button onClick={() => onUpdateQuantity(item.product._id, 1)} className="w-8 h-8 flex items-center justify-center rounded-full bg-white text-[#333D29] hover:bg-[#333D29] hover:text-white transition-colors shadow-sm"><IconPlus size={14} /></button>
+                                <button
+                                  onClick={() =>
+                                    onUpdateQuantity(item.product._id, -1)
+                                  }
+                                  disabled={item.quantity <= 1}
+                                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white text-[#333D29] hover:bg-[#333D29] hover:text-white transition-colors disabled:opacity-50 shadow-sm"
+                                >
+                                  <IconMinus size={14} />
+                                </button>
+                                <span className="w-8 text-center font-bold text-[#333D29] text-sm">
+                                  {item.quantity}
+                                </span>
+                                <button
+                                  onClick={() =>
+                                    onUpdateQuantity(item.product._id, 1)
+                                  }
+                                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white text-[#333D29] hover:bg-[#333D29] hover:text-white transition-colors shadow-sm"
+                                >
+                                  <IconPlus size={14} />
+                                </button>
                               </div>
-                              <button onClick={() => onRemoveItem(item.product._id)} className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-[#656D4A] hover:text-red-600 hover:bg-red-50 rounded-full transition-colors">
-                                <IconTrash size={16} /><span className="hidden sm:inline">Eliminar</span>
+                              <button
+                                onClick={() => onRemoveItem(item.product._id)}
+                                className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-[#656D4A] hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                              >
+                                <IconTrash size={16} />
+                                <span className="hidden sm:inline">
+                                  Eliminar
+                                </span>
                               </button>
                             </div>
                           </div>
@@ -219,15 +270,34 @@ export const CartListDesign = ({
                     className="bg-[#333D29] p-8 rounded-[2.5rem] shadow-2xl text-white relative overflow-hidden"
                   >
                     <div className="absolute top-0 right-0 w-40 h-40 bg-[#B6AD90] opacity-10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
-                    <h2 className="text-2xl font-bold mb-6 relative z-10">Resumen</h2>
+                    <h2 className="text-2xl font-bold mb-6 relative z-10">
+                      Resumen
+                    </h2>
                     <div className="space-y-4 mb-8 text-[#EBECE2]/80 text-sm relative z-10">
-                      <div className="flex justify-between"><span>Subtotal</span><span className="text-white font-medium">€{subtotal.toFixed(2)}</span></div>
-                      <div className="flex justify-between"><span>Envío estimado</span><span className="text-[#B6AD90] font-medium">Gratis</span></div>
+                      <div className="flex justify-between">
+                        <span>Subtotal</span>
+                        <span className="text-white font-medium">
+                          €{subtotal.toFixed(2)}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Envío estimado</span>
+                        <span className="text-[#B6AD90] font-medium">
+                          Gratis
+                        </span>
+                      </div>
                       <div className="h-px w-full bg-white/10 my-4"></div>
-                      <div className="flex justify-between items-end text-white"><span className="font-bold text-lg">Total</span><span className="font-bold text-4xl">€{subtotal.toFixed(2)}</span></div>
-                      <p className="text-xs text-[#EBECE2]/50 text-right">Impuestos incluidos</p>
+                      <div className="flex justify-between items-end text-white">
+                        <span className="font-bold text-lg">Total</span>
+                        <span className="font-bold text-4xl">
+                          €{subtotal.toFixed(2)}
+                        </span>
+                      </div>
+                      <p className="text-xs text-[#EBECE2]/50 text-right">
+                        Impuestos incluidos
+                      </p>
                     </div>
-                    
+
                     {/* Botón para iniciar el proceso de checkout */}
                     <button
                       onClick={onCheckoutClick}
@@ -247,7 +317,6 @@ export const CartListDesign = ({
         )}
       </div>
 
-      
       {/* --- MODAL DE DIRECCIÓN --- */}
       <AnimatePresence>
         {isAddressModalOpen && (
@@ -260,7 +329,7 @@ export const CartListDesign = ({
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               onClick={() => setIsAddressModalOpen(false)}
             />
-            
+
             {/* Modal Content */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -268,20 +337,26 @@ export const CartListDesign = ({
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="relative w-full max-w-md bg-white rounded-[2rem] p-6 md:p-8 shadow-2xl z-10 overflow-hidden"
             >
-              <button 
+              <button
                 onClick={() => setIsAddressModalOpen(false)}
                 className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 text-[#333D29] transition-colors"
               >
-                <IconX size={20}/>
+                <IconX size={20} />
               </button>
-              
-              <h2 className="text-2xl font-bold text-[#333D29] mb-2 pr-8">¿Dónde te lo enviamos?</h2>
-              <p className="text-[#656D4A] text-sm mb-6">Ingresa tu dirección para recibir tu equipo.</p>
-              
+
+              <h2 className="text-2xl font-bold text-[#333D29] mb-2 pr-8">
+                ¿Dónde te lo enviamos?
+              </h2>
+              <p className="text-[#656D4A] text-sm mb-6">
+                Ingresa tu dirección para recibir tu equipo.
+              </p>
+
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-[#333D29] uppercase tracking-wider mb-2">Dirección de Envío</label>
-                  <textarea 
+                  <label className="block text-xs font-bold text-[#333D29] uppercase tracking-wider mb-2">
+                    Dirección de Envío
+                  </label>
+                  <textarea
                     value={addressInput}
                     onChange={(e) => setAddressInput(e.target.value)}
                     placeholder="Calle, Número, Ciudad, Código Postal..."
@@ -289,7 +364,7 @@ export const CartListDesign = ({
                     autoFocus
                   />
                 </div>
-                
+
                 <button
                   onClick={() => onConfirmCheckout(addressInput)}
                   disabled={!addressInput.trim() || isCheckoutLoading}
@@ -298,7 +373,9 @@ export const CartListDesign = ({
                   {isCheckoutLoading ? (
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : (
-                    <>Confirmar Compra <IconArrowRight size={18} /></>
+                    <>
+                      Confirmar Compra <IconArrowRight size={18} />
+                    </>
                   )}
                 </button>
               </div>
