@@ -15,23 +15,23 @@ import { BRAND_THEME } from "@/config/designSystem";
 // Importamos el mapa
 import { CaminoMap } from "../../../components/ui/CaminoMap";
 
-// DATOS DEL FAQ
+// DATOS DEL FAQ OPTIMIZADOS PARA SEO Y DUDAS REALES DEL PEREGRINO
 const FAQS = [
   {
-    question: "¿Dónde se fabrican vuestros productos?",
-    answer: "Diseñamos todo en nuestro taller de Galicia y trabajamos con artesanos locales y de Portugal para la confección, asegurando condiciones laborales justas y una huella de carbono mínima."
+    question: "¿Vuestro equipamiento aguanta la lluvia de Galicia?",
+    answer: "Nacimos bajo la lluvia gallega. Usamos algodón encerado de alta densidad y costuras selladas que han sido testadas en O Cebreiro y la entrada a Santiago. Tu ropa llegará seca, garantizado."
   },
   {
-    question: "¿Los materiales son realmente impermeables?",
-    answer: "Utilizamos algodón encerado de alta densidad y lonas técnicas recicladas. Soportan la lluvia del norte, aunque recomendamos usar funda para tormentas torrenciales prolongadas."
+    question: "¿Hacéis envíos directos a albergues o Correos?",
+    answer: "Sí. Sabemos que el Camino es impredecible. Podemos enviar tu pedido a cualquier oficina de Correos o albergue de tu próxima etapa en 24/48h para que no cargues peso extra innecesario."
   },
   {
-    question: "¿Tenéis garantía de reparación?",
-    answer: "Sí. Creemos en arreglar antes que tirar. Todos nuestros productos tienen 3 años de garantía y ofrecemos un servicio de reparación de por vida a coste de taller."
+    question: "¿Qué pasa si se rompe algo durante el Camino?",
+    answer: "Nuestra garantía 'Buen Camino' te cubre. Si un producto falla en ruta, te lo reponemos en tu siguiente parada. Además, ofrecemos reparación de por vida en nuestro taller de Santiago."
   },
   {
-    question: "¿Hacéis envíos a Canarias o internacionales?",
-    answer: "Llegamos a cualquier rincón donde haya un camino. Enviamos a toda Europa y, por supuesto, a nuestras queridas Islas Canarias (sin sorpresas de aduanas, nos encargamos nosotros)."
+    question: "¿Son productos sostenibles de verdad?",
+    answer: "El Camino nos enseña a no dejar huella. Fabricamos en Galicia y norte de Portugal con artesanos locales, reduciendo la huella de carbono al mínimo. Sin plásticos, solo materiales que envejecen contigo."
   }
 ];
 
@@ -48,7 +48,7 @@ export const AboutDesign = () => {
   return (
     <div ref={containerRef} className={`relative min-h-screen w-full bg-[${BRAND_THEME.colors.background}] font-sans overflow-hidden`}>
       
-      {/* --- HERO SECTION (Restaurada con Imagen) --- */}
+      {/* --- HERO SECTION --- */}
       <section className="relative min-h-screen flex items-center justify-center pt-24 pb-12 overflow-visible">
         <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -65,22 +65,24 @@ export const AboutDesign = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <span className={BRAND_THEME.typography.eyebrow}>Desde 2024</span>
+            {/* COPY SEO CAMBIADO: Autoridad Local */}
+            <span className={BRAND_THEME.typography.eyebrow}>Diseñado en el Km 0</span>
             <h1 className="text-5xl md:text-7xl font-bold text-[#333D29] leading-[0.9] mb-6">
-              No hacemos <br/>
+              Más que <br/>
               mochilas, <br/>
-              <span className="italic font-serif text-[#B6AD90]">creamos compañeros.</span>
+              <span className="italic font-serif text-[#B6AD90]">compañeros de ruta.</span>
             </h1>
             <p className="text-[#656D4A] text-lg max-w-md leading-relaxed mb-8">
-              Nacimos en los senderos de Galicia con una misión simple: diseñar equipamiento que respete la naturaleza tanto como tú. Explora la ruta que nos inspiró.
+              {/* COPY SEO CAMBIADO: Conexión emocional con el propósito del viaje */}
+              Creemos que el equipamiento para el Camino de Santiago no debe ser una carga, sino una herramienta para la libertad. Ligereza, resistencia y alma gallega en cada costura.
             </p>
             
             <div className="flex items-center gap-2 text-xs font-bold text-[#582F0E] uppercase tracking-widest">
-                <IconMapPin size={16} /> Diseñado en Galicia
+                <IconMapPin size={16} /> Fabricado en Galicia, España
             </div>
           </motion.div>
 
-          {/* IMAGEN HERO (Derecha - Restaurada) */}
+          {/* IMAGEN HERO (Derecha) */}
           <motion.div 
             initial={{ scale: 0.9, opacity: 0, rotate: 2 }}
             animate={{ scale: 1, opacity: 1, rotate: 0 }}
@@ -89,7 +91,7 @@ export const AboutDesign = () => {
           >
             <img 
               src="https://cdn.world-discovery.com/20092/hiking-boots-on-the-waymark-stone-scaled.png" 
-              alt="Girl hiking" 
+              alt="Botas de peregrino en el Camino de Santiago" 
               className="w-full h-full object-cover rounded-[2.5rem] shadow-2xl border-4 border-white"
             />
 
@@ -101,10 +103,10 @@ export const AboutDesign = () => {
             >
               <div className="flex items-center gap-2 mb-3 text-[#B6AD90]">
                  <IconMountain size={20} />
-                 <span className="text-[10px] font-bold uppercase tracking-widest">Altitud</span>
+                 <span className="text-[10px] font-bold uppercase tracking-widest">Espíritu Jacobeo</span>
               </div>
               <p className="text-sm font-serif italic leading-relaxed">
-                "El camino se hace andando, y cada paso cuenta una historia diferente."
+                "El Camino no te da lo que quieres, te da lo que necesitas."
               </p>
             </motion.div>
           </motion.div>
@@ -123,37 +125,37 @@ export const AboutDesign = () => {
             className="text-center mb-20"
           >
             <h2 className={BRAND_THEME.typography.headingLg}>
-              Nuestra Filosofía <span className={BRAND_THEME.typography.highlight}>de Vida</span>
+              Nuestros Valores <span className={BRAND_THEME.typography.highlight}>Peregrinos</span>
             </h2>
             <p className={BRAND_THEME.typography.eyebrow + " mt-2"}>
-              Nuestro Manifiesto
+              El Manifiesto de Sol-e
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <ValueCard 
               icon={<IconLeaf size={32} />}
-              title="Sostenibilidad Radical"
-              desc="Usamos materiales reciclados y procesos de bajo impacto. El bosque es nuestra oficina."
+              title="Huella Cero"
+              desc="El peregrino pasa sin dejar rastro. Usamos materiales biodegradables y procesos limpios para proteger los senderos que amamos."
               delay={0.1}
             />
             <ValueCard 
               icon={<IconMountain size={32} />}
-              title="Durabilidad Técnica"
-              desc="Diseñado para resistir tormentas, barro y años de aventuras. Compra menos, compra mejor."
+              title="Resistencia Jacobea"
+              desc="Diseñado para soportar 800km de sol, lluvia y barro. Equipamiento que mejora con los kilómetros, como tú."
               delay={0.2}
             />
             <ValueCard 
               icon={<IconCampfire size={32} />}
-              title="Comunidad Real"
-              desc="No somos una corporación. Somos peregrinos creando para peregrinos."
+              title="De Peregrino a Peregrino"
+              desc="No somos una multinacional. Somos caminantes diseñando las soluciones que echábamos de menos en la ruta."
               delay={0.3}
             />
           </div>
         </div>
       </section>
 
-      {/* --- HISTORIA (AQUÍ ESTÁ EL MAPA AHORA) --- */}
+      {/* --- HISTORIA (MAPA) --- */}
       <section className="py-24 px-6 bg-[#333D29] text-[#EBECE2] rounded-[3rem] mx-4 md:mx-8 mb-24 relative overflow-hidden">
         <motion.div 
           style={{ y: yBackground }}
@@ -161,7 +163,7 @@ export const AboutDesign = () => {
         />
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
           
-          {/* 1. AQUÍ ESTÁ EL MAPA SUSTITUYENDO A LA IMAGEN */}
+          {/* MAPA */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -182,14 +184,15 @@ export const AboutDesign = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
-              De una idea en <br/>
+              Inspirado en <br/>
               <span className="text-[#B6AD90] italic font-serif">O Cebreiro</span>
             </h2>
             <p className="text-lg text-[#EBECE2]/80 mb-6 leading-relaxed">
-              Todo empezó bajo la lluvia. Nuestra fundadora, María, se dio cuenta de que su equipamiento técnico "de marca" fallaba cuando más lo necesitaba. 
+              {/* COPY SEO CAMBIADO: Historia de origen real */}
+              Todo empezó en una etapa tormentosa subiendo a O Cebreiro. Nuestra fundadora se dio cuenta de que el equipo técnico "moderno" fallaba cuando la montaña se ponía dura.
             </p>
             <p className="text-lg text-[#EBECE2]/80 mb-8 leading-relaxed">
-              Decidimos volver a lo básico: materiales naturales reforzados con tecnología moderna. Sin plásticos innecesarios, sin obsolescencia programada.
+              Decidimos volver a la esencia: materiales naturales que respiran, diseños funcionales sin adornos inútiles y una durabilidad capaz de llegar a Finisterre y volver.
             </p>
             
             <div className="grid grid-cols-3 gap-4 border-t border-white/10 pt-8">
@@ -199,11 +202,11 @@ export const AboutDesign = () => {
               </div>
               <div>
                 <span className="block text-3xl font-bold text-[#B6AD90]">100%</span>
-                <span className="text-xs uppercase tracking-wider opacity-60">Eco-Friendly</span>
+                <span className="text-xs uppercase tracking-wider opacity-60">Hecho en Galicia</span>
               </div>
               <div>
-                <span className="block text-3xl font-bold text-[#B6AD90]">3</span>
-                <span className="text-xs uppercase tracking-wider opacity-60">Años Garantía</span>
+                <span className="block text-3xl font-bold text-[#B6AD90]">∞</span>
+                <span className="text-xs uppercase tracking-wider opacity-60">Garantía Vitalicia</span>
               </div>
             </div>
           </motion.div>
@@ -219,10 +222,10 @@ export const AboutDesign = () => {
           className="text-center mb-16"
         >
           <h2 className={BRAND_THEME.typography.headingLg}>
-            Preguntas <span className={BRAND_THEME.typography.highlight}>Frecuentes</span>
+            Dudas del <span className={BRAND_THEME.typography.highlight}>Caminante</span>
           </h2>
           <p className={BRAND_THEME.typography.eyebrow + " mt-2"}>
-            Resolvemos tus dudas
+            Respondemos antes de que salgas
           </p>
         </motion.div>
 
@@ -241,9 +244,9 @@ export const AboutDesign = () => {
           viewport={{ once: true }}
           className="max-w-3xl mx-auto"
         >
-          <h2 className={BRAND_THEME.typography.headingLg + " mb-6"}>¿Listo para empezar tu camino?</h2>
+          <h2 className={BRAND_THEME.typography.headingLg + " mb-6"}>¿Tu Credencial está lista?</h2>
           <p className="text-[#656D4A] mb-10 text-lg">
-            Equípate con lo esencial y deja atrás lo que pesa. La aventura te espera.
+            No dejes que una mala mochila arruine tu experiencia. Equípate con lo que realmente necesitas.
           </p>
           
           <div className="flex justify-center">
@@ -251,7 +254,7 @@ export const AboutDesign = () => {
               <button className={`group relative w-64 h-14 bg-[#582F0E] text-white font-bold text-sm uppercase tracking-widest overflow-hidden shadow-xl hover:shadow-[#B6AD90]/40 transition-all active:scale-95 ${BRAND_THEME.layout.borderRadius.button}`}>
                 <span className="absolute inset-0 w-full h-full bg-[#7F4F24] transform scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100 ease-out" />
                 <span className="relative z-10 flex items-center justify-center gap-2">
-                  Ver Colección <IconArrowRight size={20} />
+                  Ver Colección<IconArrowRight size={20} />
                 </span>
               </button>
             </Link>

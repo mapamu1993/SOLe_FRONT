@@ -78,7 +78,8 @@ export function AboutSection() {
               text-xs
               uppercase"
             >
-              Espíritu Alpino
+              {/* COPY SEO CAMBIADO: Conexión emocional inmediata */}
+              Alma Peregrina
             </span>
           </div>
 
@@ -93,14 +94,15 @@ export function AboutSection() {
             leading-tight
             mb-8"
           >
-            Nacido en la <br />
+            {/* COPY SEO CAMBIADO: Relevancia temática */}
+            Forjado en el <br />
             <span
               className="
               text-[#B6AD90]
               italic
               font-serif"
             >
-              Montaña.
+              Camino.
             </span>
           </h2>
 
@@ -114,9 +116,8 @@ export function AboutSection() {
             max-w-md
             mb-12"
           >
-            Entendemos que la montaña no perdona el peso extra. Diseñamos equipo
-            técnico que respeta la naturaleza y tu espalda, para que solo te
-            preocupes de la cima.
+            {/* COPY SEO CAMBIADO: Atacando el dolor (peso) y el beneficio (disfrutar) */}
+            Sabemos que en la ruta a Santiago, cada gramo pesa el doble. Creamos equipamiento técnico que cuida de tu espalda etapa tras etapa, para que tu única carga sea la experiencia.
           </p>
 
           {/* ICONOS */}
@@ -135,21 +136,24 @@ export function AboutSection() {
             <div className="space-y-2">
               <IconMountain className="text-[#B6AD90]" size={28} stroke={1.5} />
               <h4 className="text-white font-bold text-sm uppercase tracking-wide">
-                Resistencia
+                {/* COPY SEO CAMBIADO: De "Resistencia" a algo más específico */}
+                Larga Distancia
               </h4>
             </div>
             {/* ICONO 2 */}
             <div className="space-y-2">
               <IconLeaf className="text-[#B6AD90]" size={28} stroke={1.5} />
               <h4 className="text-white font-bold text-sm uppercase tracking-wide">
-                Sostenible
+                {/* COPY SEO CAMBIADO: Refuerzo de valores */}
+                Eco-Consciente
               </h4>
             </div>
             {/* ICONO 3 */}
             <div className="space-y-2">
               <IconCompass className="text-[#B6AD90]" size={28} stroke={1.5} />
               <h4 className="text-white font-bold text-sm uppercase tracking-wide">
-                Técnico
+                {/* COPY SEO CAMBIADO: Beneficio directo al usuario */}
+                Ergonómico
               </h4>
             </div>
           </div>
@@ -196,6 +200,7 @@ export function AboutSection() {
                 z-10
                 group-hover:text-[#333D29]"
               >
+                {/* COPY SEO CAMBIADO: Más misterio/interés */}
                 Nuestra Historia
               </span>
             </button>
@@ -261,11 +266,13 @@ export function AboutSection() {
                 <IconMountain size={14} />
               </div>
               <span className="text-[10px] font-bold text-white uppercase tracking-wider">
-                Certificado
+                {/* COPY SEO CAMBIADO: Prueba social */}
+                Testado en Ruta
               </span>
             </div>
             <p className="text-[#EBECE2] text-xs font-serif italic leading-tight">
-              "El equipo que resiste donde otros fallan."
+              {/* COPY SEO CAMBIADO: Beneficio final */}
+              "El compañero que nunca te abandona hasta el Obradoiro."
             </p>
           </div>
         </div>
