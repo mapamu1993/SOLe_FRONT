@@ -113,7 +113,8 @@ const HeroSection = () => {
               shadow-black
               drop-shadow-md"
               >
-                Est. 2024 — Galicia
+                {/* COPY SEO CAMBIADO: Autoridad local */}
+                Expertos en el Camino — Desde Galicia
               </span>
             </div>
 
@@ -129,10 +130,9 @@ const HeroSection = () => {
             mb-8
             drop-shadow-lg"
             >
-              Camina{" "}
-              <span className="italic font-serif text-[#B6AD90]">Ligero</span>,
-              <br />
-              Vive Profundo.
+              {/* COPY SEO CAMBIADO: H1 con Keyword Principal */}
+              Tu Camino de Santiago,{" "}
+              <span className="italic font-serif text-[#B6AD90]">más ligero</span>.
             </h1>
 
             <p
@@ -145,8 +145,8 @@ const HeroSection = () => {
             leading-relaxed
             drop-shadow-md"
             >
-              Equipamiento de senderismo diseñado para conectar con la
-              naturaleza, no para cargar con ella.
+              {/* COPY SEO CAMBIADO: Descripción con keywords de dolor (peso) y producto (kits) */}
+              Kits de peregrino ultraligeros y sostenibles. Preparamos tu mochila para que tú solo te preocupes de caminar y conectar con la ruta.
             </p>
           </div>
 
@@ -172,7 +172,8 @@ const HeroSection = () => {
             "
           >
             <span className="z-10 group-hover/btn:-translate-y-2 transition-transform duration-300">
-              Ver Kits
+              {/* COPY SEO CAMBIADO: CTA más específico */}
+              Ver Kits Peregrino
             </span>
           </button>
         </div>

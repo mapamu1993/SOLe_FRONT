@@ -7,7 +7,12 @@ export function KitsSection() {
 
   const displayedKits = kits ? kits.slice(0, 3) : [];
 
+<<<<<<< HEAD
   const tags = ["Essential", "Best Seller", "Thermal"];
+=======
+  // COPY SEO CAMBIADO: Etiquetas en español y orientadas a beneficios reales
+  const tags = ["Ultraligero", "Top Ventas", "Impermeable"];
+>>>>>>> a0fe020362015867a4e447136417fc72944f289f
 
   if (isLoading) {
     return (
@@ -28,18 +33,31 @@ export function KitsSection() {
         {/* Bloque de Título + Descripción */}
         <div className="mb-6 md:mb-0">
           <h2 className="text-4xl md:text-5xl font-bold text-[#333D29] tracking-tight">
+<<<<<<< HEAD
             Kits{" "}
             <span className="italic font-serif text-[#582F0E]">Curados</span>
+=======
+            {/* COPY SEO CAMBIADO: Keyword principal "Kits de Peregrino" */}
+            Kits de{" "}
+            <span className="italic font-serif text-[#582F0E]">
+              Peregrino
+            </span>
+>>>>>>> a0fe020362015867a4e447136417fc72944f289f
           </h2>
           <p className="mt-4 text-[#656D4A] text-lg max-w-md leading-relaxed font-medium">
+<<<<<<< HEAD
             Selección de equipamiento esencial diseñada para aligerar tu mochila
             y mejorar tu experiencia en cada etapa del Camino.
+=======
+             {/* COPY SEO CAMBIADO: Promesa de valor (ahorro de peso y gestión) */}
+            Olvídate de las listas interminables. Hemos preparado la mochila perfecta por ti: equipamiento técnico esencial para llegar a Santiago ligero y feliz.
+>>>>>>> a0fe020362015867a4e447136417fc72944f289f
           </p>
         </div>
 
         <Link to="/kits" className="hidden md:block">
           <button className="text-[#582F0E] font-bold border-b border-[#582F0E] pb-1 hover:opacity-70 transition-opacity">
-            Ver Todos los Kits
+            Ver Todos los Packs
           </button>
         </Link>
       </div>
@@ -96,7 +114,8 @@ export function KitsSection() {
                     {kit.name}
                   </h3>
                   <p className="text-[#B6AD90] font-serif italic text-lg opacity-80">
-                    Edición Limitada
+                    {/* COPY SEO CAMBIADO: Mensaje de "listo para usar" */}
+                    Listo para Caminar
                   </p>
                 </div>
                 <span className="text-3xl font-bold text-white tracking-tight">
@@ -106,7 +125,7 @@ export function KitsSection() {
 
               <div className="mt-auto pt-6 border-t border-white/10 flex items-center justify-between text-sm">
                 <span className="text-[#EBECE2] font-bold uppercase tracking-wider text-xs group-hover:text-white transition-colors">
-                  Ver Detalles
+                  Ver Contenido
                 </span>
                 <div className="w-10 h-10 rounded-full bg-[#B6AD90] text-[#333D29] flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:bg-white">
                   <svg
