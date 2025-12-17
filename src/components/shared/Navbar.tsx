@@ -343,7 +343,7 @@ const Navbar = () => {
               .filter((item) => item.product != null)
               .map((item) => (
                 <div
-                  key={item.product._id}
+                  key={item._id}
                   className="
                 flex 
                 gap-4 
