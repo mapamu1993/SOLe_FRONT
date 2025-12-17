@@ -2,7 +2,6 @@ import axiosClient from "../../../../api/axios.client";
 import { API_ROUTES } from "../../../../config/constants";
 import { type Product } from "../types/productTypes";
 
-// ⚠️ AÑADE 'export' AQUÍ
 export interface CreateProductParams {
   name: string;
   description: string;
@@ -26,7 +25,9 @@ export const createProductService = async (
   formData.append("price", String(params.price));
   formData.append("stock", String(params.stock));
   formData.append("category", params.category);
-  formData.append("productImage", params.image); 
+  
+  // CORRECCIÓN IMPORTANTE: Cambiado de "productImage" a "image"
+  formData.append("image", params.image); 
 
   const { data } = await axiosClient.post(API_ROUTES.PRODUCTS, formData, {
     headers: { "Content-Type": "multipart/form-data" },
@@ -39,7 +40,6 @@ export const getProductByIdService = async (id: string): Promise<Product> => {
   return data.data.product; 
 };
 
-// AÑADE 'export' AQUÍ TAMBIÉN
 export interface UpdateProductParams {
   id: string;
   data: Partial<CreateProductParams>;
@@ -59,7 +59,7 @@ export const updateProductService = async ({
   if (data.category) formData.append("category", data.category);
   
   if (file) {
-    formData.append("productImage", file);
+    formData.append("image", file);
   }
 
   const { data: response } = await axiosClient.patch(
