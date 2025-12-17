@@ -28,12 +28,21 @@ export function KitsSection() {
       
       {/* HEADER SECCIÓN */}
       <div className="flex flex-col md:flex-row justify-between items-end mb-16 px-4">
-        <h2 className="text-4xl md:text-5xl font-bold text-[#333D29] tracking-tight">
-          Kits{" "}
-          <span className="italic font-serif text-[#582F0E]">
-            Curados
-          </span>
-        </h2>
+        
+        {/* Bloque de Título + Descripción */}
+        <div className="mb-6 md:mb-0">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#333D29] tracking-tight">
+            Kits{" "}
+            <span className="italic font-serif text-[#582F0E]">
+              Curados
+            </span>
+          </h2>
+          {/* --- AQUÍ ESTÁ EL NUEVO RESUMEN --- */}
+          <p className="mt-4 text-[#656D4A] text-lg max-w-md leading-relaxed font-medium">
+            Selección de equipamiento esencial diseñada para aligerar tu mochila y mejorar tu experiencia en cada etapa del Camino.
+          </p>
+        </div>
+
         {/* El botón de arriba también lleva a /kits */}
         <Link to="/kits" className="hidden md:block">
           <button className="text-[#582F0E] font-bold border-b border-[#582F0E] pb-1 hover:opacity-70 transition-opacity">
@@ -45,7 +54,6 @@ export function KitsSection() {
       {/* GRID DE LAS TARJETAS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {displayedKits.map((kit, index) => (
-          // --- CAMBIO CLAVE: TODA LA TARJETA ES UN LINK ---
           <Link
             to="/kits" 
             key={kit._id}
