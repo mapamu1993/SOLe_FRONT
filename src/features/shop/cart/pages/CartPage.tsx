@@ -35,8 +35,17 @@ const CartPage = () => {
     return cart?.items.filter((item) => item.product !== null) || [];
   }, [cart]);
 
-  const handleUpdateQuantity = (productId: string, change: number) => {
-    updateCart({ productId, quantity: change });
+  const handleUpdateQuantity = (
+    productId: string,
+    change: number,
+    productModel?: "Product" | "Kit"
+  ) => {
+    console.log("Frontend Updating Quantity:", {
+      productId,
+      change,
+      productModel,
+    });
+    updateCart({ productId, quantity: change, productModel });
   };
 
   const handleRemoveItem = (productId: string) => {

@@ -25,8 +25,6 @@ export const createProductService = async (
   formData.append("price", String(params.price));
   formData.append("stock", String(params.stock));
   formData.append("category", params.category);
-  
-  // CORRECCIÓN IMPORTANTE: Cambiado de "productImage" a "image"
   formData.append("image", params.image); 
 
   const { data } = await axiosClient.post(API_ROUTES.PRODUCTS, formData, {

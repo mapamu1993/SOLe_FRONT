@@ -8,6 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
+// Hook para borrar un kit
 export const useDeleteKitMutation = () => {
   const queryClient = useQueryClient();
   const { enqueueSnackbar } = useSnackbar();
@@ -24,13 +25,13 @@ export const useDeleteKitMutation = () => {
   });
 };
 
+// Hook para actualizar un kit
 export const useUpdateKitsMutation = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   return useMutation({
-    // CORRECCIÓN IMPORTANTE: Desestructuramos el objeto para pasarlo correctamente al servicio
     mutationFn: ({ id, formData }: { id: string; formData: FormData }) =>
       updateKitService(id, formData),
 
@@ -47,6 +48,7 @@ export const useUpdateKitsMutation = () => {
   });
 };
 
+// Hook para crear un kit
 export const useCreateKitMutation = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -66,6 +68,7 @@ export const useCreateKitMutation = () => {
   });
 };
 
+// Hook para enviar una solicitud de kit (solo disponible si el kit es premium)
 export const useSendKitRequestMutation = () => {
   const { enqueueSnackbar } = useSnackbar();
 

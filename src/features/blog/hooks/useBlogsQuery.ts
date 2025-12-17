@@ -5,6 +5,8 @@ import {
 } from "../services/blogService";
 import { type Blog } from "../types/blogTypes";
 
+
+// Hook para obtener todos los blogs
 export const useBlogsQuery = () => {
   return useQuery<Blog[], Error>({
     queryKey: ["blogs"],
@@ -15,6 +17,7 @@ export const useBlogsQuery = () => {
   });
 };
 
+// Hook para obtener un blog concreto por ID
 export const useBlogByIdQuery = (id: string | undefined) => {
   return useQuery<Blog, Error>({
     queryKey: ["blog", id],

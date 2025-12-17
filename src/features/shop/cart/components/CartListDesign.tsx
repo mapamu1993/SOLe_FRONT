@@ -19,7 +19,11 @@ interface CartListDesignProps {
   isLoading: boolean;
   isError: boolean;
   subtotal: number;
-  onUpdateQuantity: (productId: string, change: number) => void;
+  onUpdateQuantity: (
+    productId: string,
+    change: number,
+    productModel?: "Product" | "Kit"
+  ) => void;
   onRemoveItem: (productId: string) => void;
 
   // Nuevos props para el flujo de checkout
@@ -208,7 +212,10 @@ export const CartListDesign = ({
                             <div>
                               <div className="flex justify-between items-start">
                                 <h3 className="text-xl font-bold text-[#333D29] mb-1 leading-tight">
-                                  {item.product.name}
+                                  {item.product.name}{" "}
+                                  <span className="text-xs text-red-500">
+                                    ({item.productModel})
+                                  </span>
                                 </h3>
                                 <p className="font-bold text-xl text-[#582F0E]">
                                   €
@@ -225,7 +232,11 @@ export const CartListDesign = ({
                               <div className="flex items-center gap-1 bg-[#F5F5F0] rounded-full p-1 border border-[#EBECE2]">
                                 <button
                                   onClick={() =>
-                                    onUpdateQuantity(item.product._id, -1)
+                                    onUpdateQuantity(
+                                      item.product._id,
+                                      -1,
+                                      item.productModel
+                                    )
                                   }
                                   disabled={item.quantity <= 1}
                                   className="w-8 h-8 flex items-center justify-center rounded-full bg-white text-[#333D29] hover:bg-[#333D29] hover:text-white transition-colors disabled:opacity-50 shadow-sm"
@@ -237,7 +248,11 @@ export const CartListDesign = ({
                                 </span>
                                 <button
                                   onClick={() =>
-                                    onUpdateQuantity(item.product._id, 1)
+                                    onUpdateQuantity(
+                                      item.product._id,
+                                      1,
+                                      item.productModel
+                                    )
                                   }
                                   className="w-8 h-8 flex items-center justify-center rounded-full bg-white text-[#333D29] hover:bg-[#333D29] hover:text-white transition-colors shadow-sm"
                                 >

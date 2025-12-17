@@ -11,8 +11,7 @@ import { useSnackbar } from "notistack";
 interface ErrorResponse {
   message: string;
 }
-
-// CAMBIO 1: Modificar useCreateBlogMutation
+// Hook para crear un blog
 export const useCreateBlogMutation = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -22,16 +21,11 @@ export const useCreateBlogMutation = () => {
     mutationFn: ({ data, file }: { data: any; file: File }) =>
       createBlogService(data, file),
 
-    // Agregamos 'async' aquí
     onSuccess: async () => {
-      // Agregamos 'await' para esperar a que la caché se limpie antes de seguir
       await queryClient.resetQueries({
         queryKey: ["blogs"],
       });
-
       enqueueSnackbar("Blog creado exitosamente", { variant: "success" });
-
-      // Ahora navegamos, asegurando que la próxima vista cargará datos nuevos
       navigate("/blog");
     },
     onError: (error: AxiosError<ErrorResponse>) => {
@@ -70,7 +64,6 @@ export const useEditBlogMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    // Recibimos un objeto y pasamos los argumentos desestructurados al servicio
     mutationFn: ({
       id,
       data,
@@ -85,7 +78,6 @@ export const useEditBlogMutation = () => {
       await queryClient.resetQueries({
         queryKey: ["blogs"],
       });
-      // También invalidamos el detalle del blog específico por si el usuario entra de nuevo
       await queryClient.resetQueries({
         queryKey: ["blog"],
       });
