@@ -6,8 +6,7 @@ import {
 } from "../validators/authSchema";
 import { useForgotPasswordMutation } from "../hooks/usePasswordRecovery";
 
-// IMPORTAMOS EL DISEÑO
-// Ajusta la ruta (../../../) según dónde tengas la carpeta components
+
 import ForgotPasswordDesign from "../components/ForgotPasswordDesign";
 
 const ForgotPasswordPage = () => {
@@ -25,7 +24,6 @@ const ForgotPasswordPage = () => {
     mutate(data);
   };
 
-  // Renderizamos el diseño pasando las props necesarias
   return (
     <ForgotPasswordDesign
       register={register}

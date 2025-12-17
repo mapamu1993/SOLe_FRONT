@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// CORRECCIÓN: Usamos Tabler Icons
 import {
   IconX,
   IconSend,

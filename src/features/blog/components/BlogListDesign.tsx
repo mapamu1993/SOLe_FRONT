@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { type Blog } from "../types/blogTypes";
-import { getImageUrl } from "../../../utils/imageUtil"; // Ajusta la ruta si es necesario
+import { getImageUrl } from "../../../utils/imageUtil";
 import { motion, type Variants } from "framer-motion";
 import { IconPlus, IconArticle, IconEdit, IconTrash, IconArrowRight } from "@tabler/icons-react";
 
@@ -18,7 +18,6 @@ export const BlogListDesign = ({
   onDelete,
 }: BlogListDesignProps) => {
 
-  // --- ANIMACIONES ---
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     show: {
@@ -37,7 +36,6 @@ export const BlogListDesign = ({
   };
 
   return (
-    // FONDO BASE (Gris Sole)
     <div className="min-h-screen w-full bg-[#EBECE2] p-4 md:p-8 font-sans pt-24 md:pt-32">
       
       <div className="mx-auto w-full max-w-7xl">
@@ -104,7 +102,6 @@ export const BlogListDesign = ({
                   <div className="relative h-64 w-full overflow-hidden bg-[#EBECE2]">
                     {blog.image ? (
                       <img
-                        // Construimos la URL correctamente usando tu utilidad
                         src={getImageUrl(blog.image)}
                         alt={blog.title}
                         className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"

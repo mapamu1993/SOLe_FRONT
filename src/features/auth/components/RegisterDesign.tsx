@@ -26,7 +26,6 @@ export const RegisterDesign = ({
   previewUrl,
 }: RegisterDesignProps) => {
   return (
-    // FONDO: #C2C5AA
     <div className="flex min-h-screen w-full items-center justify-center bg-[#C2C5AA] p-4">
       <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl border border-[#A4AC86]">
         
@@ -42,7 +41,7 @@ export const RegisterDesign = ({
 
         {serverError && (
           <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-            ⚠️ {serverError}
+          {serverError}
           </div>
         )}
 
@@ -96,7 +95,7 @@ export const RegisterDesign = ({
             {errors.password && <span className="text-xs font-medium text-red-600">{errors.password.message}</span>}
           </LabelInputContainer>
 
-          {/* Input de Archivo con tonos Beige/Verde */}
+          {/* INPUT DE ARCHIVO */}
           <LabelInputContainer className="mb-8">
             <Label className="text-[#333D29]">Foto de Perfil</Label>
             <div className="flex items-center gap-3 rounded-lg border border-[#A4AC86] bg-[#EBECE2] p-2">
@@ -154,7 +153,7 @@ export const RegisterDesign = ({
   );
 };
 
-// --- Efectos Visuales ---
+
 const BottomGradient = () => {
   return (
     <>

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { type Product } from "../types/productTypes";
 import { getImageUrl } from "../../../../utils/imageUtil";
-// 1. IMPORTAMOS 'Variants' PARA CORREGIR EL ERROR DE TIPADO
 import { motion, type Variants } from "framer-motion";
 import { IconPlus, IconShoppingBag, IconEdit, IconTrash } from "@tabler/icons-react";
 
@@ -13,7 +12,6 @@ interface ProductsListDesignProps {
   isAdmin: boolean;
   onAddToCart: (productId: string) => void;
   isAddingToCart: boolean;
-  // Nueva prop para manejar el borrado
   onDeleteProduct: (id: string) => void;
 }
 
@@ -27,9 +25,7 @@ export const ProductsListDesign = ({
   isAddingToCart,
   onDeleteProduct,
 }: ProductsListDesignProps) => {
-  // --- DEFINICIÓN DE ANIMACIONES CON TIPADO ---
 
-  // 2. AÑADIMOS ': Variants' AQUÍ
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     show: {
@@ -40,7 +36,6 @@ export const ProductsListDesign = ({
     },
   };
 
-  // 3. Y AQUÍ TAMBIÉN PARA EVITAR EL ERROR EN EL MAP
   const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     show: {
@@ -196,7 +191,7 @@ export const ProductsListDesign = ({
                       </div>
                     )}
 
-                    {/* BOTÓN (Swipe) */}
+                    {/* BOTON (Swipe) */}
                     <button
                       onClick={() => onAddToCart(product._id)}
                       disabled={isAddingToCart}

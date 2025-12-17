@@ -39,7 +39,7 @@ export const BRAND_THEME = {
   layout: {
     // Bordes redondeados para la app entera
     borderRadius: {
-      card: "rounded-[2.5rem]", // El estilo redondeado
+      card: "rounded-[2.5rem]",
       input: "rounded-xl",
       button: "rounded-full",
     },

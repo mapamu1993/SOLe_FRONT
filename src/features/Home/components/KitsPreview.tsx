@@ -1,22 +1,20 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { useKitsQuery } from "../../shop/kits/hooks/useKitsQuery";
 import { getImageUrl } from "../../../utils/imageUtil";
 
 export function KitsSection() {
-  // 1. OBTENER LOS KITS REALES
   const { data: kits, isLoading, isError } = useKitsQuery();
 
-  // 2. SELECCIONAR SOLO LOS 3 PRIMEROS
   const displayedKits = kits ? kits.slice(0, 3) : [];
 
-  // Etiquetas decorativas
   const tags = ["Essential", "Best Seller", "Thermal"];
 
   if (isLoading) {
     return (
       <section className="w-full px-4 md:px-6 py-32 bg-[#EBECE2] flex justify-center">
-        <div className="text-[#333D29] font-bold animate-pulse">Cargando kits...</div>
+        <div className="text-[#333D29] font-bold animate-pulse">
+          Cargando kits...
+        </div>
       </section>
     );
   }
@@ -25,25 +23,20 @@ export function KitsSection() {
 
   return (
     <section className="w-full px-4 md:px-6 py-32 md:py-40 bg-[#EBECE2]">
-      
       {/* HEADER SECCIÓN */}
       <div className="flex flex-col md:flex-row justify-between items-end mb-16 px-4">
-        
         {/* Bloque de Título + Descripción */}
         <div className="mb-6 md:mb-0">
           <h2 className="text-4xl md:text-5xl font-bold text-[#333D29] tracking-tight">
             Kits{" "}
-            <span className="italic font-serif text-[#582F0E]">
-              Curados
-            </span>
+            <span className="italic font-serif text-[#582F0E]">Curados</span>
           </h2>
-          {/* --- AQUÍ ESTÁ EL NUEVO RESUMEN --- */}
           <p className="mt-4 text-[#656D4A] text-lg max-w-md leading-relaxed font-medium">
-            Selección de equipamiento esencial diseñada para aligerar tu mochila y mejorar tu experiencia en cada etapa del Camino.
+            Selección de equipamiento esencial diseñada para aligerar tu mochila
+            y mejorar tu experiencia en cada etapa del Camino.
           </p>
         </div>
 
-        {/* El botón de arriba también lleva a /kits */}
         <Link to="/kits" className="hidden md:block">
           <button className="text-[#582F0E] font-bold border-b border-[#582F0E] pb-1 hover:opacity-70 transition-opacity">
             Ver Todos los Kits
@@ -55,7 +48,7 @@ export function KitsSection() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {displayedKits.map((kit, index) => (
           <Link
-            to="/kits" 
+            to="/kits"
             key={kit._id}
             className="
               group 
@@ -88,8 +81,7 @@ export function KitsSection() {
                     group-hover:scale-110
                   "
                 />
-                
-                {/* Tag Flotante */}
+
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-[#333D29]">
                   {tags[index % tags.length]}
                 </div>
@@ -117,8 +109,19 @@ export function KitsSection() {
                   Ver Detalles
                 </span>
                 <div className="w-10 h-10 rounded-full bg-[#B6AD90] text-[#333D29] flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:bg-white">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
                   </svg>
                 </div>
               </div>
@@ -126,14 +129,14 @@ export function KitsSection() {
           </Link>
         ))}
       </div>
-      
+
       {/* Botón móvil */}
       <div className="mt-10 text-center md:hidden">
-         <Link to="/kits">
-            <button className="text-[#582F0E] font-bold border-b border-[#582F0E] pb-1 hover:opacity-70 transition-opacity">
-              Ver Tienda Completa
-            </button>
-         </Link>
+        <Link to="/kits">
+          <button className="text-[#582F0E] font-bold border-b border-[#582F0E] pb-1 hover:opacity-70 transition-opacity">
+            Ver Tienda Completa
+          </button>
+        </Link>
       </div>
     </section>
   );

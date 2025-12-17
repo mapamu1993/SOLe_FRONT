@@ -39,9 +39,6 @@ export const BlogFormDesign = ({
     : existingImageUrl;
 
   return (
-    // CAMBIO CLAVE AQUÍ:
-    // 1. items-center: Centra verticalmente.
-    // 2. py-32 md:py-40: Da aire arriba y abajo para no tocar Footer ni Navbar.
     <div className="flex min-h-screen w-full items-center justify-center bg-[#EBECE2] p-4 py-32 md:py-40 font-sans">
       
       <motion.div 
@@ -53,7 +50,6 @@ export const BlogFormDesign = ({
         {/* TARJETA DEL FORMULARIO */}
         <div className="rounded-[2.5rem] bg-white p-8 md:p-12 shadow-2xl border border-[#333D29]/5 relative overflow-hidden">
           
-          {/* Decoración de fondo */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#B6AD90] opacity-10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
 
           {/* CABECERA */}
@@ -117,7 +113,6 @@ export const BlogFormDesign = ({
               
               <div className="group relative w-full overflow-hidden rounded-2xl border-2 border-dashed border-[#B6AD90]/50 bg-[#F5F5F0] transition-colors hover:bg-[#EBECE2]">
                   
-                  {/* Visualizador */}
                   <div className="relative h-64 w-full flex flex-col items-center justify-center text-[#656D4A]">
                       {previewUrl ? (
                           <img 
@@ -136,7 +131,7 @@ export const BlogFormDesign = ({
                       )}
                   </div>
 
-                  {/* Input Invisible */}
+                  {/* INPUT INVISIBLE */}
                   <Input
                       type="file"
                       accept="image/*"

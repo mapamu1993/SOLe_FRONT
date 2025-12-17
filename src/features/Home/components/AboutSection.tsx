@@ -30,7 +30,7 @@ export function AboutSection() {
         min-h-[750px]
         shadow-2xl"
       >
-        {/* TIPOGRAFIA DISTINTA EN (MONTAÑA) */}
+        {/* TIPOGRAFIA DISTINTA EN */}
         <div
           className="
           absolute
@@ -202,7 +202,7 @@ export function AboutSection() {
           </div>
         </div>
 
-        {/* COLUMNA DE LA DERECHA (CARRUSEL) */}
+        {/* COLUMNA DE LA DERECHA */}
         <div
           className="
           w-full

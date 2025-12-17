@@ -81,7 +81,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           {/* --- ZONA DE BOTONES --- */}
 
           <div className="mt-8 flex flex-col gap-3">
-            {/* Botón Principal (Editar) - Estilo Relleno */}
+            {/* Boton Principal - Estilo Relleno */}
             <button
               onClick={onEdit}
               className="w-full bg-brand-primary hover:opacity-90 active:scale-95 text-white font-bold py-3 px-4 rounded-xl shadow-md transition-all duration-200 flex items-center justify-center gap-2"
@@ -89,7 +89,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               <span>Editar Perfil</span>
             </button>
 
-            {/* BOTÓN SECUNDARIO (Volver al Inicio) */}
+            {/* BOTON SECUNDARIO */}
             <button
               onClick={onGoHome}
               className="w-full bg-white text-brand-primary border-2 border-brand-primary hover:bg-blue-50 active:scale-95 font-bold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2"

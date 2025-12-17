@@ -26,7 +26,7 @@ const EditProductPage = () => {
     setValue,
     formState: { errors },
   } = useForm<CreateProductFields>({
-    resolver: zodResolver(createProductSchema),
+    resolver: zodResolver(createProductSchema)as any,
   });
 
   useEffect(() => {

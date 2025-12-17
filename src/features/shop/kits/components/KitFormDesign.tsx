@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import type { UseFormRegister, FieldErrors } from "react-hook-form";
 import { IconDeviceFloppy, IconUpload, IconX, IconPhoto, IconCheck } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion"; // Un toque suave de animación si está instalado, si no, funciona igual como div normal
 
 interface KitFormDesignProps {
   register: UseFormRegister<any>;
@@ -44,7 +43,6 @@ export const KitFormDesign = ({
     }
   }, [currentFile, currentImageUrl]);
 
-  // Clases comunes para inputs
   const inputClasses = "w-full bg-[#F5F5F0] border border-transparent focus:border-[#B6AD90] focus:bg-white focus:ring-0 rounded-xl px-4 py-3 text-[#333D29] placeholder:text-[#656D4A]/50 transition-all outline-none font-medium";
   const labelClasses = "block text-xs font-bold text-[#333D29] uppercase tracking-widest mb-2 ml-1";
   const errorClasses = "mt-1 text-xs font-bold text-red-500 ml-1";
@@ -78,7 +76,7 @@ export const KitFormDesign = ({
 
         <form onSubmit={onSubmit} className="space-y-8">
           
-          {/* NOMBRE Y PRECIO (GRID) */}
+          {/* NOMBRE Y PRECIO EN EL GRID */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className={labelClasses}>Nombre del Kit</label>
@@ -103,7 +101,7 @@ export const KitFormDesign = ({
             </div>
           </div>
 
-          {/* DESCRIPCIÓN */}
+          {/* DESCRIPCION */}
           <div>
             <label className={labelClasses}>Descripción</label>
             <textarea
@@ -115,7 +113,7 @@ export const KitFormDesign = ({
             {errors.description && <p className={errorClasses}>{String(errors.description.message)}</p>}
           </div>
 
-          {/* CARACTERÍSTICAS */}
+          {/* CARACTERISTICAS */}
           <div>
              <label className={labelClasses}>Características (separadas por comas)</label>
              <input
@@ -128,7 +126,7 @@ export const KitFormDesign = ({
              </p>
           </div>
 
-          {/* CHECKBOX RECOMENDADO */}
+          {/* CHECKBOX DE KIT RECOMENDADO */}
           <div className="flex items-center gap-3 p-4 bg-[#F5F5F0] rounded-xl border border-transparent hover:border-[#B6AD90] transition-colors cursor-pointer">
             <div className="relative flex items-center">
                 <input 
@@ -181,7 +179,7 @@ export const KitFormDesign = ({
             </div>
           </div>
 
-          {/* BOTÓN SUBMIT */}
+          {/* BOTON SUBMIT */}
           <div className="pt-4 border-t border-[#F5F5F0]">
               <button
                 type="submit"

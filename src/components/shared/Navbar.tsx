@@ -38,7 +38,6 @@ const Navbar = () => {
   const totalItems = useMemo(() => {
     if (!cart?.items) return 0;
     return cart.items.reduce((acc, item) => {
-      // Si el producto fue borrado (es null), no lo contamos
       if (!item.product) return acc;
       return acc + item.quantity;
     }, 0);
@@ -48,7 +47,6 @@ const Navbar = () => {
   const subtotal = useMemo(() => {
     if (!cart?.items) return 0;
     return cart.items.reduce((acc, item) => {
-      // Si el producto no existe, saltamos esta iteración para que no haya errores
       if (!item.product) return acc;
       return acc + item.product.price * item.quantity;
     }, 0);
@@ -86,7 +84,7 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* MENÚ DESKTOP (Oculto en móvil) */}
+        {/* MENÚ DESKTOP */}
         <div className="hidden md:flex items-center gap-1 bg-black/10 rounded-full p-1 border border-white/5">
           {navLinks.map((link) => (
             <Link
@@ -147,7 +145,7 @@ const Navbar = () => {
 
       {/* DEL MOVIL/*}
       
-      {/* 1. Fondo oscuro (Overlay) */}
+      {/* Fondo oscuro (Overlay) */}
       <div
         className={`fixed inset-0 z-[1000] bg-black/60 backdrop-blur-sm transition-opacity duration-500 md:hidden ${
           isMobileMenuOpen
@@ -157,7 +155,7 @@ const Navbar = () => {
         onClick={() => setIsMobileMenuOpen(false)}
       />
 
-      {/* 2. Panel lateral del menú */}
+      {/* Panel lateral del menú */}
       <div
         className={`fixed top-0 left-0 z-[1001] h-full w-[280px] bg-[#F2F2EF] shadow-2xl p-6 transform transition-transform duration-500 ease-out md:hidden flex flex-col ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
@@ -190,10 +188,9 @@ const Navbar = () => {
           ))}
         </div>
       </div>
-      {/* ======================================================= */}
 
 
-      {/* --- CART DRAWER (ESTE YA LO TENÍAS Y ESTÁ BIEN) --- */}
+      {/* --- CART DRAWER --- */}
       <div
         className={`fixed inset-0 z-[1000] bg-black/60 backdrop-blur-sm transition-opacity duration-500 ${
           isCartOpen

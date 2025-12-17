@@ -26,7 +26,6 @@ interface CartListDesignProps {
   ) => void;
   onRemoveItem: (productId: string) => void;
 
-  // Nuevos props para el flujo de checkout
   onCheckoutClick: () => void;
   onConfirmCheckout: (address: string) => void;
   isCheckoutLoading: boolean;
@@ -51,7 +50,6 @@ export const CartListDesign = ({
 }: CartListDesignProps) => {
   const [addressInput, setAddressInput] = useState("");
 
-  // Animaciones
   const listVariants = {
     hidden: { opacity: 0 },
     show: { opacity: 1, transition: { staggerChildren: 0.1 } },
@@ -62,7 +60,6 @@ export const CartListDesign = ({
     show: { opacity: 1, y: 0 },
   };
 
-  // --- 1. PANTALLA DE ÉXITO ---
   if (successOrder) {
     return (
       <div className="min-h-screen w-full bg-[#EBECE2] flex items-center justify-center p-4 pt-24">
@@ -71,7 +68,6 @@ export const CartListDesign = ({
           animate={{ scale: 1, opacity: 1 }}
           className="bg-white max-w-2xl w-full rounded-[2.5rem] p-8 md:p-12 shadow-2xl text-center relative overflow-hidden"
         >
-          {/* Confeti visual decorativo */}
           <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#582F0E] via-[#B6AD90] to-[#333D29]"></div>
 
           <div className="mx-auto w-24 h-24 bg-[#333D29] rounded-full flex items-center justify-center mb-6 shadow-lg">
@@ -113,7 +109,7 @@ export const CartListDesign = ({
     );
   }
 
-  // --- 2. RENDERIZADO PRINCIPAL ---
+  // --- RENDERIZADO PRINCIPAL ---
   return (
     <div className="min-h-screen w-full bg-[#EBECE2] p-4 md:p-8 font-sans pt-24 md:pt-32">
       <div className="mx-auto w-full max-w-7xl">
@@ -143,7 +139,7 @@ export const CartListDesign = ({
         )}
         {isError && (
           <div className="rounded-xl border border-red-200 bg-red-50 p-8 text-center text-red-700">
-            ⚠️ No pudimos cargar tu carrito. Por favor, recarga la página.
+            No pudimos cargar tu carrito. Por favor, recarga la página.
           </div>
         )}
 

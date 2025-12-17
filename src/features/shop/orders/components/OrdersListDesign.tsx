@@ -24,7 +24,6 @@ export const OrdersListDesign = ({
   isError,
 }: OrdersListDesignProps) => {
   
-  // --- CONFIGURACIÓN DE ESTADOS (Color + Icono + Texto) ---
   const getStatusConfig = (status: string) => {
     switch (status) {
       case "delivered": 
@@ -69,12 +68,11 @@ export const OrdersListDesign = ({
   };
 
   return (
-    // 1. FONDO BASE (Gris Sole)
     <div className="min-h-screen w-full bg-[#EBECE2] p-4 md:p-8 font-sans pt-24 md:pt-32">
       
       <div className="mx-auto w-full max-w-4xl">
         
-        {/* 2. CABECERA */}
+        {/* CABECERA */}
         <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
@@ -125,7 +123,6 @@ export const OrdersListDesign = ({
             className="space-y-6"
           >
             {orders.length === 0 ? (
-              // EMPTY STATE
               <motion.div 
                 variants={itemVariants}
                 className="flex flex-col items-center justify-center rounded-[2.5rem] bg-white p-16 text-center shadow-sm"
@@ -142,7 +139,6 @@ export const OrdersListDesign = ({
                 </Link>
               </motion.div>
             ) : (
-              // LISTA REAL
               orders.map((order) => {
                 const statusConfig = getStatusConfig(order.status);
                 
@@ -194,8 +190,6 @@ export const OrdersListDesign = ({
                                 <span className="font-bold text-[#333D29] text-lg block">
                                   {item.product?.name || "Producto desconocido"}
                                 </span>
-                                {/* Opcional: Si tuvieras el precio unitario */}
-                                {/* <span className="text-xs text-[#656D4A]">Ref: {item.product._id.slice(-4)}</span> */}
                               </div>
                             </div>
                           </li>

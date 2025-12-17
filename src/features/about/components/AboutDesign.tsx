@@ -12,7 +12,6 @@ import {
 } from "@tabler/icons-react";
 import { BRAND_THEME } from "@/config/designSystem";
 
-// Importamos el mapa
 import { CaminoMap } from "../../../components/ui/CaminoMap";
 
 // DATOS DEL FAQ
@@ -48,7 +47,7 @@ export const AboutDesign = () => {
   return (
     <div ref={containerRef} className={`relative min-h-screen w-full bg-[${BRAND_THEME.colors.background}] font-sans overflow-hidden`}>
       
-      {/* --- HERO SECTION (Restaurada con Imagen) --- */}
+      {/* --- HERO SECTION --- */}
       <section className="relative min-h-screen flex items-center justify-center pt-24 pb-12 overflow-visible">
         <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -58,7 +57,7 @@ export const AboutDesign = () => {
 
         <div className="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           
-          {/* TEXTO (Izquierda) */}
+          {/* TEXTO */}
           <motion.div 
             style={{ y: yText }}
             initial={{ opacity: 0, y: 50 }}
@@ -80,7 +79,7 @@ export const AboutDesign = () => {
             </div>
           </motion.div>
 
-          {/* IMAGEN HERO (Derecha - Restaurada) */}
+          {/* IMAGEN HERO */}
           <motion.div 
             initial={{ scale: 0.9, opacity: 0, rotate: 2 }}
             animate={{ scale: 1, opacity: 1, rotate: 0 }}
@@ -112,7 +111,7 @@ export const AboutDesign = () => {
         </div>
       </section>
 
-      {/* --- MANIFIESTO (VALORES) --- */}
+      {/* --- MANIFIESTO --- */}
       <section className="py-24 px-6 bg-white rounded-t-[3rem] relative z-20 -mt-10 shadow-[-20px_0_40px_rgba(0,0,0,0.05)]">
         <div className="max-w-7xl mx-auto">
           <motion.div 
@@ -153,7 +152,7 @@ export const AboutDesign = () => {
         </div>
       </section>
 
-      {/* --- HISTORIA (AQUÍ ESTÁ EL MAPA AHORA) --- */}
+      {/* --- HISTORIA --- */}
       <section className="py-24 px-6 bg-[#333D29] text-[#EBECE2] rounded-[3rem] mx-4 md:mx-8 mb-24 relative overflow-hidden">
         <motion.div 
           style={{ y: yBackground }}
@@ -161,7 +160,6 @@ export const AboutDesign = () => {
         />
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
           
-          {/* 1. AQUÍ ESTÁ EL MAPA SUSTITUYENDO A LA IMAGEN */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -174,7 +172,6 @@ export const AboutDesign = () => {
             </div>
           </motion.div>
 
-          {/* TEXTO DE LA HISTORIA */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}

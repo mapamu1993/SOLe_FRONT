@@ -1,14 +1,9 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
   const navigate = useNavigate();
 
-  return (
-    // ESTRUCTURA FRAMER:
-    //  h-screen: Ocupa toda la pantalla
-    //  p-4: Deja el marco chiquito
-    //  bg-[#EBECE2]: es el color del marco, osea el blanco 
+  return ( 
     <section
       className="
     relative
@@ -30,7 +25,7 @@ const HeroSection = () => {
       overflow-hidden
       group shadow-2xl"
       >
-        {/* IMAGEN DE FONDO con Zoom lento */}
+        {/* IMAGEN DE FONDO con zoom lento */}
         <div
           className="
           absolute

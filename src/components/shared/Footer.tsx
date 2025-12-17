@@ -1,4 +1,4 @@
-import React, { useState } from "react"; // 1. Importamos useState
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   IconBrandInstagram,
@@ -7,16 +7,14 @@ import {
   IconMountain,
 } from "@tabler/icons-react";
 import { BRAND_THEME } from "../../config/designSystem";
-import { useSnackbar } from "notistack"; // 2. Importamos el hook
+import { useSnackbar } from "notistack"; 
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
-  // 3. Inicializamos estado y notificaciones
   const { enqueueSnackbar } = useSnackbar();
   const [email, setEmail] = useState("");
 
-  // 4. Función para manejar la suscripción
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -27,11 +25,10 @@ const Footer = () => {
       return;
     }
 
-    // Simulamos éxito
     enqueueSnackbar("¡Te has unido al Camino! Gracias por suscribirte.", {
       variant: "success",
     });
-    setEmail(""); // Limpiamos el campo
+    setEmail("");
   };
 
   return (
@@ -260,7 +257,6 @@ const Footer = () => {
             <p className="text-xs text-[#EBECE2]/50 mb-4">
               Recibe consejos y ofertas exclusivas antes de empezar tu ruta.
             </p>
-            {/* 5. Conectamos el formulario */}
             <form onSubmit={handleSubscribe} className="flex flex-col gap-2">
               <input
                 type="email"

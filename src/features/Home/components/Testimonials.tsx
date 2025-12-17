@@ -1,8 +1,7 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { IconQuote } from "@tabler/icons-react";
 
-// TUS 15 TESTIMONIOS
 const testimonials = [
   {
     quote:
@@ -123,7 +122,6 @@ export function TestimonialsSection() {
   function addAnimation() {
     if (containerRef.current && scrollerRef.current) {
       const scrollerContent = Array.from(scrollerRef.current.children);
-      // Evitamos duplicar infinitamente si React ejecuta el efecto dos veces
       if (scrollerContent.length < testimonials.length * 2) {
         scrollerContent.forEach((item) => {
           const duplicatedItem = item.cloneNode(true);
@@ -225,7 +223,7 @@ export function TestimonialsSection() {
         </div>
       </div>
 
-      {/* ESTILOS INTERNOS: Aquí está la magia para que funcione sin tocar nada más */}
+      {/* ESTILOS INTERNOS */}
       <style>{`
         /* 1. Definimos la animación solo para este componente */
         @keyframes scroll-testimonials {

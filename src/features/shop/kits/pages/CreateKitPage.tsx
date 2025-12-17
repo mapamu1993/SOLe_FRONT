@@ -12,7 +12,6 @@ interface CreateKitFields {
 }
 
 const CreateKitPage = () => {
-  // El navigate y snackbar están ahora dentro del hook
   const [file, setFile] = useState<File | null>(null);
   const [localError, setLocalError] = useState("");
   

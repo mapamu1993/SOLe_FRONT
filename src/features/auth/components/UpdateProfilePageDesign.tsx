@@ -2,7 +2,6 @@ import React from "react";
 import { type UseFormRegister, type FieldErrors } from "react-hook-form";
 import { type ProfileFields } from "../validators/authSchema";
 
-// Icono de cámara
 const CameraIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +24,6 @@ const CameraIcon = () => (
   </svg>
 );
 
-// Icono de Candado (Para contraseña)
 const LockIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +52,6 @@ interface UpdateProfileDesignProps {
   onCancel: () => void;
   onGoHome: () => void;
   onChangePassword: () => void;
-  // ELIMINADO: onChangeEmail
 }
 
 const UpdateProfileDesign: React.FC<UpdateProfileDesignProps> = ({
@@ -68,7 +65,6 @@ const UpdateProfileDesign: React.FC<UpdateProfileDesignProps> = ({
   onCancel,
   onGoHome,
   onChangePassword,
-  // ELIMINADO: onChangeEmail
 }) => {
   // CLASES DE ESTILO
   const inputClass =
@@ -77,7 +73,6 @@ const UpdateProfileDesign: React.FC<UpdateProfileDesignProps> = ({
     "block text-xs font-bold text-gray-700 uppercase mb-1 tracking-wide";
   const errorClass = "text-red-500 text-xs mt-1 font-medium";
 
-  // Estilo para el botón de seguridad
   const securityBtnClass =
     "flex items-center justify-center gap-2 w-full py-2 px-4 rounded-lg border border-gray-300 bg-white text-gray-600 font-semibold hover:bg-gray-50 hover:text-brand-primary hover:border-brand-primary transition-all text-sm shadow-sm";
 
@@ -199,12 +194,11 @@ const UpdateProfileDesign: React.FC<UpdateProfileDesignProps> = ({
               </div>
             </div>
 
-            {/* --- SECCIÓN SEGURIDAD (SOLO PASSWORD) --- */}
+            {/* --- SECCION SEGURIDAD --- */}
             <div className="mb-8">
               <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 border-b border-gray-100 pb-1">
                 Seguridad de la cuenta
               </h3>
-              {/* Ahora es un div simple, sin grid, porque solo hay un botón */}
               <div className="w-full">
                 <button
                   type="button"

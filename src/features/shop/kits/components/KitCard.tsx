@@ -41,7 +41,7 @@ export const KitCard: React.FC<KitCardProps> = ({
         }
       `}
     >
-      {/* 1. IMAGEN */}
+      {/* IMAGEN */}
       <div className="relative h-64 w-full overflow-hidden rounded-[2rem] bg-[#EBECE2]">
         <img
           src={image}
@@ -55,7 +55,7 @@ export const KitCard: React.FC<KitCardProps> = ({
         )}
       </div>
 
-      {/* 2. CONTENIDO */}
+      {/* CONTENIDO */}
       <div className="flex flex-1 flex-col pt-6 px-2">
         <div className="flex items-center gap-2 text-[#656D4A] mb-3">
           <IconMountain size={18} stroke={1.5} />
@@ -92,10 +92,9 @@ export const KitCard: React.FC<KitCardProps> = ({
           <p className="text-sm text-[#656D4A] mb-2 flex-1">{description}</p>
         </div>
 
-        {/* 3. ACCIONES Y ADMIN */}
+        {/* ACCIONES Y ADMIN */}
         <div className="mt-auto space-y-4 pt-4 border-t border-[#EBECE2]">
             <div className="flex items-center justify-between gap-3">
-                {/* Botón Principal (ocupa todo el espacio posible) */}
                 <button
                 onClick={onAction}
                 className={`
@@ -109,7 +108,7 @@ export const KitCard: React.FC<KitCardProps> = ({
                 </span>
                 </button>
 
-                {/* Botones Admin (Burbujas estilo Blog) */}
+                {/* botones admin  */}
                 {canEdit && (
                     <div className="flex gap-2 shrink-0">
                         <button 

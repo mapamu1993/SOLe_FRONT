@@ -2,15 +2,11 @@ import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useAuth } from "@/features/auth/context/auth.context";
 import { USER_ROLES } from "../config/constants";
-
-// 1. IMPORTANTE: Importamos el componente ScrollToTop
 import ScrollToTop from "../components/shared/ScrollToTop";
-
-// IMPORTAMOS EL LAYOUT
 import Layout from "../components/layout/Layout";
 
 // Homepage
-import Home from "@/features/Home/Home";
+import Home from "@/features/home/Home";
 import AboutPage from "@/features/about/pages/AboutPage";
 
 // Auth Pages
@@ -49,11 +45,9 @@ const ProtectedRoute = ({
   children: React.ReactElement;
   requiredRoles?: string[];
 }) => {
-  const { isAuthenticated, user, loading } = useAuth();
+  const { user, loading } = useAuth();
 
   if (loading) return null;
-
-  //if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   if (requiredRoles && !requiredRoles.includes(user?.role || "")) {
     return <Navigate to="/" replace />;
@@ -65,7 +59,6 @@ const ProtectedRoute = ({
 const AppRouter = () => {
   return (
     <>
-      {/* 2. IMPORTANTE: Renderizamos ScrollToTop AQUÍ, antes de las rutas */}
       <ScrollToTop />
 
       <Routes>
@@ -73,8 +66,7 @@ const AppRouter = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
 
-        {/* ENVOLVEMOS TODO EN EL LAYOUT 
-            Así el Navbar y Footer aparecen en todas estas páginas 
+        {/* ENVOLVEMOS TODO EN EL LAYOUT PARA QUE SALGAN EL NAVBAR Y EL FOOTER
         */}
         <Route element={<Layout />}>
           {/* PÚBLICAS */}

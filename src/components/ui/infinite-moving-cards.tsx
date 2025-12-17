@@ -91,7 +91,6 @@ export const InfiniteMovingCards = ({
       >
         {items.map((item, idx) => (
           <li
-            // LIMPIO: Sin bordes, fondo transparente.
             className="w-auto h-[300px] max-w-full relative flex-shrink-0 border-none bg-transparent"
             key={item.image + idx}
           >
@@ -106,18 +105,17 @@ export const InfiniteMovingCards = ({
         ))}
       </ul>
 
-      {/* --- AQUÍ ESTÁ LA SOLUCIÓN ROBUSTA --- */}
 
       {/* CORTINA IZQUIERDA */}
       <div
         className="absolute inset-y-0 left-0 z-50 pointer-events-none rounded-3xl"
         style={{
-          width: "100px", // Ancho fijo para asegurarnos de que se ve
+          width: "100px", 
           background:
-            "linear-gradient(to right, rgba(255,255,255,0.2), transparent)", // Un toque de luz
-          backdropFilter: "blur(8px)", // Desenfoque forzado por CSS puro
-          WebkitBackdropFilter: "blur(8px)", // Para navegadores Safari/Chrome antiguos
-          maskImage: "linear-gradient(to right, black 20%, transparent)", // Máscara suave
+            "linear-gradient(to right, rgba(255,255,255,0.2), transparent)", 
+          backdropFilter: "blur(8px)", 
+          WebkitBackdropFilter: "blur(8px)", 
+          maskImage: "linear-gradient(to right, black 20%, transparent)", 
           WebkitMaskImage: "linear-gradient(to right, black 20%, transparent)",
         }}
       ></div>

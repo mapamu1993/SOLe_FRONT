@@ -40,9 +40,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           type={type}
           className={cn(
-            // --- CAMBIOS REALIZADOS ---
-            // 1. bg-white: Fondo BLANCO en modo claro (antes era grisáceo/verde).
-            // 2. dark:bg-stone-900: Fondo MARRÓN OSCURO en modo oscuro (antes era AZUL oscuro).
             `flex h-10 w-full rounded-md border-none bg-white px-3 py-2 text-sm text-[#333D29] shadow-input transition duration-400
             placeholder:text-[#333D29]
             focus-visible:outline-none focus-visible:ring-[2px] focus-visible:ring-[#582F0E]

@@ -2,7 +2,7 @@ import React from "react";
 import { type UseFormRegister, type FieldErrors } from "react-hook-form";
 import { type ResetPasswordFields } from "../validators/authSchema";
 
-// --- ICONOS (Para que quede Pro) ---
+// --- ICONOS ---
 const LockIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -69,13 +69,12 @@ const ResetPasswordDesign: React.FC<ResetPasswordDesignProps> = ({
   onSubmit,
   onCancel,
 }) => {
-  // Clases de estilo (Mismo look que el perfil)
   const inputClass =
     "w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white text-gray-800";
   const labelClass =
     "block text-xs font-bold text-gray-700 uppercase mb-1 tracking-wide";
   const errorClass = "text-red-500 text-xs mt-1 font-medium";
-  const iconContainerClass = "absolute left-3 top-9"; // Posición del icono dentro del input
+  const iconContainerClass = "absolute left-3 top-9";
 
   return (
     <div className="min-h-screen bg-brand-bg flex items-center justify-center p-4 font-sans">
@@ -106,7 +105,6 @@ const ResetPasswordDesign: React.FC<ResetPasswordDesignProps> = ({
           </div>
 
           <form onSubmit={onSubmit} className="space-y-5">
-            {/* Email (Solo lectura o editable según prefieras) */}
             <div className="relative">
               <label className={labelClass}>Email</label>
               <input
@@ -172,7 +170,7 @@ const ResetPasswordDesign: React.FC<ResetPasswordDesignProps> = ({
               )}
             </div>
 
-            {/* --- BOTONES DE ACCIÓN --- */}
+            {/* --- BOTONES DE ACCION --- */}
             <div className="flex flex-col gap-3 pt-4 mt-6 border-t border-gray-100">
               {/* Botón Guardar */}
               <button
@@ -183,7 +181,7 @@ const ResetPasswordDesign: React.FC<ResetPasswordDesignProps> = ({
                 {isPending ? "Actualizando..." : "Guardar Nueva Contraseña"}
               </button>
 
-              {/* Botón Cancelar (Vuelve a editar perfil) */}
+              {/* Boton Cancelar */}
               <button
                 type="button"
                 onClick={onCancel}

@@ -1,5 +1,4 @@
 import React from "react";
-// CORRECCIÓN: Usamos Tabler Icons
 import { IconChevronRight } from "@tabler/icons-react";
 
 interface DetailSection {
@@ -18,7 +17,6 @@ export const KitDetail: React.FC<KitDetailProps> = ({
 }) => {
   return (
     <div className="mt-4 p-6 bg-[#fdfcf5] border border-[#A4AC86] rounded-2xl shadow-sm relative">
-      {/* Triángulo decorativo CSS */}
       <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#fdfcf5] border-t border-l border-[#A4AC86] rotate-45 transform"></div>
 
       <p className="text-[#333D29] italic leading-relaxed mb-6 font-serif border-l-4 border-[#656D4A] pl-4">

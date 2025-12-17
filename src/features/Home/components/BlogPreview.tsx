@@ -1,28 +1,21 @@
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { IconArrowRight } from "@tabler/icons-react";
-
-// 1. Importamos el hook y las utilidades
 import { useBlogsQuery } from "../../blog/hooks/useBlogsQuery";
 import { getImageUrl } from "../../../utils/imageUtil";
 
 export function BlogPreview() {
-  // 2. Obtenemos los datos del servidor
   const { data: blogs, isLoading } = useBlogsQuery();
 
-  // 3. Procesamos los datos con useMemo para no recalcular en cada render
   const recentBlogs = useMemo(() => {
     if (!blogs) return [];
 
-    // a. Ordenamos por fecha (más reciente primero)
     const sorted = [...blogs].sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
 
-    // b. Tomamos los 3 primeros y los transformamos al formato que necesita el diseño
     return sorted.slice(0, 3).map((blog) => {
-      // Formatear fecha: Ej "12 Oct"
       const dateObj = new Date(blog.createdAt);
       const day = dateObj.getDate();
       const month = dateObj.toLocaleString("es-ES", { month: "short" });

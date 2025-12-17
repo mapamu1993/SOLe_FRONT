@@ -1,6 +1,4 @@
 import { useState, useMemo } from "react";
-
-// HOOKS
 import { useCartQuery } from "../hooks/useCartQuery";
 import {
   useUpdateCartMutation,
@@ -21,7 +19,6 @@ const CartPage = () => {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [lastOrder, setLastOrder] = useState<any>(null);
 
-  // --- LÓGICA DE NEGOCIO ---
 
   const subtotal = useMemo(() => {
     if (!cart?.items) return 0;
@@ -73,7 +70,6 @@ const CartPage = () => {
     );
   };
 
-  // --- RENDERIZADO ---
   return (
     <CartListDesign
       items={validItems}

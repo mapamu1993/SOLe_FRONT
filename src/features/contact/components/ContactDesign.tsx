@@ -11,10 +11,9 @@ import {
 
 export const ContactDesign = () => {
   return (
-    // 1. FONDO BASE (Gris Sole) + Padding superior para el Navbar
     <div className="flex min-h-screen w-full items-center justify-center bg-[#EBECE2] p-4 pt-24 md:pt-32 font-sans">
       
-      {/* 2. ANIMACIÓN DE ENTRADA */}
+      {/* ANIMACIÓN DE ENTRADA */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -88,7 +87,7 @@ export const ContactDesign = () => {
                 <IconBrandFacebook size={28} stroke={1.5} />
               </a>
 
-              {/* X (Twitter) */}
+              {/* X */}
               <a
                 href="#"
                 aria-label="X (Twitter)"

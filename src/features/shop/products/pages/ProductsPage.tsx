@@ -15,7 +15,6 @@ const ProductsPage = () => {
     user?.role === USER_ROLES.ADMIN || user?.role === USER_ROLES.MODERATOR;
 
   const handleAddToCart = (productId: string) => {
-    // CORRECCIÓN: Añadido productModel explícito
     addToCart({ 
       productId, 
       quantity: 1,

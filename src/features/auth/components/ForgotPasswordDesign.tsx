@@ -1,9 +1,8 @@
 import React from "react";
 import { type UseFormRegister, type FieldErrors } from "react-hook-form";
 import { Link as RouterLink } from "react-router-dom";
-// Ajusta la ruta si es necesario
 import { type ForgotPasswordFields } from "../validators/authSchema";
-import { cn } from "@/lib/utils"; // Asegúrate de tener esto si usas shadcn o similar, si no, puedes borrar esta importación y la función LabelInputContainer de abajo
+import { cn } from "@/lib/utils";
 
 // --- ICONOS ---
 const EmailIcon = () => (
@@ -53,7 +52,6 @@ const ForgotPasswordDesign: React.FC<ForgotPasswordDesignProps> = ({
   isPending,
   onSubmit,
 }) => {
-  // Clases de estilo adaptadas a tu paleta de colores
   const inputClass =
     "w-full pl-10 pr-4 py-2 border border-[#A4AC86] rounded-lg focus:ring-2 focus:ring-[#582F0E] focus:border-transparent outline-none transition-all bg-white text-[#333D29] placeholder:text-gray-400";
   const labelClass = "block text-sm font-medium text-[#333D29] mb-1";
@@ -61,7 +59,6 @@ const ForgotPasswordDesign: React.FC<ForgotPasswordDesignProps> = ({
   const iconContainerClass = "absolute left-3 top-9";
 
   return (
-    // FONDO (Igual que el Login)
     <div className="flex min-h-screen w-full items-center justify-center bg-[#C2C5AA] p-4 font-sans">
       {/* TARJETA */}
       <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl border border-[#A4AC86]">
@@ -99,7 +96,7 @@ const ForgotPasswordDesign: React.FC<ForgotPasswordDesignProps> = ({
               )}
             </div>
 
-            {/* Botón Enviar (Estilo Login) */}
+            {/* Botón Enviar */}
             <button
               className="group/btn relative block h-11 w-full rounded-lg bg-[#582F0E] font-bold text-white shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] transition-transform hover:scale-[1.02] hover:bg-[#7F4F24] disabled:opacity-70 mt-4"
               type="submit"

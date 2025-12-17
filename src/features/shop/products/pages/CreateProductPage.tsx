@@ -13,7 +13,6 @@ const CreateProductPage = () => {
   const [localError, setLocalError] = useState("");
   const { mutate, isPending } = useCreateProductMutation();
 
-  // 1. Aquí NO ponemos el genérico para que funcionen los inputs numéricos
   const {
     register,
     handleSubmit,
@@ -40,8 +39,6 @@ const CreateProductPage = () => {
 
   return (
     <ProductFormDesign
-      // 2. AQUÍ ESTÁ EL TRUCO: "as any"
-      // Esto hace de puente entre el tipo flexible del padre y el estricto del hijo.
       register={register as any}
       errors={errors as any}
       isSubmitting={isPending}

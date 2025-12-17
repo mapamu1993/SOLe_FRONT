@@ -13,21 +13,25 @@ interface CheckoutResponse {
   data: { order: any };
 }
 
+// Servicio para obtener el carrito del usuario
 export const fetchCartService = async (): Promise<Cart> => {
   const { data } = await axiosClient.get(API_ROUTES.CART);
   return data.data.cart;
 };
 
+// Servicio para actualizar el carrito del usuario
 export const updateCartService = async (data: UpdateCartData) => {
   const response = await axiosClient.post(`${API_ROUTES.CART}/add`, data);
   return response.data;
 };
 
+// Servicio para eliminar un ítem del carrito
 export const removeItemFromCartService = async (productId: string) => {
   const response = await axiosClient.delete(`${API_ROUTES.CART}/${productId}`);
   return response.data;
 };
 
+// Servicio para realizar el checkout del carrito
 export const checkoutService = async (
   shippingAddress: string
 ): Promise<CheckoutResponse> => {

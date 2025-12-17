@@ -33,10 +33,9 @@ const UserProfilePage = () => {
     { label: "Dirección", value: user.address || "No proporcionado" },
   ];
 
-  // 3. Función para manejar el Cierre de Sesión
   const handleLogout = () => {
-    logout(); // Limpia el estado y localStorage
-    navigate("/login"); // Redirige a login
+    logout(); 
+    navigate("/login"); 
   };
 
   return (
