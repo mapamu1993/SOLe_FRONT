@@ -1,5 +1,6 @@
 import { Link as RouterLink, useNavigate } from "react-router-dom"; // 1. Añadimos useNavigate
 import { useAuth } from "../context/auth.context";
+import { USER_ROLES } from "../../../config/constants";
 import {
   getUserProfileUrl,
   formatUserRole,
@@ -8,7 +9,6 @@ import {
 } from "../../../utils/imageUtil";
 
 const UserProfilePage = () => {
-  // 2. Extraemos 'logout' del contexto
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -22,10 +22,13 @@ const UserProfilePage = () => {
   const formattedRole = formatUserRole(user.role);
   const initial = getUserInitials(user.name, user.username);
 
+  const canViewRole =
+    user?.role === USER_ROLES.ADMIN || user?.role === USER_ROLES.MODERATOR;
+
   const profileDetails = [
     { label: "Usuario", value: user.username },
     { label: "Email", value: user.email },
-    { label: "Rol", value: formattedRole },
+    ...(canViewRole ? [{ label: "Rol", value: formattedRole }] : []),
     { label: "Teléfono", value: user.phone || "No proporcionado" },
     { label: "Dirección", value: user.address || "No proporcionado" },
   ];
