@@ -5,13 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth.context";
 import { loginSchema, type LoginFormFields } from "../validators/authSchema";
 import { loginUserService } from "../services/authService";
-import { LoginDesign } from "../components/LoginDesign"; // Importamos el diseño
+import { LoginDesign } from "../components/LoginDesign";
+import { useSnackbar } from "notistack"; // <--- Importar
 
 const LoginPage = () => {
-  // LÓGICA 
   const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar(); // <--- Hook
+
   const {
     register,
     handleSubmit,
@@ -25,16 +27,25 @@ const LoginPage = () => {
     try {
       const response = await loginUserService(data);
       const userData = response.user;
+
       login(userData);
+
+      // --- TOAST DE ÉXITO ---
+      enqueueSnackbar(`¡Bienvenido, ${userData.name || "peregrino"}!`, {
+        variant: "success",
+      });
+
       navigate("/profile");
     } catch (err: any) {
       const errorMessage =
         err.response?.data?.message || "Error al iniciar sesión";
       setError(errorMessage);
+
+      // --- TOAST DE ERROR ---
+      enqueueSnackbar(errorMessage, { variant: "error" });
     }
   };
 
-  // CONEXIÓN CON EL DISEÑO
   return (
     <LoginDesign
       register={register}
