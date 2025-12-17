@@ -91,24 +91,28 @@ const KitsPage = () => {
     // Si es un Kit normal -> Añadir al Carrito
     // 1. Verificamos si el usuario está logueado
     if (!isAuthenticated) {
-      enqueueSnackbar("Inicia sesión para añadir productos", { variant: "info" });
+      enqueueSnackbar("Inicia sesión para añadir productos", {
+        variant: "info",
+      });
       navigate("/login");
       return;
     }
 
     // 2. Ejecutamos la mutación
     addToCart(
-      { productId: kit._id, quantity: 1 },
+      { productId: kit._id, quantity: 1, productModel: "Kit" },
       {
         onSuccess: () =>
-          enqueueSnackbar(`"${kit.name}" añadido a tu mochila`, { variant: "success" }),
+          enqueueSnackbar(`"${kit.name}" añadido a tu mochila`, {
+            variant: "success",
+          }),
         onError: (error: any) => {
           // Si el error es 401 (no autorizado), forzamos logout/login
           if (error.response?.status === 401) {
-             enqueueSnackbar("Tu sesión ha expirado", { variant: "warning" });
-             navigate("/login");
+            enqueueSnackbar("Tu sesión ha expirado", { variant: "warning" });
+            navigate("/login");
           } else {
-             enqueueSnackbar("Error al añadir al carrito", { variant: "error" });
+            enqueueSnackbar("Error al añadir al carrito", { variant: "error" });
           }
         },
       }
